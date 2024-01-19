@@ -26,4 +26,5 @@ require("./js/main")(app, ecoData);
 
 app.listen(port, () => console.log(`ECOLUTION SVR LISTENING... PORT: ${port}!`));
 
-let test = electricitymaps.getZoneID();
+//let test = electricitymaps.getZoneID();
+let test2 = electricitymaps.getLatestPowerBreakdown("GB");
