@@ -3,6 +3,8 @@ var ejs = require('ejs');
 var bodyParser= require ('body-parser');
 
 const electricitymaps = require('./apis/electricitymaps');
+const res = require('express/lib/response');
+const electricityMaps = require('./apis/electricitymaps');
 
 const app = express();
 const port = 8000;
@@ -26,5 +28,15 @@ require("./js/main")(app, ecoData);
 
 app.listen(port, () => console.log(`ECOLUTION SVR LISTENING... PORT: ${port}!`));
 
-//let test = electricitymaps.getZoneID();
-let test2 = electricitymaps.getLatestPowerBreakdown("GB");
+// This is how you can take this data and use it in a separate variable and then access it
+electricitymaps.getZoneID((error, result) => {
+    if (error) {
+        console.error("Error fetching data:", error);
+    } else {
+        console.log(result);
+        for (const countryCode in result) {
+            const countryInfo = result[countryCode];
+            console.log(countryCode, countryInfo.zoneName, countryInfo.access);
+        }        
+    }
+});
