@@ -5,8 +5,7 @@ Carbon Tracking &amp; Lifestyle Web App
 
 # USAGE
  - Clone Repo
- - "npm init -y" in the root folder
-    - node should detect the dependencies and will install them for you, if not manually install express, node-fetch, ejs etc
+ - "npm install" : node-fetch, express, ejs - in the root folder
  - Run index.js via Node.js
  - If a server message appears in the console then success!
  
