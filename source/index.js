@@ -4,7 +4,7 @@ var bodyParser= require ('body-parser');
 
 const electricitymaps = require('./apis/electricitymaps');
 const res = require('express/lib/response');
-const electricityMaps = require('./apis/electricitymaps');
+const mapbox = require('./apis/mapbox');
 
 const app = express();
 const port = 8000;
@@ -29,14 +29,22 @@ require("./js/main")(app, ecoData);
 app.listen(port, () => console.log(`ECOLUTION SVR LISTENING... PORT: ${port}!`));
 
 // This is how you can take this data and use it in a separate variable and then access it
-electricitymaps.getZoneID((error, result) => {
+// electricitymaps.getZoneID((error, result) => {
+//     if (error) {
+//         console.error("Error fetching data:", error);
+//     } else {
+//         console.log(result);
+//         for (const countryCode in result) {
+//             const countryInfo = result[countryCode];
+//             console.log(countryCode, countryInfo.zoneName, countryInfo.access);
+//         }        
+//     }
+// });
+
+mapbox.getRoute([-121.677738,46.522458], [-122.677738,45.522458], "walking", (error, result) => {
     if (error) {
         console.error("Error fetching data:", error);
     } else {
-        console.log(result);
-        for (const countryCode in result) {
-            const countryInfo = result[countryCode];
-            console.log(countryCode, countryInfo.zoneName, countryInfo.access);
-        }        
+        console.log(result);   
     }
 });
