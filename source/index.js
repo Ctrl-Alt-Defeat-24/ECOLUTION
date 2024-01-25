@@ -41,10 +41,10 @@ app.listen(port, () => console.log(`ECOLUTION SVR LISTENING... PORT: ${port}!`))
 //     }
 // });
 
-mapbox.getRoute([-121.677738,46.522458], [-122.677738,45.522458], "walking", (error, result) => {
-    if (error) {
-        console.error("Error fetching data:", error);
-    } else {
-        console.log(result);   
-    }
-});
+// mapbox.getRoute([-121.677738,46.522458], [-122.677738,45.522458], "walking", (error, result) => {
+//     if (error) {
+//         console.error("Error fetching data:", error);
+//     } else {
+//         console.log(result);   
+//     }
+// });
