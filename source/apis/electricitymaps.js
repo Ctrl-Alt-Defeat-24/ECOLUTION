@@ -1,6 +1,8 @@
 // ELECTRICITY MAPS API
 // https://api-portal.electricitymaps.com/
 
+const electricityMapsAuthToken = 'XY7TPdKc9UIQfFqDYczFyAEv4uAiv1G5';
+
 const electricityMaps = {
     // Gets all the possible Zone IDs, useful for allowing the user to select a zone on setup
     getZoneID: async function (callback) {
@@ -8,7 +10,7 @@ const electricityMaps = {
         const options = {
             method: 'GET',
             headers: {
-                'auth-token': 'XY7TPdKc9UIQfFqDYczFyAEv4uAiv1G5'
+                'auth-token': electricityMapsAuthToken
             },
         };
 
@@ -30,7 +32,7 @@ const electricityMaps = {
         const options = {
             method: 'GET',
             headers: {
-                'auth-token': 'XY7TPdKc9UIQfFqDYczFyAEv4uAiv1G5'
+                'auth-token': electricityMapsAuthToken
             },
         };
 
@@ -52,7 +54,7 @@ const electricityMaps = {
         const options = {
             method: 'GET',
             headers: {
-                'auth-token': 'XY7TPdKc9UIQfFqDYczFyAEv4uAiv1G5'
+                'auth-token': electricityMapsAuthToken
             },
         };
 
