@@ -2,20 +2,21 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Add an ant path animation to a line</title>
+<title>ANTPATH TRAVEL ROUTE</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-<link href="https://api.mapbox.com/mapbox-gl-js/v3.1.0/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v3.1.0/mapbox-gl.js"></script>
+<link href="/css/mapbox-gl.css" rel="stylesheet">
+<script type="text/javascript" src="/js/mapbox-gl.js"></script>
 <style>
 body { margin: 0; padding: 0; }
 #map { position: absolute; top: 0; bottom: 0; width: 100%; }
 </style>
 </head>
 <body>
+<script src="/js/mapbox-gl-directions.js"></script>
+<link rel="stylesheet" href="/css/mapbox-gl-directions.css" type="text/css">
 <div id="map"></div>
-
 <%-'<script>'%>
-    let extendedEcoData = <%-JSON.stringify(extendedEcoData)%>;
+    const extendedEcoData = <%- JSON.stringify(extendedEcoData) %>;
 <%-'</script>'%>
 
 <script>
@@ -27,81 +28,152 @@ body { margin: 0; padding: 0; }
         center: [-73.9709, 40.6712], // starting position [lng, lat]
         zoom: 15.773 // starting zoom
     });
-    
-    map.on('load', () => {
-        map.addSource('line', {
-            type: 'geojson',
-            data: extendedEcoData
-        });
 
-        // add a line layer without line-dasharray defined to fill the gaps in the dashed line
-        map.addLayer({
-            type: 'line',
-            source: 'line',
-            id: 'line-background',
-            paint: {
-                'line-color': 'yellow',
-                'line-width': 6,
-                'line-opacity': 0.4
-            }
-        });
-
-        // add a line layer with line-dasharray set to the first value in dashArraySequence
-        map.addLayer({
-            type: 'line',
-            source: 'line',
-            id: 'line-dashed',
-            paint: {
-                'line-color': 'yellow',
-                'line-width': 6,
-                'line-dasharray': [0, 4, 3]
-            }
-        });
-
-        // technique based on https://jsfiddle.net/2mws8y3q/
-        // an array of valid line-dasharray values, specifying the lengths of the alternating dashes and gaps that form the dash pattern
-        const dashArraySequence = [
-            [0, 4, 3],
-            [0.5, 4, 2.5],
-            [1, 4, 2],
-            [1.5, 4, 1.5],
-            [2, 4, 1],
-            [2.5, 4, 0.5],
-            [3, 4, 0],
-            [0, 0.5, 3, 3.5],
-            [0, 1, 3, 3],
-            [0, 1.5, 3, 2.5],
-            [0, 2, 3, 2],
-            [0, 2.5, 3, 1.5],
-            [0, 3, 3, 1],
-            [0, 3.5, 3, 0.5]
-        ];
-
-        let step = 0;
-
-        function animateDashArray(timestamp) {
-            // Update line-dasharray using the next value in dashArraySequence. The
-            // divisor in the expression `timestamp / 50` controls the animation speed.
-            const newStep = parseInt(
-                (timestamp / 50) % dashArraySequence.length
-            );
-
-            if (newStep !== step) {
-                map.setPaintProperty(
-                    'line-dashed',
-                    'line-dasharray',
-                    dashArraySequence[step]
-                );
-                step = newStep;
-            }
-
-            // Request the next frame of the animation.
-            requestAnimationFrame(animateDashArray);
-        }
-
-        // start the animation
-        animateDashArray(0);
+    const directionsControl = new MapboxDirections({
+    accessToken: mapboxgl.accessToken
     });
+
+    map.addControl(directionsControl, 'top-left');
+
+    directionsControl.on('route', () => {
+        console.log('Route updated');
+        console.log(directionsControl.getOrigin());
+        console.log(directionsControl.getDestination());
+
+        fetchRouteData();
+    });
+
+    const fetchRouteData = async () => {
+        try {
+
+            const origin = directionsControl.getOrigin().geometry.coordinates;
+            const destination = directionsControl.getDestination().geometry.coordinates;
+            const travelMode = "driving";
+
+            const response = await fetch("/calculateRoute", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ origin, destination, travelMode }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to calculate route. Server response: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log(data.extendedEcoData);
+
+            // Update the map with the new route data as needed
+            refreshMap(data.extendedEcoData);
+
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    const addedLayerAndSourceIds = [];
+
+    function refreshMap(newExtendedEcoData) {
+        // Clear existing layers and sources
+        addedLayerAndSourceIds.forEach((layerAndSourceId) => {
+            if (map.getLayer(layerAndSourceId.layerIdBackground)) {
+                map.removeLayer(layerAndSourceId.layerIdBackground);
+                map.removeLayer(layerAndSourceId.layerIdDashed);
+            }
+            if (map.getSource(layerAndSourceId.sourceId)) {
+                map.removeSource(layerAndSourceId.sourceId);
+            }
+        });
+
+        // Clear the array after removing layers and sources
+        addedLayerAndSourceIds.length = 0;
+
+        // Add new layers and sources
+        newExtendedEcoData.forEach((lineData, index) => {
+            const sourceId = `line-${index}`;
+            const layerIdBackground = `line-background-${index}`;
+            const layerIdDashed = `line-dashed-${index}`;
+
+            map.addSource(sourceId, {
+                type: 'geojson',
+                data: lineData,
+            });
+
+            map.addLayer({
+                type: 'line',
+                source: sourceId,
+                id: layerIdBackground,
+                paint: {
+                    'line-color': index == 1 ? 'lime' : "red",
+                    'line-width': 6,
+                    'line-opacity': index == 1 ? 0.1 : 0.1
+                }
+            });
+
+            map.addLayer({
+                type: 'line',
+                source: sourceId,
+                id: layerIdDashed,
+                paint: {
+                    'line-color': index == 1 ? 'lime' : "red",
+                    'line-width': 6,
+                    'line-dasharray': [0, 4, 3]
+                }
+            });
+
+            const dashArraySequence = [
+                [0, 4, 3],
+                [0.5, 4, 2.5],
+                [1, 4, 2],
+                [1.5, 4, 1.5],
+                [2, 4, 1],
+                [2.5, 4, 0.5],
+                [3, 4, 0],
+                [0, 0.5, 3, 3.5],
+                [0, 1, 3, 3],
+                [0, 1.5, 3, 2.5],
+                [0, 2, 3, 2],
+                [0, 2.5, 3, 1.5],
+                [0, 3, 3, 1],
+                [0, 3.5, 3, 0.5]
+            ];
+
+            let step = 0;
+
+            function animateDashArray(timestamp) {
+                const newStep = parseInt((timestamp / 50) % dashArraySequence.length);
+
+                if (newStep !== step) {
+                    // Use the unique layer ID for each line
+                    map.setPaintProperty(
+                        layerIdDashed,
+                        'line-dasharray',
+                        dashArraySequence[step]
+                    );
+                    step = newStep;
+                }
+
+                requestAnimationFrame(animateDashArray);
+            }
+
+            animateDashArray(0);
+
+            addedLayerAndSourceIds.push({
+                layerIdBackground,
+                layerIdDashed,
+                sourceId
+            });
+
+        });
+    }
+
+    map.on('load', () => {
+        // Assume newExtendedEcoData is the updated data you receive from the server
+        refreshMap(extendedEcoData);
+    });
+
 </script>
 
 </body>

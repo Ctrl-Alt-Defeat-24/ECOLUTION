@@ -1,4 +1,5 @@
-const mapbox = require("../apis/mapbox");
+const ecolutionTravelRoutes = require("./travelroutes");
+
 module.exports = function (app, ecoData) {
   // Handle our routes
   app.get("/", (req, res) => {
@@ -9,31 +10,29 @@ module.exports = function (app, ecoData) {
     res.render("mapboxdirectionexample.ejs", ecoData);
   });
 
-  app.get("/antpath", (req, res) => {
-    mapbox.getRoute([-73.97137,40.67286], [-122.677738, 45.522458], "driving", (error, result) => {
-        if (error) {
-          console.error("Error fetching data:", error);
-        } else {
-          // Get the pathing result so we can display it on the map
-          const extendedEcoData = {
-            type: "FeatureCollection",
-            features: [
-              {
-                type: "Feature",
-                properties: {},
-                geometry: {
-                  coordinates: result.routes[0].geometry.coordinates,
-                  type: "LineString",
-                },
-              },
-            ],
-          };
-          console.log(extendedEcoData);
-
-          // Pass the extendedEcoData to the EJS template
-          res.render("mapboxantpath.ejs", { extendedEcoData: extendedEcoData });
-        }
-      }
-    );
+  app.get("/antpath", async (req, res) => {
+    try {
+      
+        // Use the helper library to get the data set
+        //const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints([-73.97137, 40.67286], [-122.677738, 45.522458], "driving");
+        let extendedEcoData = [];
+        res.render("mapboxantpath.ejs", { extendedEcoData: extendedEcoData });
+      
+    } catch (error) {
+        console.error("Error:", error);
+    }
   });
+
+  app.post("/calculateRoute", async (req, res) => {
+    try {
+        const { origin, destination, travelMode } = req.body;
+
+        const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints(origin, destination, travelMode);
+
+        res.json({ extendedEcoData });
+    } catch (error) {
+        console.error("Error:", error);
+    }
+  });
+
 };

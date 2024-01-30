@@ -9,6 +9,10 @@ const mapbox = require('./apis/mapbox');
 const app = express();
 const port = 8000;
 
+app.use(express.static(__dirname + "/typefaces"));
+app.use(express.json());
+app.use(express.static(__dirname + "/client"));
+
 // Set the directory where Express will pick up HTML files
 // __dirname will get the current directory
 app.set('views', __dirname + '/views');
