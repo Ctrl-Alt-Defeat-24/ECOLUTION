@@ -2,14 +2,14 @@ const express = require('express');
 var ejs = require('ejs');
 var bodyParser= require ('body-parser');
 const bcrypt = require('bcrypt');
-const { MongoClient } = require('mongodb');
-const saltRounds = 10; // for bcrypt
+// const { MongoClient } = require('mongodb');
+// const saltRounds = 10; // for bcrypt
 
 const electricitymaps = require('./apis/electricitymaps');
 const app = express();
 const port = 8000;
 // Connection URL (replace if your MongoDB is hosted elsewhere)
-const url = 'mongodb://127.0.0.1:27017';
+// const url = 'mongodb://127.0.0.1:27017';
 
 // Set the directory where Express will pick up HTML files
 // __dirname will get the current directory
@@ -40,14 +40,14 @@ const dbName = 'Ecolution';
 let db;
 let collection;
 // Create a new MongoClient
-const client = new MongoClient(url);
+// const client = new MongoClient(url);
 
 // Function to generate the chart
 app.get('/chart-data', (req, res) => {
     // Provide the necessary data for the chart
     res.json({
-        data1: [30, 200, 100, 170, 150, 250],
-        data2: [130, 100, 140, 35, 110, 50]
+        data1: [30, 200, 100],
+        data2: [130, 100, 140]
     });
 });
 
@@ -57,10 +57,17 @@ require("./js/main")(app, ecoData, db, bcrypt, saltRounds, collection);
 // Connect to the MongoDB cluster
 async function run() {
     try {
+<<<<<<< Updated upstream
         await client.connect();
         console.log("Connected successfully to server");
         db = client.db(dbName);
         collection = db.collection('User_Credentials');
+=======
+        // await client.connect();
+        // console.log("Connected successfully to server");
+        // db = client.db(dbName);
+        // const collection = db.collection('User_Credentials');
+>>>>>>> Stashed changes
 
         // Start the server after establishing the database connection
         app.listen(port, () => {
@@ -68,7 +75,7 @@ async function run() {
         });
 
         // Now you can require your routes and pass the db connection
-        require("./js/main")(app, ecoData, db, bcrypt, saltRounds, collection);
+        require("./js/main")(app, ecoData);
 
     } catch (error) {
         console.error("Failed to connect to MongoDB", error);
