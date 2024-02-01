@@ -4,6 +4,8 @@ module.exports = function (app, ecoData, db, bcrypt, saltRounds, collection) {
 
     res.render("index.ejs", {ecoData});
   });
+
+  
 // Route to display the login page
 // app.get("/login", (req, res) => {
 //   res.render("login.ejs");

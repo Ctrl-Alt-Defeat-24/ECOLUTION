@@ -43,6 +43,7 @@ let collection;
 // const client = new MongoClient(url);
 
 // Function to generate the chart
+
 app.get('/chart-data', (req, res) => {
     // Provide the necessary data for the chart
     res.json({
@@ -57,17 +58,10 @@ require("./js/main")(app, ecoData, db, bcrypt, saltRounds, collection);
 // Connect to the MongoDB cluster
 async function run() {
     try {
-<<<<<<< Updated upstream
-        await client.connect();
-        console.log("Connected successfully to server");
-        db = client.db(dbName);
-        collection = db.collection('User_Credentials');
-=======
         // await client.connect();
         // console.log("Connected successfully to server");
         // db = client.db(dbName);
         // const collection = db.collection('User_Credentials');
->>>>>>> Stashed changes
 
         // Start the server after establishing the database connection
         app.listen(port, () => {
