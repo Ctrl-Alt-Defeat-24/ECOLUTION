@@ -38,6 +38,7 @@ var ecoData = {}
 const dbName = 'Ecolution';
 
 let db;
+let collection;
 // Create a new MongoClient
 const client = new MongoClient(url);
 
@@ -51,7 +52,7 @@ app.get('/chart-data', (req, res) => {
 });
 
 // Requires the main.js file inside the routes folder passing in the Express app and data as arguments.  All the routes will go in this file
-require("./js/main")(app, ecoData);
+require("./js/main")(app, ecoData, db, bcrypt, saltRounds, collection);
 
 // Connect to the MongoDB cluster
 async function run() {
@@ -59,7 +60,7 @@ async function run() {
         await client.connect();
         console.log("Connected successfully to server");
         db = client.db(dbName);
-        const collection = db.collection('User_Credentials');
+        collection = db.collection('User_Credentials');
 
         // Start the server after establishing the database connection
         app.listen(port, () => {
@@ -73,27 +74,89 @@ async function run() {
         console.error("Failed to connect to MongoDB", error);
     }
 }
-app.get("/login", (req, res) => {
-    res.render("login.ejs");
-  });
 
+
+  // Route to display the login page
+  app.get("/login", (req, res) => {
+    res.render("login.ejs");
+});
+
+// Route to handle login logic
 app.post("/login", async (req, res) => {
-    // Authentication logic for login
+    // Extract username and password from request body
     const { username, password } = req.body;
-    const user = await db.collection('User_Credentials').findOne({ username });
     
-    if (user) {
-        const match = await bcrypt.compare(password, user.password);
-        if (match) {
-            res.send("Logged in successfully");
+    try {
+        // Find user in the database within the credentials array
+        const user = await db.collection('User_Credentials').findOne({ "credentials.username": username }, { projection: { credentials: { $elemMatch: { username } } } });
+
+        if (user && user.credentials && user.credentials.length > 0) {
+            // Extract the first element of the credentials array
+            const userData = user.credentials[0];
+
+            // Compare submitted password with stored hash
+            console.log("   ")
+            console.log(userData);
+            console.log(password);
+            console.log(userData.passwordHash);
+            if (password === userData.password){
+
+                // Passwords match, handle successful login
+                res.send("Logged in successfully");
+            } else {
+                // Passwords do not match
+                res.send("Incorrect password");
+            }
         } else {
-            res.send("Incorrect password");
+            // User not found
+            res.send("User not found");
         }
-    } else {
-        res.send("User not found");
+    } catch (error) {
+        // Handle any errors that occur during the process
+        console.error("Error during login:", error);
+        res.send("An error occurred during login");
+    }
+});
+
+// Route to display the registration page
+app.get("/register", (req, res) => {
+    res.render("register.ejs");
+  });
+  
+  // Route to handle registration logic
+  app.post("/register", async (req, res) => {
+    // Extract email, username, and password from request body
+    const { email, username, password } = req.body;
+    
+    try {
+        // Check if the user already exists
+        const existingUser = await db.collection('User_Credentials').findOne({ "credentials.username": username });
+  
+        if (existingUser) {
+            // User already exists
+            res.send("User already exists with that username");
+        } else {
+            // Insert new user into the database
+            const newUser = {
+                email: email,
+                username: username,
+                password: password, // In a real application, you should hash the password
+                createDate: new Date(), // Storing the creation date
+                lastLoginDate: null, // Initially null, updated upon login
+                isActive: "T" // Assuming "T" means True/Active
+            };
+  
+            await db.collection('User_Credentials').updateOne({}, { $push: { credentials: newUser } });
+  
+            res.send("User registered successfully");
+        }
+    } catch (error) {
+        // Handle any errors that occur during the process
+        console.error("Error during registration:", error);
+        res.send("An error occurred during registration");
     }
   });
-
+  
 run();
 
 let test = electricitymaps.getZoneID();
