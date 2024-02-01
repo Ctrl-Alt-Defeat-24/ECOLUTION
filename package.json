@@ -1,7 +1,14 @@
 {
   "dependencies": {
+    "all": "^0.0.0",
+    "bcrypt": "^5.1.1",
+    "billboard.js": "^3.11.0-next.1",
+    "body-parser": "^1.20.2",
+    "canvas": "^2.11.2",
+    "chart.js": "^4.4.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "mongodb": "6.3",
     "node-fetch": "^2.7.0"
   },
   "name": "ecolution",
@@ -11,7 +18,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ctrl-Alt-Defeat-24/ECOLUTION.git"
+  },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ctrl-Alt-Defeat-24/ECOLUTION/issues"
+  },
+  "homepage": "https://github.com/Ctrl-Alt-Defeat-24/ECOLUTION#readme"
 }

@@ -4,8 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ECOLUTION</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/billboard.js/3.1.5/billboard.min.js"></script>
+    <link rel="stylesheet" href="style\insight.min.css">
+
 </head>
 <body>
     <h1>ECOLUTION</h1>
+    <div id="chart"></div>
+    <script>
+        // Fetch the chart data from the server
+        fetch('/chart-data')
+            .then(response => response.json())
+            .then(data => {
+                // Generate the chart using billboard.js
+                bb.generate({
+                    bindto: "#chart",
+                    data: {
+                        type: "bar",
+                        columns: [
+                            ["data1", ...data.data1],
+                            ["data2", ...data.data2]
+                        ]
+                    }
+                });
+            });
+    </script>
 </body>
 </html>
