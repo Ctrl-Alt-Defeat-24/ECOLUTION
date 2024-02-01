@@ -5,7 +5,17 @@ Carbon Tracking &amp; Lifestyle Web App
 
 # USAGE
  - Clone Repo
- - "npm install" : node-fetch, express, ejs - in the root folder
+ - "npm install" : the following dependencies
+    "all": "^0.0.0",
+    "bcrypt": "^5.1.1",
+    "billboard.js": "^3.11.0-next.1",
+    "body-parser": "^1.20.2",
+    "canvas": "^2.11.2",
+    "chart.js": "^4.4.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mongodb": "6.3",
+    "node-fetch": "^2.7.0"
  - Run index.js via Node.js
  - If a server message appears in the console then success!
  

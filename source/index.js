@@ -11,12 +11,9 @@ const mapbox = require('./apis/mapbox');
 
 const app = express();
 const port = 8000;
+
 // Connection URL (replace if your MongoDB is hosted elsewhere)
 const url = 'mongodb://127.0.0.1:27017';
-
-app.use(express.static(__dirname + "/typefaces"));
-app.use(express.json());
-app.use(express.static(__dirname + "/client"));
 
 // Set the directory where Express will pick up HTML files
 // __dirname will get the current directory
@@ -31,7 +28,9 @@ app.engine('html', ejs.renderFile);
 
 // Tell Express where to find static files
 // Static files are files that will not change
-app.use(express.static('public')); // Serve static files from the 'public' folder
+app.use(express.static(__dirname + "/typefaces"));
+app.use(express.json());
+app.use(express.static(__dirname + "/client"));
 
 // Tell Express to use the body-parser middleware to parse request bodies
 app.use(bodyParser.urlencoded({ extended: true }));
