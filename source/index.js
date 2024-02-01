@@ -103,4 +103,7 @@ app.post("/login", async (req, res) => {
 
 run();
 
-let test = electricitymaps.getZoneID();
+// Bypass MongoDB connection
+// app.listen(port, () => {
+//     console.log(`BYPASSED MONGODB TO START ECOLUTION SVR... LISTENING... PORT: ${port}!`);
+// });
