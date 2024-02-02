@@ -19,4 +19,5 @@ Carbon Tracking &amp; Lifestyle Web App
  - Run index.js via Node.js
  - If a server message appears in the console then success!
  
- - API Stuff to come soon <-----
+# DEMO
+ - /antpath to demonstrate ecofriendly navigation

@@ -62,12 +62,14 @@ app.post("/register", async (req, res) => {
     }
   });
 
+  // Function to take in the origin and destination and return the waypoints for any route(s)
   app.post("/calculateRoute", async (req, res) => {
     try {
         const { origin, destination, travelMode } = req.body;
 
         const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints(origin, destination, travelMode);
 
+        // Return the json object
         res.json({ extendedEcoData });
     } catch (error) {
         console.error("Error:", error);

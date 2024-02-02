@@ -29,17 +29,20 @@ body { margin: 0; padding: 0; }
         zoom: 15.773 // starting zoom
     });
 
+    // Create the Directions API Box for the map
     const directionsControl = new MapboxDirections({
     accessToken: mapboxgl.accessToken
     });
 
     map.addControl(directionsControl, 'top-left');
 
+    // Add a listener for when the Directions Box has updated information
     directionsControl.on('route', () => {
         console.log('Route updated');
         console.log(directionsControl.getOrigin());
         console.log(directionsControl.getDestination());
 
+        // Parse the route data and send it to the server
         fetchRouteData();
     });
 
@@ -48,8 +51,10 @@ body { margin: 0; padding: 0; }
 
             const origin = directionsControl.getOrigin().geometry.coordinates;
             const destination = directionsControl.getDestination().geometry.coordinates;
+            // Specifying driving mode for the travel mode at this moment
             const travelMode = "driving";
 
+            // Send the route data to the server to get the pathing and information for the map
             const response = await fetch("/calculateRoute", {
                 method: "POST",
                 headers: {
@@ -59,7 +64,7 @@ body { margin: 0; padding: 0; }
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to calculate route. Server response: ${response.statusText}`);
+                throw console.error("Error:", error);
             }
 
             const data = await response.json();
@@ -170,7 +175,7 @@ body { margin: 0; padding: 0; }
     }
 
     map.on('load', () => {
-        // Assume newExtendedEcoData is the updated data you receive from the server
+        // Assume ExtendedEcoData is the updated data you receive from the server
         refreshMap(extendedEcoData);
     });
 
