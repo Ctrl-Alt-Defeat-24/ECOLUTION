@@ -15,7 +15,7 @@ const mapBox = {
     fetch(endpoint, options)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         callback(null, data);
       })
       .catch((error) => {

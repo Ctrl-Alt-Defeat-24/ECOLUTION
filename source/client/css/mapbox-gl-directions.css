@@ -8,8 +8,19 @@
      -moz-box-sizing:border-box;
           box-sizing:border-box;
   }
+
+@font-face {
+  font-family: 'SFProDisplayBlackItalic';
+  src: url('../typefaces/SFPRODISPLAYBLACKITALIC.OTF') format('opentype');
+}
+
+@font-face {
+  font-family: 'SFProDisplayBold';
+  src: url('../typefaces/SFPRODISPLAYBOLD.OTF') format('opentype');
+}
+
 .mapboxgl-ctrl-geocoder {
-  font:15px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font: 15px/20px 'SFProDisplayBold';
   position:relative;
   background-color:white;
   width:calc(100% - 360px);;
@@ -163,7 +174,7 @@
   }
 
 .directions-control {
-  font:15px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font:15px/20px 'SFProDisplayBold';
   }
 
 /* Layout containers */

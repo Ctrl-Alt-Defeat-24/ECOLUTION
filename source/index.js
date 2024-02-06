@@ -38,6 +38,7 @@ app.use(bodyParser.json());
 
 
 // Define our data
+// This is where any arrays or temporary data will be stored for use at the front end
 var ecoData = {}
 
 // Database Name
@@ -102,7 +103,7 @@ app.post("/login", async (req, res) => {
 
 run();
 
-// Bypass MongoDB connection
-// app.listen(port, () => {
-//     console.log(`BYPASSED MONGODB TO START ECOLUTION SVR... LISTENING... PORT: ${port}!`);
-// });
+//Bypass MongoDB connection
+app.listen(port, () => {
+    console.log(`BYPASSED MONGODB TO START ECOLUTION SVR... LISTENING... PORT: ${port}!`);
+});
