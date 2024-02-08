@@ -12,6 +12,8 @@ const mapbox = require('./apis/mapbox');
 
 const app = express();
 const port = 8000;
+// Connection URL (replace if your MongoDB is hosted elsewhere)
+// const url = 'mongodb://127.0.0.1:27017';
 
 // Connection URL (replace if your MongoDB is hosted elsewhere)
 const url = 'mongodb://127.0.0.1:27017';
@@ -48,8 +50,8 @@ const client = new MongoClient(url);
 
 app.get('/chart-data', (req, res) => {
     res.json({
-        data1: [30, 200, 100, 170, 150, 250],
-        data2: [130, 100, 140, 35, 110, 50]
+        data1: [30, 200, 100],
+        data2: [130, 100, 140]
     });
 });
 

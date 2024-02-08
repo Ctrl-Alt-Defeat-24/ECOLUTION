@@ -27,6 +27,34 @@
             </a>
         </div>
     <% } %>
+    <link rel="stylesheet" href='/style/insight.min.css'>
+    <link rel="stylesheet" href='/style/main.css'>
+    
+</head>
+<body>
+
+    <div class="grey-rectangle"></div>
+
+
+    <div class="header-container">
+        <div class="header-title">
+            <h1>ECOLUTION</h1>
+            <div class="header-logo">
+                <img src="/resources/PSD/BrandLogo.jpg" alt="Ecolution Logo">
+            </div>
+        </div>
+        <!-- Navigation Bar -->
+        <div class="navbar">
+            <ul>
+                <li><a href="#home">Login</a></li>
+                <li><a href="#about">Home</a></li>
+                <li><a href="#about">Goals</a></li>
+                <li><a href="#services">Appliance</a></li>
+                <li><a href="#contact">Travel</a></li>
+                <li><a href="#about">Leaderboard</a></li>
+            </ul>
+        </div>
+    </div>
     <div id="chart"></div>
     <script>
         // Fetch the chart data from the server
@@ -34,16 +62,32 @@
             .then(response => response.json())
             .then(data => {
                 // Generate the chart using billboard.js
-                bb.generate({
+                var chart = bb.generate({
                     bindto: "#chart",
+                    transition: {
+                        duration: 1000
+                    },
+                    bar: {
+                        width: {
+                            ratio: 0.5
+                        }
+                    },
                     data: {
                         type: "bar",
+                        columns: [
+                            ["data1", ...data.data1.map(() => 0)],
+                            ["data2", ...data.data2.map(() => 0)]
+                        ]
+                    }
+                });
+                setTimeout(function() {
+                    chart.load({
                         columns: [
                             ["data1", ...data.data1],
                             ["data2", ...data.data2]
                         ]
-                    }
-                });
+                    });
+                }, 2000);
             });
     </script>
 </body>

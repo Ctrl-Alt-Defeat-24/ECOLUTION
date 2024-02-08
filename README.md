@@ -17,6 +17,8 @@ Carbon Tracking &amp; Lifestyle Web App
     "mongodb": "6.3",
     "node-fetch": "^2.7.0"
     "express-session": "1.18.0"
+ - "npm init -y" in the source folder
+    - node should detect the dependencies and will install them for you, if not manually install express
  - Run index.js via Node.js
  - If a server message appears in the console then success!
  
