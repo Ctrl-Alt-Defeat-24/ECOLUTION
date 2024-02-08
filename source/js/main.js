@@ -19,14 +19,13 @@ module.exports = function (app, ecoData) {
 //   // Find user in the database
 //   const user = await db.collection('User_Credentials').findOne({ username });
 
-<<<<<<< Updated upstream
 //   if (user) {
 //       // Compare submitted password with stored hash
 //       const match = await bcrypt.compare(password, user.password);
-=======
-app.get("/register", (req, res) => {
-    res.render("register.ejs");
-  });
+// =======
+// app.get("/register", (req, res) => {
+//     res.render("register.ejs");
+//   });
 
 // app.post("/register", async (req, res) => {
   //   // Logic to handle user registration
@@ -42,13 +41,13 @@ app.get("/register", (req, res) => {
   //   }
   // });
 
-  app.get("/directions", (req, res) => {
-    res.render("mapboxdirectionexample.ejs", ecoData);
-  });
+//   app.get("/directions", (req, res) => {
+//     res.render("mapboxdirectionexample.ejs", ecoData);
+//   });
 
-  app.get("/antpath", async (req, res) => {
-    try {
->>>>>>> Stashed changes
+//   app.get("/antpath", async (req, res) => {
+//     try {
+// >>>>>>> Stashed changes
       
 //       if (match) {
 //           // Passwords match, handle successful login
