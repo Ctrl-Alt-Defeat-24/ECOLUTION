@@ -1,0 +1,25 @@
+.login-link, .register-link {
+    position: absolute;
+    top: 20px;
+}
+.register-link {
+    right: 100px;
+}
+.login-link {
+    right: 20px;
+}
+.user-info {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background-color: green;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+/* Position the home button in the top right corner */
+.homepage-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}

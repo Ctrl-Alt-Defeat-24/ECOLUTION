@@ -16,6 +16,7 @@ Carbon Tracking &amp; Lifestyle Web App
     "express": "^4.18.2",
     "mongodb": "6.3",
     "node-fetch": "^2.7.0"
+    "express-session": "1.18.0"
  - Run index.js via Node.js
  - If a server message appears in the console then success!
  

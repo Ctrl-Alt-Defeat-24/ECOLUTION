@@ -6,11 +6,27 @@
     <title>ECOLUTION</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/billboard.js/3.1.5/billboard.min.js"></script>
-    <link rel="stylesheet" href="style\insight.min.css">
-
+    <link rel="stylesheet" href="/style/insight.min.css">
+    <link rel="stylesheet1" href="/style/main.css" > 
 </head>
 <body>
+    <% if (!username) { %>
+        <a href="/login" class="login-link">
+            <button>Login</button>
+        </a>
+        <a href="/register" class="register-link">
+            <button>Register</button>
+        </a>
+    <% } %>
     <h1>ECOLUTION</h1>
+    <% if (username) { %>
+        <div class="user-info">
+            Welcome, <%= username %>
+            <a href="/logout">
+                <button style="background-color: green; color: white; border: none; padding: 10px 20px; border-radius: 5px;">Logout</button>
+            </a>
+        </div>
+    <% } %>
     <div id="chart"></div>
     <script>
         // Fetch the chart data from the server

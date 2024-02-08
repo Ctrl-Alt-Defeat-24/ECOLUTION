@@ -1,77 +1,112 @@
+
 const ecolutionTravelRoutes = require("./travelroutes");
-
-module.exports = function (app, ecoData, db, bcrypt, saltRounds, collection) {
-  // Handle our routes
-  app.get("/", async (req, res) => {
-
-    res.render("index.ejs", {ecoData});
+module.exports = function(app, ecoData, db, bcrypt, saltRounds, collection) {
+    // Route to display the login page
+    // Handle our routes
+    app.get("/", async (req, res) => {
+      res.render("index.ejs", {ecoData, username: req.session.username || null});
   });
-//   app.get("/login", (req, res) => {
-//     res.render("login.ejs");
-//   });
+    app.get("/login", (req, res) => {
+        res.render("login.ejs", { username: req.session.username || null });
+    });
 
-// app.post("/login", async (req, res) => {
-//     // Authentication logic for login
-//     const { username, password } = req.body;
-//     const user = await db.collection('User_Credentials').findOne({ username });
+    // Route to handle login logic
+    app.post("/login", async (req, res) => {
+        const { username, password } = req.body;
+        try {
+            const user = await db.collection('User_Credentials').findOne({ "credentials.username": username }, { projection: { credentials: { $elemMatch: { username } } } });
+            if (user && user.credentials && user.credentials.length > 0) {
+                const userData = user.credentials[0];
+                if (password === userData.password){
+                    console.log("Setting username in session:", userData.username);
+                    req.session.username = userData.username;
+                    req.session.save(err => {
+                        if (err) {
+                            console.error("Session save error:", err);
+                            res.send("An error occurred during login");
+                        } else {
+                            res.redirect('/');
+                        }
+                    });
+                } else {
+                    res.send("Incorrect password");
+                }
+            } else {
+                res.send("User not found");
+            }
+        } catch (error) {
+            console.error("Error during login:", error);
+            res.send("An error occurred during login");
+        }
+    });
+
+    app.get('/logout', (req, res) => {
+        req.session.destroy((err) => {
+            if (err) {
+                console.error("Error during logout:", err);
+                res.send("An error occurred during logout");
+            } else {
+                res.redirect('/login');
+            }
+        });
+    });
+
+    // Route to display the registration page
+    app.get("/register", (req, res) => {
+        res.render("register.ejs");
+    });
+
+    // Route to handle registration logic
+    app.post("/register", async (req, res) => {
+        const { email, username, password } = req.body;
+        try {
+            const existingUser = await db.collection('User_Credentials').findOne({ "credentials.username": username });
+            if (existingUser) {
+                res.send("User already exists with that username");
+            } else {
+                const newUser = {
+                    username: username,
+                    password: password, // In a real application, you should hash the password
+                    email: email,
+                    createDate: new Date(),
+                    lastLoginDate: null,
+                    isActive: "T"
+                };
+                await db.collection('User_Credentials').updateOne({}, { $push: { credentials: newUser } });
+                res.redirect('/login');
+            }
+        } catch (error) {
+            console.error("Error during registration:", error);
+            res.send("An error occurred during registration");
+        }
+    });
+
+app.get("/directions", (req, res) => {
+  res.render("mapboxdirectionexample.ejs", ecoData);
+});
+
+app.get("/antpath", async (req, res) => {
+  try {
     
-//     if (user) {
-//         const match = await bcrypt.compare(password, user.password);
-//         if (match) {
-//             res.send("Logged in successfully");
-//         } else {
-//             res.send("Incorrect password");
-//         }
-//     } else {
-//         res.send("User not found");
-//     }
-//   });
+      // Use the helper library to get the data set
+      //const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints([-73.97137, 40.67286], [-122.677738, 45.522458], "driving");
+      let extendedEcoData = [];
+      res.render("mapboxantpath.ejs", { extendedEcoData: extendedEcoData });
+    
+  } catch (error) {
+      console.error("Error:", error);
+  }
+});
 
-app.get("/register", (req, res) => {
-    res.render("register.ejs");
-  });
+app.post("/calculateRoute", async (req, res) => {
+  try {
+      const { origin, destination, travelMode } = req.body;
 
-app.post("/register", async (req, res) => {
-    // Logic to handle user registration
-    const { username, password } = req.body;
-    const existingUser = await db.collection('User_Credentials').findOne({ username });
+      const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints(origin, destination, travelMode);
 
-    if (existingUser) {
-        res.send("Username already taken");
-    } else {
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-        await db.collection('User_Credentials').insertOne({ username, password: hashedPassword });
-        res.send("Registered successfully");
-    }
-  });
-
-  app.get("/directions", (req, res) => {
-    res.render("mapboxdirectionexample.ejs", ecoData);
-  });
-
-  app.get("/antpath", async (req, res) => {
-    try {
-      
-        // Use the helper library to get the data set
-        //const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints([-73.97137, 40.67286], [-122.677738, 45.522458], "driving");
-        let extendedEcoData = [];
-        res.render("mapboxantpath.ejs", { extendedEcoData: extendedEcoData });
-      
-    } catch (error) {
-        console.error("Error:", error);
-    }
-  });
-
-  app.post("/calculateRoute", async (req, res) => {
-    try {
-        const { origin, destination, travelMode } = req.body;
-
-        const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints(origin, destination, travelMode);
-
-        res.json({ extendedEcoData });
-    } catch (error) {
-        console.error("Error:", error);
-    }
-  });
-
+      res.json({ extendedEcoData });
+  } catch (error) {
+      console.error("Error:", error);
+  }
+});
 };
