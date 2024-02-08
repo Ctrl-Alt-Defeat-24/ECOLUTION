@@ -6,7 +6,7 @@
     <title>ECOLUTION</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/billboard.js/3.1.5/billboard.min.js"></script>
-    <link rel="stylesheet" href="style\insight.min.css">
+    <link rel="stylesheet" href='/style/insight.min.css'>
 
 </head>
 <body>
@@ -18,17 +18,34 @@
             .then(response => response.json())
             .then(data => {
                 // Generate the chart using billboard.js
-                bb.generate({
+                var chart = bb.generate({
                     bindto: "#chart",
+                    transition: 
+                    {
+                    duration: 1000
+                    },
+                    bar: {
+                        width: {
+                            ratio: 0.5 // This makes the bar width 50% of the space between ticks
+                        }
+                    },
                     data: {
                         type: "bar",
                         columns: [
-                            ["data1", ...data.data1],
-                            ["data2", ...data.data2]
+                            ["data1", ...data.data1.map(() => 0)],
+                            ["data2", ...data.data2.map(() => 0)]
                         ]
                     }
                 });
-            });
+            setTimeout(function() {
+                chart.load({
+                    columns: [
+                        ["data1", ...data.data1],
+                        ["data2", ...data.data2]
+                    ]
+                });
+            }, 2000);
+        });
     </script>
 </body>
 </html>

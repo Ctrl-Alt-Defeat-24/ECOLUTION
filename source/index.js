@@ -53,7 +53,7 @@ app.get('/chart-data', (req, res) => {
 });
 
 // Requires the main.js file inside the routes folder passing in the Express app and data as arguments.  All the routes will go in this file
-require("./js/main")(app, ecoData, db, bcrypt, saltRounds, collection);
+require("./js/main")(app, ecoData, db, bcrypt,collection);
 
 // Connect to the MongoDB cluster
 async function run() {
