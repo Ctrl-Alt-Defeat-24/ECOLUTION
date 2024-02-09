@@ -34,7 +34,7 @@ body {
 #chart {
     position: absolute;
     right: 0vh;
-    bottom: -20vh;
+    bottom: -5vh;
     transform: translateX(50%);
     max-width: 600px;
     width: 100%;
@@ -45,6 +45,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow for depth */
     /* Ensure text and other elements are visible above the background */
     z-index: 10;
+    height: 550px;
 }
 .header-container {
     display: flex;
@@ -64,14 +65,120 @@ h1 {
     margin: 0;
 }
 
+/* Rectangle 1 css changes: */
 .grey-rectangle {
-    position: fixed;
-    left: 0;
-    bottom: -20vh5;
-    margin-left: 200px;
-    height: 50%;
-    width: 50px; /* Adjust width as needed */
-    background-color: rgba(180, 180, 180, 0.8); /* Grey background with 80% opacity */
-    z-index: 100; /* Ensure it's above other content */
+    /* Display texts better */
+    display: flex;
+    align-items: center; /* Aligns the text block vertically */
+    justify-content: center; /* Aligns the text block horizontally */
+    text-align: center; /* Ensures that the text within the <p> tag is centered */
     
+    
+    
+    position: absolute;
+    left: -33vh;
+    bottom: 12vh;
+    transform: translateX(50%);
+    margin-left: 0px;
+    max-width: 600px;
+    height: 270px;
+    width: 100%; /* Adjust width as needed */
+    border-radius: 8px;
+    background-color: rgba(240, 240, 240, 0.5); /* Grey background with 80% opacity */
+    z-index: 10; /* Ensure it's above other content */
+    
+}
+
+.grey-rectangle p {
+    color: #333; /* Or any color you prefer for the text */
+    font-weight: bold;
+    font-size: 16px; /* Adjust the size as needed */
+    margin: 0; /* Remove default margin from p tag */
+    padding: 0 20px; /* Add some padding if needed */
+    height: 260px
+
+    /* Remove line-height to allow default line spacing */
+}
+
+/* Rectangle 2 css changes: */
+.grey-rectangle2 {
+    position: absolute;
+    left: -33vh;
+    bottom: 50vh;
+    transform: translateX(50%);
+    margin-left: 0px;
+    max-width: 600px;
+    height: 270px;
+    width: 100%; /* Adjust width as needed */
+    border-radius: 8px;
+    background-color: rgba(240, 240, 240, 0.6); /* Grey background with 80% opacity */
+    z-index: 10; /* Ensure it's above other content */
+    
+}
+
+.grey-rectangleb {
+    position: absolute;
+    left: -41vh;
+    bottom: 55vh;
+    transform: translateX(50%);
+    margin-left: 300px;
+    max-width: 600px;
+    height: 10%;
+    width: 15%; /* Adjust width as needed */
+    border-radius: 8px;
+    background-color: rgba(206, 203, 203, 0.6); /* Grey background with 80% opacity */
+    z-index: 10; /* Ensure it's above other content */
+    
+}
+
+.grey-rectangleb2 {
+    position: absolute;
+    left: -41vh;
+    bottom: 69vh;
+    transform: translateX(50%);
+    margin-left: 300px;
+    max-width: 600px;
+    height: 10%;
+    width: 15%; /* Adjust width as needed */
+    border-radius: 8px;
+    background-color: rgba(206, 203, 203, 0.6); /* Grey background with 80% opacity */
+    z-index: 10; /* Ensure it's above other content */
+    
+}
+
+.grey-rectangleb3 {
+    position: absolute;
+    left: -4vh;
+    bottom: 69vh;
+    transform: translateX(50%);
+    margin-left: 300px;
+    max-width: 600px;
+    height: 10%;
+    width: 15%; /* Adjust width as needed */
+    border-radius: 8px;
+    background-color: rgba(206, 203, 203, 0.6); /* Grey background with 80% opacity */
+    z-index: 10; /* Ensure it's above other content */
+    
+}
+
+.grey-rectangleb4 {
+    position: absolute;
+    left: -4vh;
+    bottom: 55vh;
+    transform: translateX(50%);
+    margin-left: 300px;
+    max-width: 600px;
+    height: 10%;
+    width: 15%; /* Adjust width as needed */
+    border-radius: 8px;
+    background-color: rgba(206, 203, 203, 0.6); /* Grey background with 80% opacity */
+    z-index: 10; /* Ensure it's above other content */
+    
+}
+
+.grey-rectangleb:hover,
+.grey-rectangleb2:hover,
+.grey-rectangleb3:hover,
+.grey-rectangleb4:hover {
+    background-color: rgb(0, 243, 101, 0.6); /* Or any green color you prefer, e.g., #00ff00 for a bright green */
 }
