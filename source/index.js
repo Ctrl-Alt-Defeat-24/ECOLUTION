@@ -16,7 +16,7 @@ const port = 8000;
 // const url = 'mongodb://127.0.0.1:27017';
 
 // Connection URL (replace if your MongoDB is hosted elsewhere)
-const url = 'mongodb://127.0.0.1:27017';
+const url = 'mongodb+srv://UrbanR:fD9Zdwdk63UxzOUh@ecolution.4v9i1rl.mongodb.net/?retryWrites=true&w=majority';
 
 // Set the directory where Express will pick up HTML files
 app.set('views', __dirname + '/views');
