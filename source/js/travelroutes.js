@@ -36,7 +36,7 @@ const ecolutionTravelRoutes = {
                         });
                 
                     // If we're walking, check to see if the distance that we're trying to go is in an acceptable walking distnace, if so, we'll push an empty coord so that we can render the route as green
-                    } else if (mode == "walking" && this.IsAcceptableWalkingDistance(result.routes[0])) {
+                    } else if ((mode == "walking" && this.IsAcceptableWalkingDistance(result.routes[0])) || mode == "cycling") {
                         extendedEcoData.push({
                             type: "FeatureCollection",
                             features: [
