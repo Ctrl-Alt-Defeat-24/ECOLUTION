@@ -1,7 +1,7 @@
 // ELECTRICITY MAPS API
 // https://api-portal.electricitymaps.com/
 
-const electricityMapsAuthToken = "XY7TPdKc9UIQfFqDYczFyAEv4uAiv1G5";
+const electricityMapsAuthToken = "kjRL1vGOymDku";
 
 const electricityMaps = {
   // Gets all the possible Zone IDs, useful for allowing the user to select a zone on setup
