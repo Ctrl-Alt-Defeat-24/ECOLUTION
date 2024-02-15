@@ -1,6 +1,7 @@
 
 const ecolutionTravelRoutes = require("./travelroutes");
 const MQL = require("./MQL");
+const StaticGlobalData = require("../client/js/ecolutionclientlib");
 
 module.exports = function(app, ecoData, bcrypt, saltRounds) {
     // Route to display the login page
@@ -26,7 +27,18 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
                         if (err) {
                             console.error("Session save error:", err);
                             res.send("An error occurred during login");
+                        }
+                    });
+                    // Get and save the user preferences into the session
+                    req.session.userpreferences = await (await MQL.getMongoDBInstance()).collection('User_Preferences').findOne({ _id: userData.username });
+                    req.session.save(err => {
+                        if (err) {
+                            console.error("Session save error:", err);
+                            res.send("An error occurred during login");
                         } else {
+                            console.log("Loaded preferences into session:", req.session.userpreferences);
+                            // Update the static global data with a cached version of the user preferences
+                            StaticGlobalData.userPreferences = req.session.userpreferences;
                             res.redirect('/');
                         }
                     });

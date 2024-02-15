@@ -4,4 +4,7 @@
 // avgAcceptableWalkingDist_mile = Average acceptable walking distance in miles
 const StaticGlobalData = {avgCO2eMT_driven_per_mile : 0.0002214, avgAcceptableWalkingDist_mile : 0.7};
 
+// User preferences that are loaded into the session and cached here for easier referencing
+var userPreferences = null; 
+
 module.exports = StaticGlobalData;
