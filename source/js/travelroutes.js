@@ -88,7 +88,7 @@ const ecolutionTravelRoutes = {
     //Takes in a route then uses a heuristic to determine if the walking distance is acceptable
     IsAcceptableWalkingDistance : function(route) {
         distance = route.distance * 0.000621371;
-        console.log(distance <= StaticGlobalData.avgAcceptableWalkingDist_mile);
+        //console.log(distance <= StaticGlobalData.avgAcceptableWalkingDist_mile);
         return distance <= StaticGlobalData.avgAcceptableWalkingDist_mile;
     }
 };

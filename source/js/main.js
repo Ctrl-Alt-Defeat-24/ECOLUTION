@@ -1,6 +1,8 @@
 
 const ecolutionTravelRoutes = require("./travelroutes");
-module.exports = function(app, ecoData, db, bcrypt, saltRounds, collection) {
+const MQL = require("./MQL");
+
+module.exports = function(app, ecoData, bcrypt, saltRounds) {
     // Route to display the login page
     // Handle our routes
     app.get("/", async (req, res) => {
@@ -14,7 +16,7 @@ module.exports = function(app, ecoData, db, bcrypt, saltRounds, collection) {
     app.post("/login", async (req, res) => {
         const { username, password } = req.body;
         try {
-            const user = await db.collection('User_Credentials').findOne({ "credentials.username": username }, { projection: { credentials: { $elemMatch: { username } } } });
+            const user = await (await MQL.getMongoDBInstance()).collection('User_Credentials').findOne({ "credentials.username": username }, { projection: { credentials: { $elemMatch: { username } } } });
             if (user && user.credentials && user.credentials.length > 0) {
                 const userData = user.credentials[0];
                 if (password === userData.password){
@@ -60,7 +62,7 @@ module.exports = function(app, ecoData, db, bcrypt, saltRounds, collection) {
     app.post("/register", async (req, res) => {
         const { email, username, password } = req.body;
         try {
-            const existingUser = await db.collection('User_Credentials').findOne({ "credentials.username": username });
+            const existingUser = await (await MQL.getMongoDBInstance()).collection('User_Credentials').findOne({ "credentials.username": username });
             if (existingUser) {
                 res.send("User already exists with that username");
             } else {
@@ -72,7 +74,7 @@ module.exports = function(app, ecoData, db, bcrypt, saltRounds, collection) {
                     lastLoginDate: null,
                     isActive: "T"
                 };
-                await db.collection('User_Credentials').updateOne({}, { $push: { credentials: newUser } });
+                await (await MQL.getMongoDBInstance()).collection('User_Credentials').updateOne({}, { $push: { credentials: newUser } });
                 res.redirect('/login');
             }
         } catch (error) {
@@ -85,7 +87,7 @@ app.get("/directions", (req, res) => {
   res.render("mapboxdirectionexample.ejs", ecoData);
 });
 
-app.get("/antpath", async (req, res) => {
+app.get("/ecoTravelRoutes", async (req, res) => {
   try {
     
       // Use the helper library to get the data set
