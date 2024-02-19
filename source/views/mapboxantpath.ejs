@@ -54,6 +54,7 @@ body { margin: 0; padding: 0; }
             const origin = directionsControl.getOrigin().geometry.coordinates;
             const destination = directionsControl.getDestination().geometry.coordinates;
             const travelMode = directionsControl.getProfile().replace("mapbox/", "");
+            const EVMode = directionsControl.getEVMode();
 
             // Send the route data to the server to get the pathing and information for the map
             const response = await fetch("/calculateRoute", {
@@ -61,7 +62,7 @@ body { margin: 0; padding: 0; }
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ origin, destination, travelMode }),
+                body: JSON.stringify({ origin, destination, travelMode, EVMode }),
             });
 
             if (!response.ok) {
