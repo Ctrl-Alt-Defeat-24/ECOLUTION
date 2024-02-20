@@ -131,8 +131,8 @@
 /* icons */
 .geocoder-icon {
   display:inline-block;
-  width:20px;
-  height:20px;
+  width:0px;
+  height:0px;
   vertical-align:middle;
   speak:none;
   background-repeat:no-repeat;
@@ -264,6 +264,7 @@
     cursor:pointer;
     vertical-align:top;
     display:block;
+    font:15px/20px 'SFProDisplayBold';
     border-radius:16px;
     padding:3px 5px;
     font-size:12px;
@@ -274,7 +275,7 @@
     float:left;
     }
     .mapbox-directions-profile label:hover {
-      color:rgba(0,0,0,.75);
+      color:rgba(59, 115, 59, 0.75);
       }
   .mapbox-directions-profile input[type=radio] {
     display:none;
@@ -284,6 +285,72 @@
     background:#eee;
     color:rgba(0,0,0,.75);
     }
+
+.mapbox-directions-confirm {
+  background:#fff;
+  margin:2px 0 0;
+  padding:5px;
+  border-radius:15px;
+  vertical-align:middle;
+  }
+  .mapbox-directions-confirm label {
+    cursor:pointer;
+    vertical-align:top;
+    display:inline-block;
+    font:30px/40px 'SFProDisplayBold';
+    border-radius:26px;
+    padding:3px 97px;
+    font-size:12px;
+    color:rgba(0,0,0,.5);
+    line-height:20px;
+    text-align:center;
+    white-space: nowrap;
+    }
+    .mapbox-directions-confirm label:hover {
+      color:rgba(59, 115, 59, 0.75);
+      }
+  .mapbox-directions-confirm input[type=radio] {
+    display:none;
+    }
+  .mapbox-directions-confirm input[type=radio]:checked + label:hover,
+  .mapbox-directions-confirm input[type=radio]:checked + label {
+    background:#eee;
+    color:rgba(0,0,0,.75);
+    }
+
+.mapbox-directions-success {
+  background:#fff;
+  margin:2px 0 0;
+  padding:5px;
+  border-radius:15px;
+  vertical-align:middle;
+  z-index: 100;
+  }
+  .mapbox-directions-success label {
+    cursor:pointer;
+    vertical-align:top;
+    display:inline-block;
+    font:30px/40px 'SFProDisplayBold';
+    border-radius:26px;
+    padding:3px 20px;
+    font-size:12px;
+    color:rgba(0,0,0,.5);
+    line-height:20px;
+    text-align:center;
+    white-space: nowrap;
+    z-index: 100;
+    }
+    .mapbox-directions-success label:hover {
+      color:rgba(59, 115, 59, 0.75);
+      }
+  .mapbox-directions-success input[type=radio] {
+    display:none;
+    }
+  .mapbox-directions-success input[type=radio]:checked + label:hover,
+  .mapbox-directions-success input[type=radio]:checked + label {
+    background:#eee;
+    color:rgba(0,0,0,.75);
+    }    
 
 /* Routes */
 .mapbox-directions-routes ul {

@@ -30,7 +30,7 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
                         }
                     });
                     // Get and save the user preferences into the session
-                    req.session.userpreferences = await (await MQL.getMongoDBInstance()).collection('User_Preferences').findOne({ _id: userData.username });
+                    req.session.userpreferences = await MQL.getUserPreferences(username);
                     req.session.save(err => {
                         if (err) {
                             console.error("Session save error:", err);
@@ -99,30 +99,61 @@ app.get("/directions", (req, res) => {
   res.render("mapboxdirectionexample.ejs", ecoData);
 });
 
+
+// TRAVEL ROUTES SECTION
+
+// Route to display the travel routes page
 app.get("/ecoTravelRoutes", async (req, res) => {
   try {
-    
-      // Use the helper library to get the data set
-      //const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints([-73.97137, 40.67286], [-122.677738, 45.522458], "driving");
-      let extendedEcoData = [];
-      res.render("mapboxantpath.ejs", { extendedEcoData: extendedEcoData });
-    
-  } catch (error) {
-      console.error("Error:", error);
-  }
+        //const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints([-73.97137, 40.67286], [-122.677738, 45.522458], "driving");
+        let extendedEcoData = [];
+        res.render("mapboxantpath.ejs", { extendedEcoData: extendedEcoData });
+        
+    } catch (error) {
+        console.error("Error:", error);
+    }
 });
 
-  // Function to take in the origin and destination and return the waypoints for any route(s)
+// Function to take in the origin and destination and return the waypoints for any route(s)
 app.post("/calculateRoute", async (req, res) => {
   try {
-      const { origin, destination, travelMode, EVMode } = req.body;
-
-      const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints(origin, destination, travelMode, EVMode);
-
-        // Return the json object
-      res.json({ extendedEcoData });
-  } catch (error) {
-      console.error("Error:", error);
-  }
+        const { origin, destination, travelMode, EVMode } = req.body;
+        // Get the route information from the given data
+        const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints(origin, destination, travelMode, EVMode);
+        // Cache the route CO2eMT on the session
+        req.session.cachedMTRoute = extendedEcoData[1];
+        // Log the cached route
+        console.log(req.session.cachedMTRoute);
+        // Return all the data to the front end
+        res.json({ extendedEcoData });
+    } catch (error) {
+        console.error("Error:", error);
+    }
 });
+
+// Function to commit the journey carbon to the database
+app.post("/commitjourneycarbon", async (req, res) => {
+    try {
+        // Just log the amount to double check for NaNs if that we're ever to occur
+        console.log("Committing", req.session.cachedMTRoute, "to the database");
+        // Double check here to make sure that we're not trying to commit a NaN
+        if((req.session.cachedMTRoute != null || req.session.cachedMTRoute != undefined) && req.session.cachedMTRoute != 0){
+            // Add the new journey carbon to the users standing amount
+            const succesfullyUpdated = await MQL.AddToTotalEmission(req.session.username, req.session.cachedMTRoute);
+            // Return the success of the update
+            res.json({ succesfullyUpdated });
+        // If we're trying to commit a 0 then we can skip the log as the update (currently) doesnt do anything but take up bandwidth
+        } else if (req.session.cachedMTRoute == 0)
+        {
+            console.log("No emissions to add, skipping the log");
+            res.json({ succesfullyUpdated: true });
+        } else {
+            console.error("Error trying to commit new journey carbon, make sure a route has been chosen");
+            res.json({ succesfullyUpdated: false });
+        }
+    } catch (error) {
+        console.error("Error trying to commit new journey carbon: ", error);
+    }
+  });
+
 };
