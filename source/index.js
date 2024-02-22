@@ -52,6 +52,22 @@ app.get('/chart-data', (req, res) => {
     });
 });
 
+
+// Endpoint to get current power consumption breakdown
+app.get('/current-power-consumption', async (req, res) => {
+    try {
+        const zoneID = ""; // You would set this based on your application's needs
+        const postcode = ""; // This could come from the user's input or session
+        const data = await cbreakdown.getCurrentPowerConsumptionBreakdown(zoneID, postcode);
+        res.json(data);
+    } catch (error) {
+        console.error("Failed to get current power consumption breakdown:", error);
+        res.status(500).send("Server Error");
+    }
+});
+
+
+
 // Start the server up by initializing the server and then listening on the port
 MQL.getMongoDBInstance().then(async (db) => {
     app.listen(port, () => {

@@ -55,6 +55,25 @@ body {
     height: 100%; /* Fill the wrapper */
 }
 
+/* Pie Chart Wrapper */
+#piechart-wrapper {
+  background-color: rgba(179, 179, 179, 0.5); /* Semi-transparent background */
+  width: 35%; /* Width similar to the other boxes */
+  height: 35%; /* Height to fit the content */
+  border-radius: 20px; /* Rounded corners */
+  
+  /* Positioning */
+  position: fixed; /* Fixed position to stay in place on scroll */
+  right: 40%; /* Adjust as necessary to place the pie chart */
+  top: 50%; /* Start at the middle of the screen */
+  transform: translateY(-50%); /* Center it vertically */
+}
+
+#piechart {
+  width: 100%; /* Fill the wrapper */
+  height: 100%; /* Fill the wrapper */
+}
+
 
 
 /* bottom left box */

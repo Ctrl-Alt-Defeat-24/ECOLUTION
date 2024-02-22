@@ -81,5 +81,47 @@
         });
 </script>
 
+
+<!-- Pie Chart Wrapper -->
+<div id="piechart-wrapper">
+    <div id="piechart"></div>
+</div>
+<!-- Pie Chart Script -->
+<script>
+    // Fetch the power consumption data from the server
+    fetch('/current-power-consumption')
+        .then(response => response.json())
+        .then(data => {
+            // Assume data is an array of objects with 'fuel' and 'percentage' properties
+            var columns = data.map(item => [item.fuel, item.percentage]);
+            
+            // Generate the pie chart using billboard.js
+            var piechart = bb.generate({
+                bindto: "#piechart",
+                data: {
+                    type: "pie", // Specifies the chart type as pie.
+                    columns: columns
+                },
+                pie: {
+                    label: {
+                        show: false // Hides the label; set to true if you want to display them.
+                    }
+                },
+                tooltip: {
+                    format: {
+                        value: function (value, ratio, id) {
+                            return value + '%'; // Formatting the tooltip to show percentages
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching power consumption data:', error);
+        });
+</script>
+
+
+
 </body>
 </html>
