@@ -1,4 +1,10 @@
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 body, html {
+    animation: fadeIn 1.5s ease-out forwards;
     margin: 0;
     padding: 0;
     height: 100%;
@@ -12,7 +18,7 @@ body, html {
     bottom: 0;
     right: 0;
     width: 50%;
-    background: rgb(235, 255, 226);
+    background: rgb(234, 247, 228);
     z-index: 1;
 }
 
