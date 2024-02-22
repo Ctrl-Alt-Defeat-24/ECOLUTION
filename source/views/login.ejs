@@ -6,40 +6,57 @@
     <meta name="google-signin-client_id" content="736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="/style/main.css">
+    <link rel="stylesheet" href="/style/login.css" > 
+    <style>
+      
+    </style>
 </head>
 <body>
-    <h1>Ecolution</h1>
-    <div class="container">
-
-        <a href="/" class="homepage-link">
-            <button>Home</button>
-        </a>
-        <!-- Login Form -->
-        <form action="/login" method="POST">
-            <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" class="input-field" required>
-            </div>
-            
-            <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" class="input-field" required>
-            </div>
-            <button type="submit">Login</button>
-        </form>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        <a href="/register">Don't have an account? Sign up here</a>
+    <div class="left-half">
+        <div class="content-container">
+            <img src="/resources/PSD/ProjectSplash_Cropped.png" alt="Company Title" class="title-image">
+            <p class="info-text">Ecolution empowers individuals to reduce<br>
+                their carbon footprint with user-friendly tools,<br>
+                eco-friendly options, and a supportive community.<br>
+                Small actions lead to big change!</p>
+        </div>
     </div>
-    <script>
-        function onSignIn(googleUser) {
-            var profile = googleUser.getBasicProfile();
-            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-            console.log('Name: ' + profile.getName());
-            console.log('Image URL: ' + profile.getImageUrl());
-            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        }
-    </script>
+   
+    <div class="right-half">
+        <div class="form-container">
+            
+            <div class="header"><h1>Login</h1></div>
+            <form action="/login" method="post">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div class="or-container">
+                <div class="line"></div>
+                <p>or</p>
+                <div class="line"></div>
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            <a href="/register">Don't have an account? Sign up here</a>
+        </div>
+        <script>
+            function onSignIn(googleUser) {
+                var profile = googleUser.getBasicProfile();
+                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                console.log('Name: ' + profile.getName());
+                console.log('Image URL: ' + profile.getImageUrl());
+                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            }
+        </script>
+            
+            <a href="/forgot-password" style="text-decoration: none;">
+                <p class="forgot">Forgot Password?</p>
+            </a>
+            <a href="/register" style="text-decoration: none;">
+                <p class="register">Register With Us</p>
+            </a>
+        </div>
+    </div>
+
 
 </body>
 </html>

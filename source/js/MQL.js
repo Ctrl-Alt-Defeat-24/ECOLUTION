@@ -37,7 +37,7 @@ const mql = {
                 // Establish the collection of interest
                 const collection = db.collection('User_Preferences');
                 // Find the users preferences based on the username
-                console.log("Fetching user preferences for:", username)
+                console.log("Fetching user preferences for: ", username)
                 try {
                     // Get the value from the collection
                     const user = await collection.findOne({ _id: username });
@@ -45,12 +45,70 @@ const mql = {
                     resolve(user);
                 } catch (error) {
                     // Handle errors
-                    console.error("Error fetching user preferences:", error);
+                    console.error("Error fetching user preferences: ", error);
                     reject(error);
                 }
             // If we couldnt retrieve the DB instance then we need to log the error and reject the promise
             }).catch((error) => {
-                console.error("Error fetching user preferences:", error);
+                console.error("Error fetching user preferences: ", error);
+                reject(error);
+            });
+        });
+    },
+
+    getUserSavedData : async function(username) {
+        return new Promise((resolve, reject) => {
+            this.getMongoDBInstance().then(async (db) => {
+                // Establish the collection of interest
+                const collection = db.collection('User_SavedData');
+                // Find the users preferences based on the username
+                console.log("Fetching user preferences for: ", username)
+                try {
+                    // Get the value from the collection
+                    const user = await collection.findOne({ _id: username });
+                    console.log(user);
+                    resolve(user);
+                } catch (error) {
+                    // Handle errors
+                    console.error("Error fetching user saved data: ", error);
+                    reject(error);
+                }
+            // If we couldnt retrieve the DB instance then we need to log the error and reject the promise
+            }).catch((error) => {
+                console.error("Error fetching user saved data: ", error);
+                reject(error);
+            });
+        });
+    },
+
+    // This function adds a given emission(eMT) to the users standing amount
+    AddToTotalEmission : async function(username, emissionToAdd) {
+        return new Promise((resolve, reject) => {
+            this.getMongoDBInstance().then(async (db) => {
+                // Establish the collection of interest
+                const collection = db.collection('User_SavedData');
+                // Find the users preferences based on the username
+                console.log("Fetching user preferences for: ", username)
+                try {
+                    // Just make sure that we're sending a valid number
+                    if(emissionToAdd < 0 || isNaN(emissionToAdd)){
+                        throw new Error("Invalid emission value");
+                    }
+                    // Get the value from the collection
+                    const user = await collection.findOne({ _id: username });
+                    console.log("Updating Emissions for user: " + username)
+                    // Add the new value ontop of the user's current amount
+                    collection.updateOne({ _id: username }, { $set: { _id: username, totalEstCO2eMT: user.totalEstCO2eMT + emissionToAdd } });
+                    // return true to show it was successful in updating
+                    resolve(true);
+                } catch (error) {
+                    // Handle errors
+                    console.error("Error fetching user saved data:", error);
+                    resolve(false);
+                }
+            // If we couldnt retrieve the DB instance then we need to log the error and reject the promise
+            }).catch((error) => {
+                console.error("Error fetching user saved data:", error);
                 reject(error);
             });
         });

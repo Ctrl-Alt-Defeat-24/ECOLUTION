@@ -8,19 +8,19 @@ const ecolutionTravelRoutes = {
     
     // This function produces an array of length 2, where the first element is the second most efficient route and the second element is the most efficient route
     // if we dont have 2 routes provided, we will pad it with an empty array so that we can render the route as the appropriate color
-    getRouteWaypoints: function (start, end, mode) {
+    getRouteWaypoints: function (start, end, mode, EVMode) {
         return new Promise((resolve, reject) => {
-            mapbox.getRoute(start, end, mode, (error, result) => {
+            mapbox.getRoute(start, end, mode, EVMode, (error, result) => {
                 if (error) {
                     console.error("Error fetching data:", error);
                     reject(error);
                 } else {
                     const extendedEcoData = [];
-                    
-                    if(result.routes.length > 1) {
+                    const routeData = [];
+                    if((result.routes.length > 1)) {
 
                         // Push the second route to the front, as it isnt the most efficient
-                        extendedEcoData.push({
+                        routeData.push({
                             type: "FeatureCollection",
                             features: [
                                 {
@@ -34,9 +34,9 @@ const ecolutionTravelRoutes = {
                             ],
                         });
                 
-                    // If we're walking, check to see if the distance that we're trying to go is in an acceptable walking distnace, if so, we'll push an empty coord so that we can render the route as green
-                    } else if ((mode == "walking" && this.IsAcceptableWalkingDistance(result.routes[0])) || mode == "cycling") {
-                        extendedEcoData.push({
+                    // If we're walking, check to see if the distance that we're trying to go is in an acceptable walking distance, if so, we'll push an empty coord so that we can render the route as green
+                    } else if ((mode == "walking" && this.IsAcceptableWalkingDistance(result.routes[0])) || mode == "cycling" || EVMode) {
+                        routeData.push({
                             type: "FeatureCollection",
                             features: [
                                 {
@@ -52,7 +52,7 @@ const ecolutionTravelRoutes = {
                     }
 
                     // We're always going to get 1 so we can push this to the back
-                    extendedEcoData.push({
+                    routeData.push({
                         type: "FeatureCollection",
                         features: [
                             {
@@ -68,6 +68,10 @@ const ecolutionTravelRoutes = {
 
                     //console.log(this.getDrivingEmissionFromRoute(result.routes[0]));
                     //console.log(extendedEcoData);
+                    // Push the route information
+                    extendedEcoData.push(routeData);
+                    // Push the CO2e emissions
+                    extendedEcoData.push(mode == "driving-traffic" && !EVMode ? this.getDrivingEmissionFromRoute(result.routes[0]) : 0);
                     resolve(extendedEcoData);
                 }
             });
@@ -88,7 +92,6 @@ const ecolutionTravelRoutes = {
     IsAcceptableWalkingDistance : function(route) {
         distance = route.distance * 0.000621371;
         //console.log(distance <= StaticGlobalData.avgAcceptableWalkingDist_mile);
-        console.log(StaticGlobalData.userPreferences);
         return distance <= (StaticGlobalData.userPreferences == null ? StaticGlobalData.avgAcceptableWalkingDist_mile : StaticGlobalData.userPreferences.avgAcceptableWalkingDist_mile);
     }
 };

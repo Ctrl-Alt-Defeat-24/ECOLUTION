@@ -27,185 +27,62 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
-.navbar {
-    position: absolute;
-    right: 0;
-    top: 0;
-    margin: 20px;
-    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
-    border-radius: 5px;
-    padding: 10px;
+
+.ECOLUTION
+{
+    font-size: 100%;
+    position: fixed;
+    top: 1%;
 }
-.navbar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-}
-.navbar ul li {
-    padding: 10px;
-    margin-left: 10px;
-}
-.navbar ul li a {
-    text-decoration: none;
-    color: #000;
-    font-weight: bold;
+
+/* Chart  */
+#chart-wrapper {
+    font-size: 10px;
+    background-color: rgba(179, 179, 179, 0.5); /* Similar background color */
+    width: 35%; /* Width similar to the boxes */
+    height: 77%; /* Height to fit in the middle of the screen */
+    border-radius: 20px; /* Rounded corners */
+
+    /* Positioning */
+    position: fixed; /* Fixed position to stay in place on scroll */
+    right: 5%; /* Positioned on the right side of the screen */
+    top: 50%; /* Start at the middle of the screen */
+    transform: translateY(-50%); /* Center it vertically */
 }
 
 #chart {
-    position: absolute;
-    right: 0vh;
-    bottom: -10vh;
-    transform: translateX(50%);
-    max-width: 600px;
-    width: 100%;
-    margin-left: 450px;
-    background-color: rgba(240, 240, 240, 0.5); /* Semi-transparent grey background */
-    padding: 20px; /* Add some padding around the chart */
-    border-radius: 8px; /* Optional: adds rounded corners to the background */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow for depth */
-    /* Ensure text and other elements are visible above the background */
-    z-index: 10;
-    height: 500px;
-}
-.header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-}
-.header-title {
-    display: flex;
-    align-items: center;
-}
-.header-logo img {
-    height: 50px;
-    margin-left: 15px;
-}
-h1 
-{
-    color: #333;
-    text-align: center;
-    margin-bottom: 1em;
+    width: 100%; /* Fill the wrapper */
+    height: 100%; /* Fill the wrapper */
 }
 
-.grey-rectangle {
-    /* Display texts better */
-    display: flex;
-    align-items: center; /* Aligns the text block vertically */
-    justify-content: center; /* Aligns the text block horizontally */
-    text-align: center; /* Ensures that the text within the <p> tag is centered */
-    
-    
-    
-    position: absolute;
-    left: -33vh;
-    bottom: 12vh;
-    transform: translateX(50%);
-    margin-left: 0px;
-    max-width: 600px;
-    height: 270px;
-    width: 100%; /* Adjust width as needed */
-    border-radius: 8px;
-    background-color: rgba(240, 240, 240, 0.5); /* Grey background with 80% opacity */
-    z-index: 10; /* Ensure it's above other content */
+
+
+/* bottom left box */
+.boxtl {
+    font-size: 10px;
+    background-color: rgba(179, 179, 179, 0.5);
+    width: 35%;
+    height: 35%;
+    border-radius: 20px;
+
+    /* Positioning */
+    position: fixed; /* or 'fixed' if you want it to stay in place on scroll */
+    left: 5%; /* Adjusts to roughly the bottom left-middle of the screen */
+    top: 12%; /* Aligns it to the bottom of the screen */
     
 }
 
-.grey-rectangle p {
-    color: #333; /* Or any color you prefer for the text */
-    font-weight: bold;
-    font-size: 16px; /* Adjust the size as needed */
-    margin: 0; /* Remove default margin from p tag */
-    padding: 0 20px; /* Add some padding if needed */
-    height: 260px
+.boxbl {
+    font-size: 10px;
+    background-color: rgba(180, 178, 178, 0.5);
+    width: 35%;
+    height: 35%;
+    border-radius: 20px;
 
-    /* Remove line-height to allow default line spacing */
-}
-
-
-
-/* Rectangle 2 changes: */
-.grey-rectangle2 {
-    position: absolute;
-    left: -33vh;
-    bottom: 50vh;
-    transform: translateX(50%);
-    margin-left: 0px;
-    max-width: 600px;
-    height: 270px;
-    width: 100%; /* Adjust width as needed */
-    border-radius: 8px;
-    background-color: rgba(240, 240, 240, 0.6); /* Grey background with 80% opacity */
-    z-index: 10; /* Ensure it's above other content */
-    
-}
-
-.grey-rectangleb {
-    position: absolute;
-    left: -41vh;
-    bottom: 55vh;
-    transform: translateX(50%);
-    margin-left: 300px;
-    max-width: 600px;
-    height: 10%;
-    width: 15%; /* Adjust width as needed */
-    border-radius: 8px;
-    background-color: rgba(206, 203, 203, 0.6); /* Grey background with 80% opacity */
-    z-index: 10; /* Ensure it's above other content */
-    
-}
-
-.grey-rectangleb2 {
-    position: absolute;
-    left: -41vh;
-    bottom: 69vh;
-    transform: translateX(50%);
-    margin-left: 300px;
-    max-width: 600px;
-    height: 10%;
-    width: 15%; /* Adjust width as needed */
-    border-radius: 8px;
-    background-color: rgba(206, 203, 203, 0.6); /* Grey background with 80% opacity */
-    z-index: 10; /* Ensure it's above other content */
-    
-}
-
-.grey-rectangleb3 {
-    position: absolute;
-    left: -4vh;
-    bottom: 69vh;
-    transform: translateX(50%);
-    margin-left: 300px;
-    max-width: 600px;
-    height: 10%;
-    width: 15%; /* Adjust width as needed */
-    border-radius: 8px;
-    background-color: rgba(206, 203, 203, 0.6); /* Grey background with 80% opacity */
-    z-index: 10; /* Ensure it's above other content */
-    
-}
-
-.grey-rectangleb4 {
-    position: absolute;
-    left: -4vh;
-    bottom: 55vh;
-    transform: translateX(50%);
-    margin-left: 300px;
-    max-width: 600px;
-    height: 10%;
-    width: 15%; /* Adjust width as needed */
-    border-radius: 8px;
-    background-color: rgba(206, 203, 203, 0.6); /* Grey background with 80% opacity */
-    z-index: 10; /* Ensure it's above other content */
-    
-}
-
-.grey-rectangleb:hover,
-.grey-rectangleb2:hover,
-.grey-rectangleb3:hover,
-.grey-rectangleb4:hover {
-    background-color: rgb(0, 243, 101, 0.6); /* Or any green color you prefer, e.g., #00ff00 for a bright green */
+    /* Positioning */
+    position: fixed; /* or 'fixed' if you want it to stay in place on scroll */
+    left: 5%; /* Adjusts to roughly the bottom left-middle of the screen */
+    bottom: 12%; /* Aligns it to the bottom of the screen */
 }
 
 /* Login Page */

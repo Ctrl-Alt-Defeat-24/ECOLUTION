@@ -6908,6 +6908,7 @@ exports.setDestinationFromCoordinates = setDestinationFromCoordinates;
 exports.setOptions = setOptions;
 exports.setOriginFromCoordinates = setOriginFromCoordinates;
 exports.setProfile = setProfile;
+exports.setEVMode = setEVMode;
 exports.setRouteIndex = setRouteIndex;
 exports.setWaypoint = setWaypoint;
 var types = _interopRequireWildcard(require("../constants/action_types"));
@@ -7187,6 +7188,12 @@ function setProfile(profile) {
     if (origin.geometry && destination.geometry) dispatch(fetchDirections());
   };
 }
+function setEVMode(isEVMode) {
+  return {
+    type: types.EVMODE,
+    isEVMode: isEVMode
+  };
+}
 function reverse() {
   return function (dispatch, getState) {
     var state = getState();
@@ -7311,6 +7318,8 @@ var DIRECTIONS_REQUEST_START = 'DIRECTIONS_REQUEST_START';
 exports.DIRECTIONS_REQUEST_START = DIRECTIONS_REQUEST_START;
 var DIRECTIONS_PROFILE = 'DIRECTIONS_PROFILE';
 exports.DIRECTIONS_PROFILE = DIRECTIONS_PROFILE;
+var EVMODE = 'EVMODE';
+exports.EVMODE = EVMODE;
 var EVENTS = 'EVENTS';
 exports.EVENTS = EVENTS;
 var ERROR = 'ERROR';
@@ -7632,7 +7641,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
  // substack/brfs#39
-var tmpl = (0, _lodash["default"])("<div class='mapbox-directions-component mapbox-directions-inputs'>\n  <div class='mapbox-directions-component-keyline'>\n    <div class='mapbox-directions-origin'>\n      <label class='mapbox-form-label'>\n        <span class='directions-icon directions-icon-depart'></span>\n      </label>\n      <div id='mapbox-directions-origin-input'></div>\n    </div>\n\n    <button\n      class='directions-icon directions-icon-reverse directions-reverse js-reverse-inputs'\n      title='Reverse origin &amp; destination'>\n    </button>\n\n    <div class='mapbox-directions-destination'>\n      <label class='mapbox-form-label'>\n        <span class='directions-icon directions-icon-arrive'></span>\n      </label>\n      <div id='mapbox-directions-destination-input'></div>\n    </div>\n  </div>\n\n  <% if (controls.profileSwitcher) { %>\n  <div class='mapbox-directions-profile mapbox-directions-component-keyline mapbox-directions-clearfix'><input\n     id='mapbox-directions-profile-driving'\n      type='radio'\n      name='profile'\n      value='mapbox/driving-traffic'\n      <% if (profile === 'mapbox/driving-traffic') { %>checked<% } %>\n    />\n    <label for='mapbox-directions-profile-driving'>Driving</label>\n    <input\n      id='mapbox-directions-profile-walking'\n      type='radio'\n      name='profile'\n      value='mapbox/walking'\n      <% if (profile === 'mapbox/walking') { %>checked<% } %>\n    />\n    <label for='mapbox-directions-profile-walking'>Walking</label>\n    <input\n      id='mapbox-directions-profile-cycling'\n      type='radio'\n      name='profile'\n      value='mapbox/cycling'\n      <% if (profile === 'mapbox/cycling') { %>checked<% } %>\n    />\n    <label for='mapbox-directions-profile-cycling'>Cycling</label>\n  </div>\n  <% } %>\n</div>\n");
+var tmpl = (0, _lodash["default"])("<div class='mapbox-directions-component mapbox-directions-inputs'>\n  <div class='mapbox-directions-component-keyline'>\n    <div class='mapbox-directions-origin'>\n      <label class='mapbox-form-label'>\n        <span class='directions-icon directions-icon-depart'></span>\n      </label>\n      <div id='mapbox-directions-origin-input'></div>\n    </div>\n\n    <button\n      class='directions-icon directions-icon-reverse directions-reverse js-reverse-inputs'\n      title='Reverse origin &amp; destination'>\n    </button>\n\n    <div class='mapbox-directions-destination'>\n      <label class='mapbox-form-label'>\n        <span class='directions-icon directions-icon-arrive'></span>\n      </label>\n      <div id='mapbox-directions-destination-input'></div>\n    </div>\n  </div>\n\n  <% if (controls.profileSwitcher) { %>\n  <div class='mapbox-directions-profile mapbox-directions-component-keyline mapbox-directions-clearfix'><input\n      id='mapbox-directions-profile-driving-traffic'\n      type='radio'\n      name='profile'\n      value='mapbox/driving-traffic'\n      <% if (profile === 'mapbox/driving-traffic') { %>checked<% } %>\n    />\n    <label for='mapbox-directions-profile-driving-traffic'>Driving</label>\n    <input\n      id='mapbox-directions-profile-driving'\n      type='radio'\n      name='profile'\n      value='mapbox/driving-traffic'\n      <% if (profile === 'mapbox/driving') { %>checked<% } %>\n    />\n    <label for='mapbox-directions-profile-driving'>EV-Driving</label>\n    <input\n      id='mapbox-directions-profile-walking'\n      type='radio'\n      name='profile'\n      value='mapbox/walking'\n      <% if (profile === 'mapbox/walking') { %>checked<% } %>\n    />\n    <label for='mapbox-directions-profile-walking'>Walking</label>\n    <input\n      id='mapbox-directions-profile-cycling'\n      type='radio'\n      name='profile'\n      value='mapbox/cycling'\n      <% if (profile === 'mapbox/cycling') { %>checked<% } %>\n    />\n    <label for='mapbox-directions-profile-cycling'>Cycling</label>\n  </div>\n  <% } %>\n</div>\n");
 
 /**
  * Inputs controller
@@ -7696,6 +7705,7 @@ var Inputs = /*#__PURE__*/function () {
         createOrigin = _this$actions.createOrigin,
         createDestination = _this$actions.createDestination,
         setProfile = _this$actions.setProfile,
+        setEVMode = _this$actions.setEVMode,
         reverse = _this$actions.reverse;
       var _this$store$getState2 = this.store.getState(),
         geocoder = _this$store$getState2.geocoder,
@@ -7741,6 +7751,14 @@ var Inputs = /*#__PURE__*/function () {
       Array.prototype.forEach.call(profiles, function (el) {
         el.addEventListener('change', function () {
           setProfile(el.value);
+
+          //console.log(el.id);
+          if (el.id == 'mapbox-directions-profile-driving') {
+            setEVMode(true);
+          } else {
+            setEVMode(false);
+          }
+          
         });
       });
 
@@ -8381,6 +8399,12 @@ var MapboxDirections = /*#__PURE__*/function () {
       return this._store.getState().profile;
     }
 
+  }, {
+    key: "getEVMode",
+    value: function getEVMode() {
+      return this._store.getState().isEVMode;
+    }
+
     /**
      * Swap the origin and destination.
      * @returns {MapboxDirections} this
@@ -8649,6 +8673,7 @@ var getInitialState = function getInitialState() {
     // Options set on initialization
     api: 'https://api.mapbox.com/directions/v5/',
     profile: 'mapbox/driving-traffic',
+    isEVMode: false,
     alternatives: false,
     congestion: false,
     unit: 'imperial',
@@ -8699,6 +8724,10 @@ function data() {
     case types.DIRECTIONS_PROFILE:
       return Object.assign({}, state, {
         profile: action.profile
+      });
+    case types.EVMODE:
+      return Object.assign({}, state, {
+        isEVMode: action.isEVMode
       });
     case types.ORIGIN:
       return Object.assign({}, state, {

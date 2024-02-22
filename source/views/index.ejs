@@ -33,75 +33,53 @@
 </head>
 <body>
 
-    <div class="grey-rectangle">
-        <p>
-            Ecolution stands as a pioneering platform dedicated to empowering individuals in their efforts to curb CO2 emissions and contribute positively to environmental preservation. By providing accessible tools and resources, Ecolution facilitates practical steps towards sustainable living, fostering a collective ethos of responsibility towards the planet. Through a user-friendly interface, individuals can effortlessly track their carbon footprint, explore eco-friendly alternatives, and engage with a supportive community committed to making impactful changes. Ecolution emphasizes actionable solutions tailored to each user's lifestyle, recognizing that small, <br>consistent actions can collectively lead to significant environmental benefits. By prioritizing education, accountability, and collaboration, Ecolution serves as a catalyst for widespread environmental consciousness and action, <br>inspiring individuals worldwide to embrace sustainable practices and collectively work towards a greener, healthier planet.</p>
-    </div>
 
-    <div class="grey-rectangle2"></div>
-    <div class="grey-rectangleb"></div>
-    <div class="grey-rectangleb2"></div>
-    <div class="grey-rectangleb3"></div>
-    <div class="grey-rectangleb4"></div>
+    <!-- Bottom left Rectangle -->
+    <div class="boxtl"><p>hello world</p></div>
+    <div class="boxbl"><p>hello world</p></div>
 
+   <div class="ECOLUTION"><h1>ECOLUTION</h1></div> 
 
-
-    <div class="grey-rectangle"></div>
-
-
-    <div class="header-container">
-        <div class="header-title">
-            <h1>ECOLUTION</h1>
-            <div class="header-logo">
-                <img src="/resources/PSD/BrandLogo.jpg" alt="Ecolution Logo">
-            </div>
-        </div>
-        <!-- Navigation Bar -->
-        <div class="navbar">
-            <ul>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/">Home</a></li>
-                <li><a href="#about">Goals</a></li>
-                <li><a href="#services">Appliance</a></li>
-                <li><a href="#contact">Travel</a></li>
-                <li><a href="#about">Leaderboard</a></li>
-            </ul>
-        </div>
-    </div>
+   <div id="chart-wrapper">
     <div id="chart"></div>
-    <script>
-        // Fetch the chart data from the server
-        fetch('/chart-data')
-            .then(response => response.json())
-            .then(data => {
-                // Generate the chart using billboard.js
-                var chart = bb.generate({
-                    bindto: "#chart",
-                    transition: {
-                        duration: 1000
-                    },
-                    bar: {
-                        width: {
-                            ratio: 0.5
-                        }
-                    },
-                    data: {
-                        type: "bar",
-                        columns: [
-                            ["data1", ...data.data1.map(() => 0)],
-                            ["data2", ...data.data2.map(() => 0)]
-                        ]
+</div>
+
+<script>
+    // Fetch the chart data from the server
+    fetch('/chart-data')
+        .then(response => response.json())
+        .then(data => {
+            // Generate the chart using billboard.js
+            var chart = bb.generate({
+                bindto: "#chart",
+                transition: {
+                    duration: 1000
+                },
+                bar: {
+                    width: {
+                        ratio: 0.5 // This controls the width of the bars in the chart.
                     }
-                });
-                setTimeout(function() {
-                    chart.load({
-                        columns: [
-                            ["data1", ...data.data1],
-                            ["data2", ...data.data2]
-                        ]
-                    });
-                }, 2000);
+                },
+                data: {
+                    type: "bar", // Specifies the chart type.
+                    columns: [
+                        ["data1", ...data.data1.map(() => 0)], // Initializes data1 with zeros.
+                        ["data2", ...data.data2.map(() => 0)] // Initializes data2 with zeros.
+                    ]
+                }
             });
-    </script>
+
+            // Update the chart data after a delay to create an animation effect.
+            setTimeout(function() {
+                chart.load({
+                    columns: [
+                        ["data1", ...data.data1], // Loads the actual data1 values.
+                        ["data2", ...data.data2] // Loads the actual data2 values.
+                    ]
+                });
+            }, 2000); // Delay before updating the chart data.
+        });
+</script>
+
 </body>
 </html>

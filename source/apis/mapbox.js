@@ -6,8 +6,8 @@ const mapBoxAuthToken =
 
 const mapBox = {
   // Fetches a route with information about the route, uses coordinates for start and end
-  getRoute: async function (start, end, mode, callback) {
-    const alternatives = mode === "driving-traffic" ? "true" : "false";
+  getRoute: async function (start, end, mode, EVMode, callback) {
+    const alternatives = mode === "driving-traffic" && !EVMode ? "true" : "false";
     const endpoint = `https://api.mapbox.com/directions/v5/mapbox/${mode}/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&alternatives=${alternatives}&access_token=${mapBoxAuthToken}`;
     const options = {
       method: "GET",
