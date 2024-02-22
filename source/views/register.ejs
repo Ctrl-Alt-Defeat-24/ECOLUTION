@@ -2,36 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <style>
-        /* Position the home button in the top right corner */
-        .homepage-link {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="/style/main.css">
 </head>
 <body>
     <a href="/" class="homepage-link">
         <button>Home</button>
     </a>
     <h1>Register</h1>
-    <form action="/register" method="post">
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-        </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">Register</button>
-    </form>
+    <div class="container">
+        <form action="/register" method="post">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="input-field" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" class="input-field" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="input-field" required>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    </div>
 </body>
 </html>

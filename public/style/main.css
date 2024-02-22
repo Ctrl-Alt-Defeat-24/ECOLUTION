@@ -84,7 +84,9 @@ body {
 }
 h1 
 {
-    margin: 0;
+    color: #333;
+    text-align: center;
+    margin-bottom: 1em;
 }
 
 .grey-rectangle {
@@ -205,3 +207,93 @@ h1
 .grey-rectangleb4:hover {
     background-color: rgb(0, 243, 101, 0.6); /* Or any green color you prefer, e.g., #00ff00 for a bright green */
 }
+
+/* Login Page */
+.container {
+    background-color: rgba(255, 255, 255, 0.7); /* semi-transparent white */
+    padding: 2em;
+    border-radius: 8px;
+    width: fit-content; /* or your preferred width */
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Style the form sections */
+.form-section {
+    padding: 20px;
+    flex-basis: 45%; /* Adjust the width of the form sections */
+  }
+
+  /* Style the form inputs and labels */
+.form-group label {
+    display: block;
+    margin-bottom: .5em;
+    color: #333;
+}
+
+/* Style the input fields */
+.input-field {
+    background-color: #aaeeaa; /* light green background */
+    border: 1px solid #000; /* black border */
+    padding: 10px;
+    margin-bottom: 15px; /* space between input fields */
+    width: calc(100% - 22px); /* Adjust width based on padding and border */
+    box-sizing: border-box;
+  }
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1em;
+  border: none;
+  border-radius: 4px;
+  box-sizing: border-box; /* So the inputs don't exceed their containers */
+}
+/* Style the buttons */
+button {
+    background-color: #aaeeaa; /* Green */
+    color: black; /* Black text */
+    padding: 10px 15px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+  /* Style the labels for better visibility */
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Links for 'Forgot Details' and 'Report Problem' */
+  .form-links {
+    text-align: center;
+    margin-top: 1em;
+  }
+  
+  .form-links a {
+    text-decoration: none;
+    color: #06C;
+    font-size: 0.9em;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 960px) {
+    .container {
+      flex-direction: column;
+      width: auto;
+    }
+  
+    .form-section {
+      flex-basis: 100%;
+    }
+  }

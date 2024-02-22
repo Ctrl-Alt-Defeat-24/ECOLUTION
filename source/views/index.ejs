@@ -10,14 +10,14 @@
     <link rel="stylesheet1" href="/style/main.css" > 
 </head>
 <body>
-    <% if (!username) { %>
+    <!-- <% if (!username) { %>
         <a href="/login" class="login-link">
             <button>Login</button>
         </a>
         <a href="/register" class="register-link">
             <button>Register</button>
         </a>
-    <% } %>
+    <% } %> -->
 
     <% if (username) { %>
         <div class="user-info">
@@ -59,8 +59,8 @@
         <!-- Navigation Bar -->
         <div class="navbar">
             <ul>
-                <li><a href="#home">Login</a></li>
-                <li><a href="#about">Home</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="#about">Goals</a></li>
                 <li><a href="#services">Appliance</a></li>
                 <li><a href="#contact">Travel</a></li>

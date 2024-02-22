@@ -21,6 +21,11 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
             if (user && user.credentials && user.credentials.length > 0) {
                 const userData = user.credentials[0];
                 if (password === userData.password){
+                    // User authenticated successfully, update lastLoginDate
+                    await (await MQL.getMongoDBInstance()).collection('User_Credentials').updateOne(
+                        { "credentials.username": username },
+                        { $set: { "credentials.$.lastLoginDate": new Date() } } // Set lastLoginDate to current date
+                    );
                     console.log("Setting username in session:", userData.username);
                     req.session.username = userData.username;
                     req.session.save(err => {
@@ -48,6 +53,7 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
             } else {
                 res.send("User not found");
             }
+            
         } catch (error) {
             console.error("Error during login:", error);
             res.send("An error occurred during login");
@@ -74,13 +80,14 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
     app.post("/register", async (req, res) => {
         const { email, username, password } = req.body;
         try {
-            const existingUser = await (await MQL.getMongoDBInstance()).collection('User_Credentials').findOne({ "credentials.username": username });
+            const existingUser = await (await MQL.getMongoDBInstance()).collection('User_Credentials').findOne({ "credentials._id": username });
             if (existingUser) {
                 res.send("User already exists with that username");
             } else {
                 const newUser = {
+                    _id: username,
                     username: username,
-                    password: password, // In a real application, you should hash the password
+                    password: password,
                     email: email,
                     createDate: new Date(),
                     lastLoginDate: null,
