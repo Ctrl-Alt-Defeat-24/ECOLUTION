@@ -38,7 +38,7 @@ body {
 /* Chart  */
 #chart-wrapper {
     font-size: 10px;
-    background-color: rgba(179, 179, 179, 0.5); /* Similar background color */
+    background-color: rgba(255, 255, 255, 0.5); /* Similar background color */
     width: 35%; /* Width similar to the boxes */
     height: 77%; /* Height to fit in the middle of the screen */
     border-radius: 20px; /* Rounded corners */
@@ -57,16 +57,15 @@ body {
 
 /* Pie Chart Wrapper */
 #piechart-wrapper {
-  background-color: rgba(179, 179, 179, 0.5); /* Semi-transparent background */
+  background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
   width: 35%; /* Width similar to the other boxes */
   height: 35%; /* Height to fit the content */
   border-radius: 20px; /* Rounded corners */
   
   /* Positioning */
   position: fixed; /* Fixed position to stay in place on scroll */
-  right: 40%; /* Adjust as necessary to place the pie chart */
-  top: 50%; /* Start at the middle of the screen */
-  transform: translateY(-50%); /* Center it vertically */
+  left: 5%; /* Adjusts to roughly the bottom left-middle of the screen */
+  bottom: 12%; /* Aligns it to the bottom of the screen */
 }
 
 #piechart {
@@ -76,10 +75,11 @@ body {
 
 
 
-/* bottom left box */
+
+/* top left box wrapper */
 .boxtl {
     font-size: 10px;
-    background-color: rgba(179, 179, 179, 0.5);
+    background-color: rgba(238, 238, 238, 0.9);
     width: 35%;
     height: 35%;
     border-radius: 20px;
@@ -103,6 +103,54 @@ body {
     left: 5%; /* Adjusts to roughly the bottom left-middle of the screen */
     bottom: 12%; /* Aligns it to the bottom of the screen */
 }
+
+
+
+/* Media Queries for Tablet/Mobile Screens/Minimised Screens */
+@media screen and (max-width: 1250px) {
+  #chart-wrapper {
+    position: absolute;
+    top: 135%;
+    left: 5%;
+    width: 90%;
+    margin-bottom: 20px; /* Adjust this value as needed to prevent touching the bottom */
+  }
+  #piechart-wrapper {
+    position: absolute;
+    width: 90%;
+  }
+
+  .boxtl {
+    position: absolute;
+    width: 90%;
+  }
+
+  .ECOLUTION
+  {
+    position: absolute;
+  }
+
+  /* Additional adjustment to ensure content does not touch the bottom */
+  body, html {
+    padding-bottom: 50px; /* Or more, depending on the gap you want */
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Login Page */
 .container {

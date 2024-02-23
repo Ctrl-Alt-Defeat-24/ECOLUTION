@@ -132,11 +132,11 @@ button[type="submit"]:hover {
   @media screen and (max-width: 1500px) {
     .form-container{
         right: 20%;
-        top: 60%;
+        top: 55%;
     }
 
     .content-container{
-        left: 10%;
+        left: 7%;
     }
 
 

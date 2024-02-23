@@ -53,10 +53,10 @@ app.get('/chart-data', (req, res) => {
 });
 
 
-// Endpoint to get current power consumption breakdown
+//// Endpoint to get current power consumption breakdown ////
 app.get('/current-power-consumption', async (req, res) => {
     try {
-        const zoneID = ""; // You would set this based on your application's needs
+        const zoneID = ""; // set this based on your application's needs
         const postcode = ""; // This could come from the user's input or session
         const data = await cbreakdown.getCurrentPowerConsumptionBreakdown(zoneID, postcode);
         res.json(data);
