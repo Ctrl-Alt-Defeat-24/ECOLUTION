@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="/style/login.css" > 
@@ -39,18 +38,49 @@
                 <div class="line"></div>
                 <p>or</p>
                 <div class="line"></div>
-            <div class="g-signin2" data-onsuccess="onSignIn"></div>
-            <a href="/register">Don't have an account? Sign up here</a>
-        </div>
-        <script>
-            function onSignIn(googleUser) {
-                var profile = googleUser.getBasicProfile();
-                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-                console.log('Name: ' + profile.getName());
-                console.log('Image URL: ' + profile.getImageUrl());
-                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-            }
+                <div id="g_id_onload"
+                    data-client_id="736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com"
+                    data-callback="onSignIn">
+                </div>
+                <div class="g-signin" data-type="standard" data-onsuccess="onSignIn"></div>  
+            </div>
+             <script>
+            window.handleCredentialResponse = function(response) {
+            fetch('/api/auth/google', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: response.credential })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from your server
+                console.log(data);
+            })
+            .catch(error => console.error('Error:', error));
+        };
+
         </script> -->
+        <!-- <script>
+            function onSignIn(googleUser) {
+                var id_token = googleUser.getAuthResponse().id_token;
+                fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: id_token })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from your server
+                    console.log(data);
+                    redirect('/');
+                })
+                .catch(error => console.error('Error:', error));
+            }
+            </script> -->
             
             
         
