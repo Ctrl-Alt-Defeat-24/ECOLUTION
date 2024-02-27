@@ -67,6 +67,22 @@ app.get('/current-power-consumption', async (req, res) => {
     }
 });
 
+// Endpoint to get recycling centres
+app.get('/get-recycling-centres', async (req, res) => {
+    try {
+        const postcodePrefix = "E17"; // This could come from the user's input or session
+        const postcodeSuffix = "3AN"; // This could come from the user's input or session
+        const radius = 25; // You can adjust this as needed
+        const count = 30; // You can adjust this as needed
+
+        const centresData = await recycle.getNearestRecyclingCentresByPostCode(postcodePrefix, postcodeSuffix, radius, count);
+        res.json(centresData);
+    } catch (error) {
+        console.error("Failed to get recycling centres:", error);
+        res.status(500).send("Server Error");
+    }
+});
+
 
 
 // Start the server up by initializing the server and then listening on the port
@@ -74,7 +90,7 @@ MQL.getMongoDBInstance().then(async (db) => {
     app.listen(port, async () => {
         console.log(`ECOLUTION SVR LISTENING... PORT: ${port}!`);
         // Example invoked to view some data from the recycling API
-        recycle.getNearestRecyclingCentresByPostCode("E17", "3AN", 25, 30);
+        recycle.getNearestRecyclingCentresByPostCode("E14", "8AG", 25, 30);
     });
 
     // Require the routes and pass the necessary arguments
