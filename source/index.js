@@ -71,7 +71,7 @@ app.get('/current-power-consumption', async (req, res) => {
 app.get('/get-recycling-centres', async (req, res) => {
     try {
         const postcodePrefix = "E17"; // This could come from the user's input or session
-        const postcodeSuffix = "3AN"; // This could come from the user's input or session
+        const postcodeSuffix = "7JN"; // This could come from the user's input or session
         const radius = 25; // You can adjust this as needed
         const count = 30; // You can adjust this as needed
 
@@ -90,7 +90,7 @@ MQL.getMongoDBInstance().then(async (db) => {
     app.listen(port, async () => {
         console.log(`ECOLUTION SVR LISTENING... PORT: ${port}!`);
         // Example invoked to view some data from the recycling API
-        recycle.getNearestRecyclingCentresByPostCode("E14", "8AG", 25, 30);
+        recycle.getNearestRecyclingCentresByPostCode("E17", "7JN", 25, 30);
     });
 
     // Require the routes and pass the necessary arguments
