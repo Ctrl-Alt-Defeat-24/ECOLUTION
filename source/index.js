@@ -90,7 +90,7 @@ MQL.getMongoDBInstance().then(async (db) => {
     app.listen(port, async () => {
         console.log(`ECOLUTION SVR LISTENING... PORT: ${port}!`);
         // Example invoked to view some data from the recycling API
-        recycle.getNearestRecyclingCentresByPostCode("E17", "7JN", 25, 30);
+        // recycle.getNearestRecyclingCentresByPostCode("E17", "7JN", 25, 30);
     });
 
     // Require the routes and pass the necessary arguments

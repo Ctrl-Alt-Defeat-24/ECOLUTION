@@ -16,7 +16,32 @@ const materialsTypes = {
 const ecolutionGB_RecyclingCentres = {
 
     // This function cleans up the materials array and returns a sanitized version of it so that it can be easily used in the front end
-    sanitizeMaterials : function(materials) {
+    
+    //This one is commented out, text errors like repeating texts keep appearing, below is a fixed version to stop that, code is a temporary keep 
+    // sanitizeMaterials : function(materials) {
+    //     if (!Array.isArray(materials)) {
+    //         return materials;
+    //     }
+    //     // Create a new array to store the sanitized materials
+    //     var sanitizedMaterials = [];
+    //     for (var i = 0; i < materials.length; i++) {
+    //         var material = materials[i];
+    //         // Check to see if the material category is already defined to be used
+    //         if (typeof material === 'object' && material.category) {
+    //             sanitizedMaterials.push(material.name);
+    //         // Check to see if we have a number and if it's in our defined list of materials
+    //         } else if (typeof material === 'number' && materialsTypes[material]) {
+    //             sanitizedMaterials.push(materialsTypes[material]);
+    //         // Return an "Other" if we dont have it defined in either list or as an object
+    //         } else {
+    //             sanitizedMaterials.push("Other, please check the recycling point for more details");
+    //         }
+    //     }
+    //     return sanitizedMaterials;
+    // },
+    
+    //Working version
+    sanitizeMaterials: function(materials) {
         if (!Array.isArray(materials)) {
             return materials;
         }
@@ -24,19 +49,27 @@ const ecolutionGB_RecyclingCentres = {
         var sanitizedMaterials = [];
         for (var i = 0; i < materials.length; i++) {
             var material = materials[i];
+            var materialName;
             // Check to see if the material category is already defined to be used
             if (typeof material === 'object' && material.category) {
-                sanitizedMaterials.push(material.name);
+                materialName = material.name;
             // Check to see if we have a number and if it's in our defined list of materials
             } else if (typeof material === 'number' && materialsTypes[material]) {
-                sanitizedMaterials.push(materialsTypes[material]);
-            // Return an "Other" if we dont have it defined in either list or as an object
+                materialName = materialsTypes[material];
+            // Use a generic "Other" if we don't have it defined in either list or as an object
             } else {
-                sanitizedMaterials.push("Other, please check the recycling point for more details");
+                materialName = "Other, please check the recycling point for more details";
+            }
+    
+            // Add the material name only if it's not already included to avoid repetition
+            if (!sanitizedMaterials.includes(materialName)) {
+                sanitizedMaterials.push(materialName);
             }
         }
         return sanitizedMaterials;
     },
+    
+    
 
     // This function takes optional params of a postcode and a radius and produces a list of recycling centres within the radius of the postcode
     getNearestRecyclingCentresByPostCode : function(prefix, suffix, radius, count) {
