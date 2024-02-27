@@ -11,6 +11,7 @@ const e = require('express');
 const mapbox = require('./apis/mapbox');
 const electricityMaps = require('./apis/electricitymaps');
 const nationalgrid = require('./apis/nationalgrid');
+const recycle = require('./js/gb_recyclecentres');
 const cbreakdown = require('./js/carbonbreakdown');
 const MQL = require('./js/MQL');
 
@@ -70,8 +71,10 @@ app.get('/current-power-consumption', async (req, res) => {
 
 // Start the server up by initializing the server and then listening on the port
 MQL.getMongoDBInstance().then(async (db) => {
-    app.listen(port, () => {
+    app.listen(port, async () => {
         console.log(`ECOLUTION SVR LISTENING... PORT: ${port}!`);
+        // Example invoked to view some data from the recycling API
+        recycle.getNearestRecyclingCentresByPostCode("E17", "3AN", 25, 30);
     });
 
     // Require the routes and pass the necessary arguments
