@@ -1,0 +1,53 @@
+/* recycle1.css */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#container {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+}
+
+#recyclingCentresList {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #f2f2f2; /* Light grey background */
+    border-right: 1px solid #ccc;
+}
+
+.centre-item {
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.centre-item:hover {
+    background-color: #e8e8e8; /* Slightly darker grey on hover */
+}
+
+#centreDetails {
+    flex: 2;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #fff;
+}
+
+#centreDetails div {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+}
+
+h2 {
+    color: #333;
+}
+
+p {
+    color: #666;
+    margin: 5px 0;
+}

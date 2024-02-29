@@ -3,28 +3,49 @@
 <head>
     <title>Recycling Centres</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/style/recycle1.css" > 
 </head>
 <body>
-    <div id="recyclingCentresList">Loading recycling centres...</div>
+    <div id="container" style="display: flex;">
+        <div id="recyclingCentresList" style="flex: 1; height: 100vh; overflow-y: scroll;"></div>
+        <div id="centreDetails" style="flex: 2; padding: 20px;">Select a recycling centre to view details.</div>
+    </div>
 
     <script type="text/javascript">
         $(document).ready(function() {
             $.ajax({
-                url: '/get-recycling-centres', // This endpoint needs to be defined in your Express app
+                url: '/get-recycling-centres',
                 type: 'GET',
                 success: function(data) {
-                    var centresHTML = data.map(function(centre) {
-                        return '<div>' +
-                               '<h2>' + centre.name + '</h2>' +
-                               '<p>Address: ' + centre.address + '</p>' +
-                               '<p>Distance: ' + centre.distance + ' miles</p>' +
-                               '<p>Materials: ' + centre.materials.join(', ') + '</p>' +
-                               '</div>';
-                    }).join('');
-                    $('#recyclingCentresList').html(centresHTML);
+                    if(data && Array.isArray(data) && data.length > 0) {
+                        var centresHTML = data.map(function(centre, index) {
+                            return '<div class="centre-item" data-index="' + index + '">' +
+                                   '<h2>' + centre.name + '</h2>' +
+                                   '<p>Address: ' + centre.address + '</p>' +
+                                   '<p>Distance: ' + centre.distance.toFixed(2) + ' miles</p>' +
+                                   '</div>';
+                        }).join('');
+                        $('#recyclingCentresList').html(centresHTML);
+
+                        // Bind click event to each centre
+                        $('.centre-item').click(function() {
+                            var index = $(this).data('index');
+                            var selectedCentre = data[index];
+                            var detailsHTML = '<div>' +
+                                              '<h2>' + selectedCentre.name + '</h2>' +
+                                              '<p>Address: ' + selectedCentre.address + '</p>' +
+                                              '<p>Distance: ' + selectedCentre.distance.toFixed(2) + ' miles</p>' +
+                                              '<p>Materials: ' + selectedCentre.materials.join(', ') + '</p>' +
+                                              '</div>';
+                            $('#centreDetails').html(detailsHTML);
+                        });
+                    } else {
+                        $('#recyclingCentresList').html('<p>No recycling centres found.</p>');
+                    }
                 },
                 error: function(error) {
-                    $('#recyclingCentresList').html('Failed to load recycling centres.');
+                    console.error('Error loading recycling centres:', error);
+                    $('#recyclingCentresList').html('<p>Failed to load recycling centres. Please try again later.</p>');
                 }
             });
         });
