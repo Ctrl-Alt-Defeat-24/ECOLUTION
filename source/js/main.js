@@ -2,18 +2,6 @@
 const ecolutionTravelRoutes = require("./travelroutes");
 const MQL = require("./MQL");
 const StaticGlobalData = require("../client/js/ecolutionclientlib");
-const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client("736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com");
-
-async function verify(token) {
-    const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: "YOUR_CLIENT_ID",
-    });
-    const payload = ticket.getPayload();
-    const userid = payload['sub'];
-    return payload; // Return the payload for further use
-}
 
 
 module.exports = function(app, ecoData, bcrypt, saltRounds) {
@@ -35,35 +23,12 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
     });
 
     //                 audience: "736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com",
-    app.post('/api/auth/google', async (req, res) => {
-        try {
-            const { token } = req.body;
-            const ticket = await client.verifyIdToken({
-                idToken: token,
-                audience: '736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com',
-            });
-            const payload = ticket.getPayload();
-            const userid = payload['sub'];
-            // Now you can use the user's Google ID to find or create a user in your database
-            res.send({ status: 'success', user: payload });
-        } catch (error) {
-            console.error(error);
-            res.status(401).send({ status: 'error', message: error.message });
-        }
-    });
+
 
     // Route to handle login logic
     app.post("/login", async (req, res) => {
         const { username, password } = req.body;
         try {
-            // const { token } = req.body; // Make sure the token is being received here
-            // // Verify the ID token
-            // const ticket = await client.verifyIdToken({
-            //     idToken: token,
-            //     audience: '736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com',
-            // });
-            // const payload = await verify(token);
-            // const userid = payload['sub'];
 
             const user = await (await MQL.getMongoDBInstance()).collection('User_Credentials').findOne({ "credentials.username": username }, { projection: { credentials: { $elemMatch: { username } } } });
             if (user && user.credentials && user.credentials.length > 0) {
