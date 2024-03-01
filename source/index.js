@@ -72,8 +72,8 @@ app.get('/get-recycling-centres', async (req, res) => {
     try {
         const postcodePrefix = "E17"; // This could come from the user's input or session
         const postcodeSuffix = "7JN"; // This could come from the user's input or session
-        const radius = 25; // You can adjust this as needed
-        const count = 30; // You can adjust this as needed
+        const radius = 50; //radius in miles
+        const count = 50; //return recycle centres
 
         const centresData = await recycle.getNearestRecyclingCentresByPostCode(postcodePrefix, postcodeSuffix, radius, count);
         res.json(centresData);

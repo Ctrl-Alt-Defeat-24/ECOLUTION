@@ -6,10 +6,13 @@
     <link rel="stylesheet" href="/style/recycle1.css" > 
 </head>
 <body>
-    <div id="container" style="display: flex;">
-        <div id="recyclingCentresList" style="flex: 1; height: 100vh; overflow-y: scroll;"></div>
-        <div id="centreDetails" style="flex: 2; padding: 20px;">Select a recycling centre to view details.</div>
+    <div id="container">
+        <div id="recyclingCentresList"></div>
+        <div id="centreDetails">Select a recycling centre to view details.</div>
     </div>
+
+    <!-- search form for address, radius and count -->
+    
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -19,24 +22,23 @@
                 success: function(data) {
                     if(data && Array.isArray(data) && data.length > 0) {
                         var centresHTML = data.map(function(centre, index) {
-                            return '<div class="centre-item" data-index="' + index + '">' +
-                                   '<h2>' + centre.name + '</h2>' +
-                                   '<p>Address: ' + centre.address + '</p>' +
-                                   '<p>Distance: ' + centre.distance.toFixed(2) + ' miles</p>' +
-                                   '</div>';
+                            return `<div class="centre-item" data-index="${index}">
+                                    <h2>${centre.name}</h2>
+                                    <p>${centre.distance.toFixed(2)} miles</p>
+                                    <p>${centre.materials.length} materials accepted</p>
+                                    </div>`;
                         }).join('');
                         $('#recyclingCentresList').html(centresHTML);
-
-                        // Bind click event to each centre
-                        $('.centre-item').click(function() {
+    
+                        $('#recyclingCentresList').on('click', '.centre-item', function() {
                             var index = $(this).data('index');
                             var selectedCentre = data[index];
-                            var detailsHTML = '<div>' +
-                                              '<h2>' + selectedCentre.name + '</h2>' +
-                                              '<p>Address: ' + selectedCentre.address + '</p>' +
-                                              '<p>Distance: ' + selectedCentre.distance.toFixed(2) + ' miles</p>' +
-                                              '<p>Materials: ' + selectedCentre.materials.join(', ') + '</p>' +
-                                              '</div>';
+                            var detailsHTML = `<h2>${selectedCentre.address}</h2>
+                                               <p>The following things can be recycled at this place:</p>
+                                               <p>Materials: ${selectedCentre.materials.join(', ')}</p>
+                                               <p>Distance: ${selectedCentre.distance.toFixed(2)} miles</p>
+                                               <a href="#" class="show-map" onclick="showMapPlaceholder(); return false;">Show map</a>
+                                               <span>//placeholder for mini map below</span>`;
                             $('#centreDetails').html(detailsHTML);
                         });
                     } else {
@@ -49,6 +51,13 @@
                 }
             });
         });
+    
+        function showMapPlaceholder() {
+            alert("Show mini sized map functionality will be implemented below.");
+        }
     </script>
+    
+    
+    
 </body>
 </html>
