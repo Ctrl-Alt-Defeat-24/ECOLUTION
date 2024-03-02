@@ -67,6 +67,9 @@ app.get('/current-power-consumption', async (req, res) => {
     }
 });
 
+
+
+
 // Endpoint to get recycling centres
 app.get('/get-recycling-centres', async (req, res) => {
     try {
