@@ -4,6 +4,10 @@
     <title>Recycling Centres</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="/style/recycle1.css" > 
+
+
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
 </head>
 <body>
     <div id="container">
@@ -16,6 +20,9 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+            var userLat = 0; // Placeholder value, replace with actual user latitude
+            var userLng = 0; // Placeholder value, replace with actual user longitude
+    
             $.ajax({
                 url: '/get-recycling-centres',
                 type: 'GET',
@@ -33,12 +40,13 @@
                         $('#recyclingCentresList').on('click', '.centre-item', function() {
                             var index = $(this).data('index');
                             var selectedCentre = data[index];
-                            var detailsHTML = `<h2>${selectedCentre.address}</h2>
+                            var detailsHTML = `<h2>${selectedCentre.name}</h2>
+                                               <p>${selectedCentre.address}</p>
                                                <p>The following things can be recycled at this place:</p>
                                                <p>Materials: ${selectedCentre.materials.join(', ')}</p>
                                                <p>Distance: ${selectedCentre.distance.toFixed(2)} miles</p>
-                                               <a href="#" class="show-map" onclick="showMapPlaceholder(); return false;">Show map</a>
-                                               <span>//placeholder for mini map below</span>`;
+                                               <a href="#" class="show-map" onclick="showMapPlaceholder(${userLat}, ${userLng}, ${selectedCentre.latitude}, ${selectedCentre.longitude}); return false;">Show map</a>
+                                               <div id="mapPlaceholder" style="height: 300px;"></div>`; // Ensure you have a height for your map container
                             $('#centreDetails').html(detailsHTML);
                         });
                     } else {
@@ -52,10 +60,35 @@
             });
         });
     
-        function showMapPlaceholder() {
-            alert("Show mini sized map functionality will be implemented below.");
+        function showMapPlaceholder(userLat, userLng, centreLat, centreLng) {
+            mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN'; // Ensure you replace this with your actual Mapbox access token
+            var map = new mapboxgl.Map({
+                container: 'mapPlaceholder', // container ID
+                style: 'mapbox://styles/mapbox/streets-v11', // style URL
+                center: [userLng, userLat], // starting position [lng, lat]
+                zoom: 9 // starting zoom
+            });
+    
+            // Add a marker for the user's location
+            new mapboxgl.Marker()
+                .setLngLat([userLng, userLat])
+                .addTo(map);
+    
+            // Add a marker for the recycling centre's location
+            new mapboxgl.Marker()
+                .setLngLat([centreLng, centreLat])
+                .addTo(map);
+    
+            // Optionally, adjust the map to fit both markers
+            map.fitBounds([
+                [userLng, userLat], // southwestern corner of the bounds
+                [centreLng, centreLat] // northeastern corner of the bounds
+            ], {
+                padding: {top: 10, bottom:25, left: 15, right: 5}
+            });
         }
     </script>
+    
     
     
     
