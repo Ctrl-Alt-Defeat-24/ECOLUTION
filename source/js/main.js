@@ -80,6 +80,7 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
                     // Get and save the user preferences into the session
                     req.session.userpreferences = await MQL.getUserPreferences(username);
                     req.session.usersaveddata = await MQL.getUserSavedData(username);
+                    //const yoo = await MQL.getUserAllDailyEmissions(username);
                     req.session.save(err => {
                         if (err) {
                             console.error("Session save error:", err);

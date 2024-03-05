@@ -81,6 +81,39 @@ const mql = {
         });
     },
 
+    getUserAllDailyEmissions : async function(username) {
+        return new Promise((resolve, reject) => {
+            this.getMongoDBInstance().then(async (db) => {
+                // Establish the collection of interest
+                const collection = db.collection('User_SavedData');
+                // Find the users preferences based on the username
+                console.log("Fetching user preferences for: ", username)
+                try {
+                    // Get the value from the collection
+                    const user = await collection.findOne({ _id: username });
+                    var allDailyEmissions = [];
+                    if(user.activityDailyEmissions.length > 0){
+                        for(var i = 0; i < user.activityDailyEmissions.length; i++){
+                            allDailyEmissions.push([user.activityDailyEmissions[i].split(':')[0], user.activityDailyEmissions[i].split(':')[1]]); 
+                        }
+                    } else {
+                        allDailyEmissions.push([new Date().toISOString().split('T')[0], 0]);
+                    }
+                    console.log(allDailyEmissions);
+                    resolve(allDailyEmissions);
+                } catch (error) {
+                    // Handle errors
+                    console.error("Error fetching user saved data: ", error);
+                    reject(error);
+                }
+            // If we couldnt retrieve the DB instance then we need to log the error and reject the promise
+            }).catch((error) => {
+                console.error("Error fetching user saved data: ", error);
+                reject(error);
+            });
+        });
+    },
+
     // This function adds a given emission(eMT) to the users standing amount
     AddToTotalEmission : async function(username, emissionToAdd) {
         return new Promise((resolve, reject) => {
@@ -114,6 +147,7 @@ const mql = {
         });
     },
 
+    // This function adds a given emission(eMT) to the users daily amount
     AddToDailyEmissions : async function(username, emissionToAdd) {
         return new Promise((resolve, reject) => {
             this.getMongoDBInstance().then(async (db) => {
