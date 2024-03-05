@@ -15,6 +15,7 @@ const recycle = require('./js/gb_recyclecentres');
 const cbreakdown = require('./js/carbonbreakdown');
 const MQL = require('./js/MQL');
 const StaticGlobalData = require('./client/js/ecolutionclientlib');
+const axios = require('axios');
 
 const app = express();
 const port = 8000;
@@ -71,11 +72,46 @@ app.get('/current-power-consumption', async (req, res) => {
 
 
 
-// Endpoint to get recycling centres
+////// Endpoint to get recycling centres and postcode converted into coordinates for mini map //////
+//Users postcode
+//User Preferences postcode: StaticGlobalData.userPreferences.GBPostalPrefix;
+//StaticGlobalData.userPreferences.GBPostalSuffix;
+const postcodePrefix = "E14";
+const postcodeSuffix = "8AG";
+
+//OpenCage API key for postcode - coordinates converter for mini map
+const opencageApiKey = '27da4a1090654b3fb665c4aa304d0b5d';
+app.get('/convert-postcode-to-coordinates', async (req, res) => {
+    const postcode = req.query.postcode;
+    if (!postcode) {
+        return res.status(400).send('Postcode is required');
+    }
+
+    try {
+        const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json`, {
+            params: {
+                key: opencageApiKey,
+                q: postcode,
+                pretty: 1,
+                no_annotations: 1
+            }
+        });
+        if (response.data && response.data.results && response.data.results.length > 0) {
+            const { lat, lng } = response.data.results[0].geometry;
+            res.json({ latitude: lat, longitude: lng });
+        } else {
+            res.status(404).send('Coordinates not found');
+        }
+    } catch (error) {
+        console.error('Error converting postcode to coordinates:', error);
+        res.status(500).send('Server Error');
+    }
+});
+
+
+//Endpoint for recycle centres
 app.get('/get-recycling-centres', async (req, res) => {
     try {
-        const postcodePrefix = StaticGlobalData.userPreferences.GBPostalPrefix;
-        const postcodeSuffix = StaticGlobalData.userPreferences.GBPostalSuffix;
         const radius = 50; //radius in miles
         const count = 50; //return recycle centres
 
@@ -86,6 +122,16 @@ app.get('/get-recycling-centres', async (req, res) => {
         res.status(500).send("Server Error");
     }
 });
+
+app.get('/recycle', (req, res) => {
+
+    ecoData.postcodePrefix = postcodePrefix;
+    ecoData.postcodeSuffix = postcodeSuffix;
+    
+    res.render("recyclingcentres", ecoData);
+}); 
+
+
 
 
 

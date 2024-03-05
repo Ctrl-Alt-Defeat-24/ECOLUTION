@@ -23,46 +23,56 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var userLat = 51.5901; // Placeholder for user's latitude
-            var userLng = -0.0201; // Placeholder for user's longitude
-        
-            $.ajax({
-                url: '/get-recycling-centres',
-                type: 'GET',
-                success: function(data) {
-                    if(data && Array.isArray(data) && data.length > 0) {
-                        var centresHTML = data.map(function(centre, index) {
-                            return `<div class="centre-item" data-index="${index}" data-lat="${centre.latitude}" data-lng="${centre.longitude}" data-name="${centre.name}">
-                                        <h2>${centre.name}</h2>
-                                        <p>${centre.distance.toFixed(2)} miles</p>
-                                        <p>${centre.materials.length} materials accepted</p>
-                                    </div>`;
-                        }).join('');
-                        $('#recyclingCentresList').html(centresHTML);
-        
-                        $('#recyclingCentresList').on('click', '.centre-item', function() {
-                            var index = $(this).data('index');
-                            var selectedCentre = data[index];
-                            var detailsHTML = `<h2>${selectedCentre.name}</h2>
-                                               <p>${selectedCentre.address}</p>
-                                               <p>The following things can be recycled at this place:</p>
-                                               <p>Materials: ${selectedCentre.materials.join(', ')}</p>
-                                               <p>Distance: ${selectedCentre.distance.toFixed(2)} miles</p>
-                                               <a href="#" class="show-map" onclick="showMapPlaceholder(${userLat}, ${userLng}, ${selectedCentre.latitude}, ${selectedCentre.longitude}, '${selectedCentre.name.replace(/'/g, "\\'")}'); return false;">Show map</a>
-                                               <div id="mapPlaceholder" style="height: 300px;"></div>`; // Ensure you have a height for your map container
-                            $('#centreDetails').html(detailsHTML);
-                        });
-                    } else {
-                        $('#recyclingCentresList').html('<p>No recycling centres found.</p>');
+            // Assuming StaticGlobalData.userPreferences contains the user's postcode
+            // Replace 'USER_POSTCODE_FROM_STATIC_GLOBAL_DATA' with the actual source of the user postcode
+            var userPostcode = '<%= postcodePrefix %> <%= postcodeSuffix %>';
+            
+            // Convert postcode to coordinates
+            $.get('/convert-postcode-to-coordinates', {postcode: userPostcode}, function(coords) {
+                var userLat = coords.latitude;
+                var userLng = coords.longitude;
+    
+                // Fetch recycling centres now that we have the user's coordinates
+                $.ajax({
+                    url: '/get-recycling-centres',
+                    type: 'GET',
+                    success: function(data) {
+                        if(data && Array.isArray(data) && data.length > 0) {
+                            var centresHTML = data.map(function(centre, index) {
+                                return `<div class="centre-item" data-index="${index}" data-lat="${centre.latitude}" data-lng="${centre.longitude}" data-name="${centre.name}">
+                                            <h2>${centre.name}</h2>
+                                            <p>${centre.distance.toFixed(2)} miles</p>
+                                            <p>${centre.materials.length} materials accepted</p>
+                                        </div>`;
+                            }).join('');
+                            $('#recyclingCentresList').html(centresHTML);
+            
+                            $('#recyclingCentresList').on('click', '.centre-item', function() {
+                                var index = $(this).data('index');
+                                var selectedCentre = data[index];
+                                var detailsHTML = `<h2>${selectedCentre.name}</h2>
+                                                   <p>${selectedCentre.address}</p>
+                                                   <p>The following things can be recycled at this place:</p>
+                                                   <p>Materials: ${selectedCentre.materials.join(', ')}</p>
+                                                   <p>Distance: ${selectedCentre.distance.toFixed(2)} miles</p>
+                                                   <a href="#" class="show-map" onclick="showMapPlaceholder(${userLat}, ${userLng}, ${selectedCentre.latitude}, ${selectedCentre.longitude}, '${selectedCentre.name.replace(/'/g, "\\'")}'); return false;">Show map</a>
+                                                   <div id="mapPlaceholder" style="height: 300px;"></div>`; // Ensure you have a height for your map container
+                                $('#centreDetails').html(detailsHTML);
+                            });
+                        } else {
+                            $('#recyclingCentresList').html('<p>No recycling centres found.</p>');
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error loading recycling centres:', error);
+                        $('#recyclingCentresList').html('<p>Failed to load recycling centres. Please try again later.</p>');
                     }
-                },
-                error: function(error) {
-                    console.error('Error loading recycling centres:', error);
-                    $('#recyclingCentresList').html('<p>Failed to load recycling centres. Please try again later.</p>');
-                }
+                });
+            }).fail(function() {
+                alert('Failed to get user location from postcode.');
             });
         });
-        
+    
         function showMapPlaceholder(userLat, userLng, centreLat, centreLng, centreName) {
             mapboxgl.accessToken = 'pk.eyJ1IjoicHJpbWFscmV4IiwiYSI6ImNscmFrbWg2cjBjbDUyaW13dmxjeG96bXoifQ.ktWyvNqeJ4awZ2pu__T1Xw'; // Your actual Mapbox access token
             var map = new mapboxgl.Map({
@@ -71,7 +81,7 @@
                 center: [userLng, userLat], // Starting position [lng, lat]
                 zoom: 9 // Starting zoom
             });
-        
+    
             map.on('load', function() {
                 var elUserLocation = document.createElement('div');
                 elUserLocation.style.backgroundColor = 'blue';
@@ -79,31 +89,33 @@
                 elUserLocation.style.padding = '5px';
                 elUserLocation.style.borderRadius = '5px';
                 elUserLocation.innerText = "You're here";
-        
+    
                 new mapboxgl.Marker(elUserLocation)
                     .setLngLat([userLng, userLat])
                     .addTo(map);
-        
+    
                 var elCentreLocation = document.createElement('div');
                 elCentreLocation.style.backgroundColor = 'green';
                 elCentreLocation.style.color = 'white';
                 elCentreLocation.style.padding = '5px';
                 elCentreLocation.style.borderRadius = '5px';
                 elCentreLocation.innerHTML = centreName;
-        
+    
                 new mapboxgl.Marker(elCentreLocation)
                     .setLngLat([centreLng, centreLat])
                     .addTo(map);
-        
+    
                 map.fitBounds([
-                    [userLng, userLat], // Southwestern corner of the bounds
-                    [centreLng, centreLat] // Northeastern corner of the bounds
-                ], {
-                    padding: {top: 10, bottom:25, left: 15, right: 5}
-                });
+                    [userLng, userLat], //southwest coordinates
+                [centreLng, centreLat] //northeast coordinates
+            ], {
+                padding: {top: 10, bottom:25, left: 15, right: 5}
             });
-        }
-        </script>
+        });
+    }
+</script>
+
+    
     
     
     

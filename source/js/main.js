@@ -213,8 +213,6 @@ app.post("/commitjourneycarbon", async (req, res) => {
     }
   });
 
-  app.get("/recycle", (req, res) => {
-    res.render("recyclingcentres.ejs", ecoData);
-  });  
+   
 
 };
