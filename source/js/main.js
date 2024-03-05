@@ -190,6 +190,7 @@ app.post("/commitjourneycarbon", async (req, res) => {
         // Double check here to make sure that we're not trying to commit a NaN
         if((req.session.cachedMTRoute != null || req.session.cachedMTRoute != undefined) && req.session.cachedMTRoute != 0){
             // Add the new journey carbon to the users standing amount
+            const test = await MQL.AddToDailyEmissions(req.session.username, req.session.cachedMTRoute);
             const succesfullyUpdated = await MQL.AddToTotalEmission(req.session.username, req.session.cachedMTRoute);
             // Return the success of the update
             res.json({ succesfullyUpdated });
