@@ -79,6 +79,7 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
 
                     // Get and save the user preferences into the session
                     req.session.userpreferences = await MQL.getUserPreferences(username);
+                    req.session.usersaveddata = await MQL.getUserSavedData(username);
                     req.session.save(err => {
                         if (err) {
                             console.error("Session save error:", err);
@@ -87,6 +88,9 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
                             console.log("Loaded preferences into session:", req.session.userpreferences);
                             // Update the static global data with a cached version of the user preferences
                             StaticGlobalData.userPreferences = req.session.userpreferences;
+                            // Update the static global data with a cached version of the user saved data
+                            console.log("Loaded saved data into session:", req.session.usersaveddata);
+                            StaticGlobalData.userSavedData = req.session.usersaveddata;
 
                             res.redirect('/');
                         }

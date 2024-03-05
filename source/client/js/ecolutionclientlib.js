@@ -5,6 +5,9 @@
 const StaticGlobalData = {avgCO2eMT_driven_per_mile : 0.0002214, avgAcceptableWalkingDist_mile : 0.7};
 
 // User preferences that are loaded into the session and cached here for easier referencing
-var userPreferences = null; 
+var userPreferences = null;
+
+// User saved data that is loaded into the session and cached here for easier referencing
+var userSavedData = null;
 
 module.exports = StaticGlobalData;

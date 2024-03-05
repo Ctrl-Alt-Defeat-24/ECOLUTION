@@ -14,6 +14,7 @@ const nationalgrid = require('./apis/nationalgrid');
 const recycle = require('./js/gb_recyclecentres');
 const cbreakdown = require('./js/carbonbreakdown');
 const MQL = require('./js/MQL');
+const StaticGlobalData = require('./client/js/ecolutionclientlib');
 
 const app = express();
 const port = 8000;
@@ -57,9 +58,9 @@ app.get('/chart-data', (req, res) => {
 //// Endpoint to get current power consumption breakdown ////
 app.get('/current-power-consumption', async (req, res) => {
     try {
-        const zoneID = ""; // set this based on your application's needs
-        const postcode = ""; // This could come from the user's input or session
-        const data = await cbreakdown.getCurrentPowerConsumptionBreakdown(zoneID, postcode);
+        const zoneID = StaticGlobalData.userPreferences.region; // This could come from the user's input or session
+        const postcodePrefix = StaticGlobalData.userPreferences.GBPostalPrefix; 
+        const data = await cbreakdown.getCurrentPowerConsumptionBreakdown(zoneID, postcodePrefix);
         res.json(data);
     } catch (error) {
         console.error("Failed to get current power consumption breakdown:", error);
@@ -73,8 +74,8 @@ app.get('/current-power-consumption', async (req, res) => {
 // Endpoint to get recycling centres
 app.get('/get-recycling-centres', async (req, res) => {
     try {
-        const postcodePrefix = "E17"; // This could come from the user's input or session
-        const postcodeSuffix = "7JN"; // This could come from the user's input or session
+        const postcodePrefix = StaticGlobalData.userPreferences.GBPostalPrefix;
+        const postcodeSuffix = StaticGlobalData.userPreferences.GBPostalSuffix;
         const radius = 50; //radius in miles
         const count = 50; //return recycle centres
 
