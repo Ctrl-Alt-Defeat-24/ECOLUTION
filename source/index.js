@@ -6,10 +6,6 @@ const { MongoClient } = require('mongodb');
 const session = require('express-session');
 const saltRounds = 10; // for bcrypt
 const passport = require('passport');
-var userProfile;
-const GOOGLE_CLIENT_ID ="736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com";
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const GOOGLE_CLIENT_SECRET = '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';
 
 const res = require('express/lib/response');
 const e = require('express');
@@ -46,21 +42,6 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
-
-passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:8000/auth/google/callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
-    console.log(accessToken); // Log the token
-    console.log(profile); // Log the user's profile information
-      userProfile=profile;
-      return done(null, userProfile);
-  }
-));
-app.use(passport.initialize());
-app.use(passport.session());
 
 
 // This is where any arrays or temporary data will be stored for use at the front end
@@ -103,47 +84,6 @@ app.get('/get-recycling-centres', async (req, res) => {
         res.status(500).send("Server Error");
     }
 });
-
-app.get('/success', (req, res) => res.send(userProfile));
-
-app.get('/error', (req, res) => res.send('error logging in'));
-
-passport.serializeUser(function(user, cb) {
-    cb(null, user);
-  });  
-
-  passport.deserializeUser(function(obj, cb) {
-    cb(null, obj);
-  });
-
-  app.post('/api/auth/google', async (req, res) => {
-    try {
-        const { token } = req.body;
-        const ticket = await client.verifyIdToken({
-            idToken: token,
-            audience: '736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com',
-        });
-        const payload = ticket.getPayload();
-        const userid = payload['sub'];
-        // Now you can use the user's Google ID to find or create a user in your database
-        res.send({ status: 'success', user: payload });
-    } catch (error) {
-        console.error(error);
-        res.status(401).send({ status: 'error', message: error.message });
-    }
-});
-app.get('/auth/google', 
-passport.authenticate('google', { scope : ['profile', 'email'] }));
-
-
-app.get('/auth/google/callback', 
-passport.authenticate('google', { failureRedirect: '/error' }),
-function(req, res) {
-
-// Successful authentication, redirect success.
-res.redirect('/success');
-});
-  
 
 
 // Start the server up by initializing the server and then listening on the port
