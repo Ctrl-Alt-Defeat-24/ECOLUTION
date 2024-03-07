@@ -13,6 +13,12 @@ async function verify(token) {
     const userid = payload['sub'];
     return payload; // Return the payload for further use
 }
+const passport = require('passport');
+var userProfile;
+//google api data
+const GOOGLE_CLIENT_ID ="736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com";
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GOOGLE_CLIENT_SECRET = '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';
 
 
 module.exports = function(app, ecoData, bcrypt, saltRounds) {
