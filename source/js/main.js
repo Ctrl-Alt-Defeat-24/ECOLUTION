@@ -4,7 +4,6 @@ const MQL = require("./MQL");
 const StaticGlobalData = require("../client/js/ecolutionclientlib");
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client("736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com");
-
 async function verify(token) {
     const ticket = await client.verifyIdToken({
         idToken: token,
