@@ -30,59 +30,11 @@
                 <input type="password" name="password" placeholder="Password" required>
                 <button type="submit">Login</button>
             </form>
-           
-           
-           
-           <!-- Riyaads Code -->
-            <!-- <div class="or-container">
-                <div class="line"></div>
-                <p>or</p>
-                <div class="line"></div>
-                <div id="g_id_onload"
-                    data-client_id="736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com"
-                    data-callback="onSignIn">
-                </div>
-                <div class="g-signin" data-type="standard" data-onsuccess="onSignIn"></div>  
-            </div>
-             <script>
-            window.handleCredentialResponse = function(response) {
-            fetch('/api/auth/google', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ token: response.credential })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Handle the response from your server
-                console.log(data);
-            })
-            .catch(error => console.error('Error:', error));
-        };
+            <a class="google-btn" href="/auth/google">
+                <img src="/resources/PSD/googleIcon.png" alt="Google" style="vertical-align: middle; margin-right: 8px;">
+                Log in with Google
+            </a>
 
-        </script> -->
-        <!-- <script>
-            function onSignIn(googleUser) {
-                var id_token = googleUser.getAuthResponse().id_token;
-                fetch('/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ token: id_token })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Handle the response from your server
-                    console.log(data);
-                    redirect('/');
-                })
-                .catch(error => console.error('Error:', error));
-            }
-            </script> -->
-            
-            
         
         <a href="/forgot-password" style="text-decoration: none;">
                 <p class="forgot">Forgot Password?</p>
