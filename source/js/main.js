@@ -4,6 +4,7 @@ const MQL = require("./MQL");
 const StaticGlobalData = require("../client/js/ecolutionclientlib");
 const passport = require('passport');
 var userProfile;
+//google api data
 const GOOGLE_CLIENT_ID ="736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com";
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const GOOGLE_CLIENT_SECRET = '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';
