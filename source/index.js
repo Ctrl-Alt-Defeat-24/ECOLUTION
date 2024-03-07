@@ -19,7 +19,6 @@ const axios = require('axios');
 
 const app = express();
 const port = 8000;
-
 // Set the directory where Express will pick up HTML files
 app.set('views', __dirname + '/views');
 
