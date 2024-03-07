@@ -17,6 +17,8 @@
     "mongodb": "6.3",
     "mql": "^0.0.1",
     "node-fetch": "^2.7.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth": "^2.0.0",
     "php": "^1.0.2",
     "php-node": "^0.0.2"
   },
