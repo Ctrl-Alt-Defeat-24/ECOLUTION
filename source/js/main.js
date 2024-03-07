@@ -2,39 +2,92 @@
 const ecolutionTravelRoutes = require("./travelroutes");
 const MQL = require("./MQL");
 const StaticGlobalData = require("../client/js/ecolutionclientlib");
-const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client("736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com");
-
-async function verify(token) {
-    const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: "YOUR_CLIENT_ID",
-    });
-    const payload = ticket.getPayload();
-    const userid = payload['sub'];
-    return payload; // Return the payload for further use
-}
+const passport = require('passport');
+var userProfile;
+//google api data
+const GOOGLE_CLIENT_ID ="736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com";
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GOOGLE_CLIENT_SECRET = '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';
 
 
 module.exports = function(app, ecoData, bcrypt, saltRounds) {
     // Route to display the login page
     // Handle our routes
     const isAuthenticated = (req, res, next) => {
-        if (req.session && req.session.username) {
+        if ((req.session && req.session.username) || req.isAuthenticated()) {
             return next();
         } else {
             res.redirect('/login');
         }
     };
-    app.get("/", isAuthenticated, async (req, res) => {
+    passport.use(new GoogleStrategy({
+        clientID: GOOGLE_CLIENT_ID,
+        clientSecret: GOOGLE_CLIENT_SECRET,
+        callbackURL: "http://localhost:8000/auth/google/callback"
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+            const username = profile.displayName; // Or profile.emails[0].value for email
+            const user = await (await MQL.getMongoDBInstance()).collection('User_Credentials').findOne({ "credentials.username": username });
+            if (!user) {
+                // If user does not exist, create a new user
+                const newUser = {
+                    _id: username,
+                    username: username,
+                    password: accessToken, // Consider encrypting or using a secure method
+                    email: profile.emails[0].value,
+                    createDate: new Date(),
+                    lastLoginDate: new Date(),
+                    isActive: "T"
+                };
+                await (await MQL.getMongoDBInstance()).collection('User_Credentials').updateOne({}, { $push: { credentials: newUser } });
+            } else {
+                // Update existing user's last login date or any other relevant information
+                await (await MQL.getMongoDBInstance()).collection('User_Credentials').updateOne(
+                    { "credentials.username": username },
+                    { $set: { "credentials.$.lastLoginDate": new Date() } }
+                );
+            }
+            console.log("Setting username in session:", username);
+            // Here, mark the user as authenticated in the session
+            done(null, profile);
+        } catch (error) {
+            console.log("Error during Google authentication:", user);
+            done(error, null);
+        }
+    }));
+    app.use(passport.initialize());
+    app.use(passport.session());
+    app.get('/success', (req, res) => res.send(userProfile));
 
-        res.render("index.ejs", {ecoData, username: req.session.username || null});
-  });
-    app.get("/login", (req, res) => {
-        res.render("login.ejs", { username: req.session.username || null });
+    app.get('/error', (req, res) => res.send('error logging in'));
+    
+    passport.serializeUser(function(user, done) {
+        done(null, user);
+      });  
+    
+      passport.deserializeUser(async (username, done) => {
+        try {
+            const db = await MQL.getMongoDBInstance();
+            // Ensure the query correctly identifies the user. Adjust as per your database schema.
+            // This assumes 'id' matches the 'username' saved in the session during serialization.
+            const user = await db.collection('User_Credentials').findOne({ "credentials._id": username.displayName });
+            if (user) {
+
+                const userData = user.credentials[0];
+                userData.username = username.displayName;
+
+                done(null, user);
+            } else {
+                console.log("User not found:", username);
+                console.log("no:"+user);
+                done(new Error('User not found'), null);
+            }
+        } catch (error) {
+            console.error("Error during deserialization:", error);
+            done(error, null);
+        }
     });
-
-    //                 audience: "736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com",
     app.post('/api/auth/google', async (req, res) => {
         try {
             const { token } = req.body;
@@ -51,21 +104,36 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
             res.status(401).send({ status: 'error', message: error.message });
         }
     });
+    app.get('/auth/google', 
+    passport.authenticate('google', { scope : ['profile', 'email'] }));
+    
+    
+    app.get('/auth/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/error' }),
+    function(req, res) {
+        if (req.user && req.user.displayName) {
+            req.session.username = req.user.displayName; // Or the appropriate field from the Google profile
+        }    
+    
+    // Successful authentication, redirect success.
+    res.redirect('/'); 
+    });
+
+    app.get("/", isAuthenticated, async (req, res) => {
+
+        res.render("index.ejs", {ecoData, username: req.session.username || null});
+  });
+    app.get("/login", (req, res) => {
+        res.render("login.ejs", { username: req.session.username || null });
+    });
 
     // Route to handle login logic
     app.post("/login", async (req, res) => {
         const { username, password } = req.body;
         try {
-            // const { token } = req.body; // Make sure the token is being received here
-            // // Verify the ID token
-            // const ticket = await client.verifyIdToken({
-            //     idToken: token,
-            //     audience: '736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com',
-            // });
-            // const payload = await verify(token);
-            // const userid = payload['sub'];
 
             const user = await (await MQL.getMongoDBInstance()).collection('User_Credentials').findOne({ "credentials.username": username }, { projection: { credentials: { $elemMatch: { username } } } });
+            console.log("User found:", user);
             if (user && user.credentials && user.credentials.length > 0) {
                 const userData = user.credentials[0];
                 if (password === userData.password){
