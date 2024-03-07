@@ -125,6 +125,11 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
         res.render("register.ejs");
     });
 
+    //route to display input form
+    app.get("/inputform", (req, res) => {
+        res.render("inputform.ejs");
+    });
+
     // Route to handle registration logic
     app.post("/register", async (req, res) => {
         const { email, username, password } = req.body;
@@ -143,7 +148,7 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
                     isActive: "T"
                 };
                 await (await MQL.getMongoDBInstance()).collection('User_Credentials').updateOne({}, { $push: { credentials: newUser } });
-                res.redirect('/login');
+                res.redirect('/inputform');
             }
         } catch (error) {
             console.error("Error during registration:", error);

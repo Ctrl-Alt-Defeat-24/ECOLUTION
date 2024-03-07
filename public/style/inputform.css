@@ -1,0 +1,27 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-image: url('/resources/PSD/forest.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#formContainer {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#dynamicForm label, #dynamicForm select, #dynamicForm input, #dynamicForm button {
+    display: block;
+    margin: 10px 0;
+}
+
+#dynamicForm button {
+    cursor: pointer;
+}
