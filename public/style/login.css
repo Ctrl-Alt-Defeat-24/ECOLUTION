@@ -68,13 +68,12 @@ input[type="password"] {
 
 /* Submit button */
 button[type="submit"] {
-    padding: 12px 60px; /* Adjusted for proper sizing */
+    padding: 12px 24px; /* Adjusted for proper sizing */
     border-radius: 30px;
     font-size: 120%;
     cursor: pointer; /* Added cursor pointer for better UX */
     
     margin-right: 60%; /* Adjust this to align under the password field */
-    margin-bottom: 5%;
 }
 
 button[type="submit"]:hover {
@@ -266,33 +265,7 @@ button[type="submit"] {
         margin-left: -12%;
     }
 }
-.google-btn {
-    display: inline-flex; /* Use flexbox for alignment */
-    align-items: center; /* Center items vertically */
-    justify-content: center; /* Center items horizontally */
-    background-color: #4285F4;
-    color: white;
-    padding: 12px 24px; /* Adjust padding as needed */
-    border: none;
-    border-radius: 30px; /* Adjust to match your design */
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 16px;
-    /* Space between the Google button and the next form element */
-    width: 50%; /* Match the width of your input fields */
-    margin-left: -25%;
-}
 
-.google-btn img {
-    margin-right: 8px; /* Space between the logo and the text */
-    width: 20px; /* Adjust based on your logo size */
-    height: auto;
-}
-
-/* Hover effect for the Google button */
-.google-btn:hover {
-    background-color: #357ae8;
-}
 @media screen and (max-width: 800px)
 {
     .register{

@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const { MongoClient } = require('mongodb');
 const session = require('express-session');
 const saltRounds = 10; // for bcrypt
-const passport = require('passport');
 
 const res = require('express/lib/response');
 const e = require('express');
@@ -44,7 +43,6 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
-
 
 // This is where any arrays or temporary data will be stored for use at the front end
 var ecoData = {}
@@ -132,6 +130,7 @@ app.get('/recycle', (req, res) => {
     
     res.render("recyclingcentres", ecoData);
 }); 
+
 
 
 
