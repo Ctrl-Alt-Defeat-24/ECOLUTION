@@ -47,6 +47,34 @@ body { margin: 0; padding: 0; }
 </head>
 <body>
 
+    <input type="text" placeholder="Choose destination">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+    const params = new URLSearchParams(window.location.search);
+    const address = params.get('address');
+    if (address) {
+        // Select the input field based on the placeholder attribute
+        var destinationInput = $('input[placeholder="Choose destination"]');
+        destinationInput.val(decodeURIComponent(address));
+        
+        // Focus the input to prepare for synthetic event
+        destinationInput.focus();
+        
+        // Create a synthetic keydown event
+        var e = jQuery.Event("keydown", { keyCode: 65 }); // 65 is the key code for 'a'
+
+        // Trigger the keydown event
+        destinationInput.trigger(e);
+        
+        // If necessary, follow up with a keyup event
+        var e2 = jQuery.Event("keyup", { keyCode: 65 }); // 'keyup' for the same key
+        destinationInput.trigger(e2);
+    }
+});
+
+    </script>
+
     <div class="nav-bar">
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
