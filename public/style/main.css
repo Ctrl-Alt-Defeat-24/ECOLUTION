@@ -61,8 +61,15 @@ body {
 
 .nav-links a {
   text-decoration: none;
-  color: black; /* Black text for the links */
+  color: rgb(0, 0, 0); /* Ensuring visibility */
   font-weight: bold;
+  font-size: medium;
+}
+
+/* New style to underline the Travel link */
+.nav-links li a[href="/"] {
+  border-bottom: 2px solid rgb(0, 0, 0); /* Customizable thickness and color */
+  padding-bottom: 5px; /* Adjusts the space between the text and the underline */
 }
 
 

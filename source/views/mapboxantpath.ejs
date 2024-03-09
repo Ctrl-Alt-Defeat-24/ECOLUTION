@@ -24,7 +24,7 @@ body { margin: 0; padding: 0; }
     padding: 20px;
     text-align: center;
     z-index: 1002; /* Ensuring it's above other elements */
-    background-color: rgba(0, 0, 0, 0.5); /* Optional: Adding a semi-transparent background for visibility */
+    background-color: rgba(0, 0, 0, 0.1); /* Optional: Adding a semi-transparent background for visibility */
 }
 
 .nav-links {
@@ -39,6 +39,12 @@ body { margin: 0; padding: 0; }
     text-decoration: none;
     color: white; /* Ensuring visibility */
     font-weight: bold;
+}
+
+/* New style to underline the Travel link */
+.nav-links li a[href="/ecoTravelRoutes"] {
+    border-bottom: 2px solid white; /* Customizable thickness and color */
+    padding-bottom: 5px; /* Adjusts the space between the text and the underline */
 }
 
 
@@ -78,8 +84,9 @@ body { margin: 0; padding: 0; }
     <div class="nav-bar">
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
-            <li><a href="/recycle">Recycle</a></li>
-            <li><a href="/leaderboard">leaderboard</a></li>
+            <li><a href="/ecoTravelRoutes">Travel</a></li>
+            <li><a href="/Recycle">Recycle</a></li>
+            <li><a href="/Leaderboard">leaderboard</a></li>
         </ul>
     </div>
 
