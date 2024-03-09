@@ -1,4 +1,24 @@
-/* recycle1.css */
+@font-face {
+    font-family: 'SFProDisplayBlackItalic';
+    src: url('/ECOLUTION/source/client/typefaces/SFPRODISPLAYBLACKITALIC.OTF') format('opentype');
+  }
+  
+  @font-face {
+    font-family: 'SFProDisplayBold';
+    src: url('/ECOLUTION/source/client/typefaces/SFPRODISPLAYBOLD.OTF') format('opentype');
+  }
+  
+  /* Ensure global elements use border-box sizing */
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+  
+  /* Apply the font family to map and related elements */
+  .mapboxgl-ctrl-geocoder, .map-element-class {
+    font-family: 'SFProDisplayBold', sans-serif;
+  }
+
+
 html, body {
     margin: 0;
     padding: 0;
@@ -67,3 +87,32 @@ h2 {
 p {
     font-size: 14px; /* Adjusted font size */
 }
+
+
+/* ... your existing CSS ... */
+
+#centreDetails h2.distance {
+    background-color: #e1e1e1; /* Slightly grey background */
+    padding: 4px;
+    border-radius: 4px;
+    font-size: 16px; /* Slightly larger font for distance */
+    font-weight: normal; /* Adjust the weight as needed */
+    text-align: center; /* Center align the distance */
+    margin-bottom: 8px; /* Space between distance and location title */
+}
+
+#centreDetails h2.location-title {
+    font-size: 20px; /* Increased font size for location title */
+    margin-bottom: 4px; /* Space between title and address */
+}
+
+#centreDetails p.address {
+    font-weight: bold; /* Make the address bold */
+}
+
+#mapPlaceholder {
+    height: 75%; /* Increased height for the map */
+    margin: 16px 0; /* Center the map vertically with margin */
+}
+
+/* ... the rest of your existing CSS ... */

@@ -23,10 +23,8 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            // Assuming StaticGlobalData.userPreferences contains the user's postcode
-            // Replace 'USER_POSTCODE_FROM_STATIC_GLOBAL_DATA' with the actual source of the user postcode
             var userPostcode = '<%= postcodePrefix %> <%= postcodeSuffix %>';
-            
+    
             // Convert postcode to coordinates
             $.get('/convert-postcode-to-coordinates', {postcode: userPostcode}, function(coords) {
                 var userLat = coords.latitude;
@@ -50,14 +48,16 @@
                             $('#recyclingCentresList').on('click', '.centre-item', function() {
                                 var index = $(this).data('index');
                                 var selectedCentre = data[index];
-                                var detailsHTML = `<h2>${selectedCentre.name}</h2>
-                                                   <p>${selectedCentre.address}</p>
-                                                   <p>The following things can be recycled at this place:</p>
-                                                   <p>Materials: ${selectedCentre.materials.join(', ')}</p>
-                                                   <p>Distance: ${selectedCentre.distance.toFixed(2)} miles</p>
-                                                   <a href="#" class="show-map" onclick="showMapPlaceholder(${userLat}, ${userLng}, ${selectedCentre.latitude}, ${selectedCentre.longitude}, '${selectedCentre.name.replace(/'/g, "\\'")}'); return false;">Show map</a>
-                                                   <div id="mapPlaceholder" style="height: 300px;"></div>`; // Ensure you have a height for your map container
+                                var detailsHTML = `
+                                    <h2 class="distance">${selectedCentre.distance.toFixed(2)} miles away</h2>
+                                    <h2 class="location-title">${selectedCentre.name}</h2>
+                                    <p class="address">${selectedCentre.address}</p>
+                                    <p>The following materials can be recycled at this place:</p>
+                                    <p>Materials: ${selectedCentre.materials.join(', ')}</p>
+                                    <div id="mapPlaceholder"></div>`; // Map placeholder with increased height
                                 $('#centreDetails').html(detailsHTML);
+            
+                                showMapPlaceholder(userLat, userLng, selectedCentre.latitude, selectedCentre.longitude, selectedCentre.name.replace(/'/g, "\\'"));
                             });
                         } else {
                             $('#recyclingCentresList').html('<p>No recycling centres found.</p>');
@@ -71,49 +71,62 @@
             }).fail(function() {
                 alert('Failed to get user location from postcode.');
             });
-        });
     
-        function showMapPlaceholder(userLat, userLng, centreLat, centreLng, centreName) {
-            mapboxgl.accessToken = 'pk.eyJ1IjoicHJpbWFscmV4IiwiYSI6ImNscmFrbWg2cjBjbDUyaW13dmxjeG96bXoifQ.ktWyvNqeJ4awZ2pu__T1Xw'; // Your actual Mapbox access token
-            var map = new mapboxgl.Map({
-                container: 'mapPlaceholder', // Container ID
-                style: 'mapbox://styles/mapbox/streets-v11', // Style URL
-                center: [userLng, userLat], // Starting position [lng, lat]
-                zoom: 9 // Starting zoom
+            function showMapPlaceholder(userLat, userLng, centreLat, centreLng, centreName) {
+                mapboxgl.accessToken = 'pk.eyJ1IjoicHJpbWFscmV4IiwiYSI6ImNscmFrbWg2cjBjbDUyaW13dmxjeG96bXoifQ.ktWyvNqeJ4awZ2pu__T1Xw'; // Replace with your Mapbox access token
+                var map = new mapboxgl.Map({
+                    container: 'mapPlaceholder', // Container ID
+                    style: 'mapbox://styles/mapbox/dark-v10', // Style URL
+                    center: [userLng, userLat], // Starting position [lng, lat]
+                    zoom: 15, // Starting zoom
+                    attributionControl: false // Disables the default attribution control, minimizes trademarks/logos
+                });
+    
+                // If you want to show a custom attribution, you can add it using the AttributionControl
+                map.addControl(new mapboxgl.AttributionControl({
+                    compact: true
+                }));
+    
+                map.on('load', function() {
+                    var elUserLocation = document.createElement('div');
+                    elUserLocation.style.backgroundColor = 'blue';
+                    elUserLocation.style.color = 'white';
+                    elUserLocation.style.padding = '5px';
+                    elUserLocation.style.borderRadius = '5px';
+                    elUserLocation.innerText = "You're here";
+    
+                    new mapboxgl.Marker(elUserLocation)
+                        .setLngLat([userLng, userLat])
+                        .addTo(map);
+    
+                    var elCentreLocation = document.createElement('div');
+                    elCentreLocation.style.backgroundColor = 'green';
+                    elCentreLocation.style.color = 'white';
+                    elCentreLocation.style.padding = '5px';
+                    elCentreLocation.style.borderRadius = '5px';
+                    elCentreLocation.innerHTML = centreName;
+    
+                    new mapboxgl.Marker(elCentreLocation)
+                        .setLngLat([centreLng, centreLat])
+                        .addTo(map);
+    
+                    map.fitBounds([
+                        [userLng, userLat], // Southwest coordinates
+                        [centreLng, centreLat] // Northeast coordinates
+                    ], {
+                        padding: {top: 10, bottom:25, left: 15, right: 5}
+                });
             });
-    
-            map.on('load', function() {
-                var elUserLocation = document.createElement('div');
-                elUserLocation.style.backgroundColor = 'blue';
-                elUserLocation.style.color = 'white';
-                elUserLocation.style.padding = '5px';
-                elUserLocation.style.borderRadius = '5px';
-                elUserLocation.innerText = "You're here";
-    
-                new mapboxgl.Marker(elUserLocation)
-                    .setLngLat([userLng, userLat])
-                    .addTo(map);
-    
-                var elCentreLocation = document.createElement('div');
-                elCentreLocation.style.backgroundColor = 'green';
-                elCentreLocation.style.color = 'white';
-                elCentreLocation.style.padding = '5px';
-                elCentreLocation.style.borderRadius = '5px';
-                elCentreLocation.innerHTML = centreName;
-    
-                new mapboxgl.Marker(elCentreLocation)
-                    .setLngLat([centreLng, centreLat])
-                    .addTo(map);
-    
-                map.fitBounds([
-                    [userLng, userLat], //southwest coordinates
-                [centreLng, centreLat] //northeast coordinates
-            ], {
-                padding: {top: 10, bottom:25, left: 15, right: 5}
-            });
-        });
-    }
+
+            // Optionally, if you want to remove or minimize the logo
+            // You can manipulate the CSS directly to hide or alter the logo's appearance
+            // Please check Mapbox's terms of service before hiding the logo to ensure compliance
+            map.addControl(new mapboxgl.NavigationControl());
+            $('.mapboxgl-ctrl-logo').hide();
+        }
+    });
 </script>
+    
 
     
     
