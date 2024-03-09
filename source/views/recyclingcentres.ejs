@@ -13,6 +13,22 @@
 <script type="text/javascript" src="/js/mapbox-gl.js"></script>
 </head>
 <body>
+    <button onclick="copyAddressAndRedirect(this)">Copy & Go to Map</button>
+
+    <script>
+    function copyAddressAndRedirect(button) {
+        var address = document.querySelector('.address').innerText;
+        navigator.clipboard.writeText(address).then(function() {
+            alert('Address copied to clipboard: ' + address);
+            // Properly encode the address and format it as a query parameter
+            var encodedAddress = encodeURIComponent(address);
+            window.location.href = "/ecoTravelRoutes?address=" + encodedAddress;
+        }, function() {
+            alert('Failed to copy address to clipboard.');
+        });
+    }
+    </script>
+    
     <div id="container">
         <div id="recyclingCentresList"></div>
         <div id="centreDetails">Select a recycling centre to view details.</div>
