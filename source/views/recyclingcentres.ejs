@@ -38,7 +38,6 @@
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
             <li><a href="/ecoTravelRoutes">Travel</a></li>
-            <li><a href="/recycle">Recycle</a></li>
             <li><a href="/leaderboard">leaderboard</a></li>
         </ul>
     </div>
@@ -51,42 +50,28 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var userPostcode = '<%= postcodePrefix %> <%= postcodeSuffix %>';
+            var userLat, userLng; // Define these outside the AJAX call to ensure wider scope
     
             // Convert postcode to coordinates
+            var userPostcode = '<%= postcodePrefix %> <%= postcodeSuffix %>';
             $.get('/convert-postcode-to-coordinates', {postcode: userPostcode}, function(coords) {
-                var userLat = coords.latitude;
-                var userLng = coords.longitude;
+                userLat = coords.latitude;
+                userLng = coords.longitude;
     
-                // Fetch recycling centres now that we have the user's coordinates
+                fetchRecyclingCentres();
+            }).fail(function() {
+                alert('Failed to get user location from postcode.');
+            });
+    
+            function fetchRecyclingCentres() {
                 $.ajax({
                     url: '/get-recycling-centres',
                     type: 'GET',
                     success: function(data) {
                         if(data && Array.isArray(data) && data.length > 0) {
-                            var centresHTML = data.map(function(centre, index) {
-                                return `<div class="centre-item" data-index="${index}" data-lat="${centre.latitude}" data-lng="${centre.longitude}" data-name="${centre.name}">
-                                            <h2>${centre.name}</h2>
-                                            <p>${centre.distance.toFixed(2)} miles</p>
-                                            <p>${centre.materials.length} materials accepted</p>
-                                        </div>`;
-                            }).join('');
-                            $('#recyclingCentresList').html(centresHTML);
-            
-                            $('#recyclingCentresList').on('click', '.centre-item', function() {
-                                var index = $(this).data('index');
-                                var selectedCentre = data[index];
-                                var detailsHTML = `
-                                    <h2 class="distance">${selectedCentre.distance.toFixed(2)} miles away</h2>
-                                    <h2 class="location-title">${selectedCentre.name}</h2>
-                                    <p class="address">${selectedCentre.address}</p>
-                                    <p>The following materials can be recycled at this place:</p>
-                                    <p>Materials: ${selectedCentre.materials.join(', ')}</p>
-                                    <div id="mapPlaceholder"></div>`; // Map placeholder with increased height
-                                $('#centreDetails').html(detailsHTML);
-            
-                                showMapPlaceholder(userLat, userLng, selectedCentre.latitude, selectedCentre.longitude, selectedCentre.name.replace(/'/g, "\\'"));
-                            });
+                            displayRecyclingCentres(data);
+                            // Immediately display the first centre's details and map
+                            displayCentreDetailsAndMap(data[0]);
                         } else {
                             $('#recyclingCentresList').html('<p>No recycling centres found.</p>');
                         }
@@ -96,19 +81,66 @@
                         $('#recyclingCentresList').html('<p>Failed to load recycling centres. Please try again later.</p>');
                     }
                 });
-            }).fail(function() {
-                alert('Failed to get user location from postcode.');
-            });
+            }
+    
+            function displayRecyclingCentres(data) {
+                var centresHTML = data.map(function(centre, index) {
+                    return `<div class="centre-item" data-index="${index}" data-lat="${centre.latitude}" data-lng="${centre.longitude}" data-name="${centre.name}">
+                                <h2>${centre.name}</h2>
+                                <p>${centre.distance.toFixed(2)} miles</p>
+                                <p>${centre.materials.length} materials accepted</p>
+                            </div>`;
+                }).join('');
+                $('#recyclingCentresList').html(centresHTML);
+    
+                // Attach click event handlers to each centre item after they are displayed
+                $('.centre-item').click(function() {
+                    var index = $(this).data('index');
+                    displayCentreDetailsAndMap(data[index]);
+                });
+            }
+    
+            function displayCentreDetailsAndMap(centre) {
+                var detailsHTML = `
+                    <h2 class="distance">${centre.distance.toFixed(2)} miles away</h2>
+                    <h2 class="location-title">${centre.name}</h2>
+                    <p class="address">${centre.address}</p>
+                    <p>The following materials can be recycled at this place:</p>
+                    <p>Materials: ${centre.materials.join(', ')}</p>
+                    <div id="mapPlaceholder"></div>`;
+                $('#centreDetails').html(detailsHTML);
+    
+                // Assuming this function is correctly defined to show the map
+                showMapPlaceholder(userLat, userLng, centre.latitude, centre.longitude, centre.name.replace(/'/g, "\\'"));
+            }
     
             function showMapPlaceholder(userLat, userLng, centreLat, centreLng, centreName) {
-                mapboxgl.accessToken = 'pk.eyJ1IjoicHJpbWFscmV4IiwiYSI6ImNscmFrbWg2cjBjbDUyaW13dmxjeG96bXoifQ.ktWyvNqeJ4awZ2pu__T1Xw'; // Replace with your Mapbox access token
+                mapboxgl.accessToken = 'pk.eyJ1IjoicHJpbWFscmV4IiwiYSI6ImNscmFrbWg2cjBjbDUyaW13dmxjeG96bXoifQ.ktWyvNqeJ4awZ2pu__T1Xw';
                 var map = new mapboxgl.Map({
-                    container: 'mapPlaceholder', // Container ID
-                    style: 'mapbox://styles/mapbox/dark-v10', // Style URL
-                    center: [userLng, userLat], // Starting position [lng, lat]
-                    zoom: 15, // Starting zoom
-                    attributionControl: false // Disables the default attribution control, minimizes trademarks/logos
+                    container: 'mapPlaceholder', // container ID
+                    style: 'mapbox://styles/mapbox/streets-v11', // map style
+                    center: [userLng, userLat], // starting position
+                    zoom: 10 // starting zoom
                 });
+    
+                // Add markers for the user and the centre
+                new mapboxgl.Marker({ color: 'blue' })
+                    .setLngLat([userLng, userLat])
+                    .addTo(map)
+                    .setPopup(new mapboxgl.Popup().setText("Your location"))
+                    .addTo(map);
+    
+                new mapboxgl.Marker({ color: 'green' })
+                    .setLngLat([centreLng, centreLat])
+                    .addTo(map)
+                    .setPopup(new mapboxgl.Popup().setText(centreName))
+                    .addTo(map);
+                    
+                map.on('load', function() {
+                    map.resize(); // This ensures map adjusts to the div size
+                });
+    
+    
     
                 // If you want to show a custom attribution, you can add it using the AttributionControl
                 map.addControl(new mapboxgl.AttributionControl({
