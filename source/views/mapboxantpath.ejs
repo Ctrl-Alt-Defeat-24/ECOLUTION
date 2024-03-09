@@ -15,9 +15,50 @@ body { margin: 0; padding: 0; }
 #loadingIndicator { display: none; position: absolute; bottom: 110px; left: 150px; }
 #successMessage { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
 #updatingIndicator { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; z-index: 1001;}
+
+/* Navigation Bar Styles */
+.nav-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 20px;
+    text-align: center;
+    z-index: 1002; /* Ensuring it's above other elements */
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: Adding a semi-transparent background for visibility */
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px; /* Adjust the space between links as needed */
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white; /* Ensuring visibility */
+    font-weight: bold;
+}
+
+
+
 </style>
 </head>
 <body>
+
+    <div class="nav-bar">
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/ecoTravelRoutes">Travel</a></li>
+            <li><a href="/recycle">Recycle</a></li>
+            <li><a href="/leaderboard">leaderboard</a></li>
+        </ul>
+    </div>
+
+
+
+
 <script src="/js/mapbox-gl-directions.js"></script>
 <!-- Reference to the ldrs library for a loading indicator -->
 <script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/infinity.js"></script>
