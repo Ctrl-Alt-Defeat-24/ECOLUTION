@@ -78,8 +78,8 @@ app.get('/current-power-consumption', async (req, res) => {
 //Users postcode
 //User Preferences postcode: StaticGlobalData.userPreferences.GBPostalPrefix;
 //StaticGlobalData.userPreferences.GBPostalSuffix;
-const postcodePrefix = "E14";
-const postcodeSuffix = "8AG";
+const postcodePrefix = "E17";
+const postcodeSuffix = "7JP";
 
 //OpenCage API key for postcode - coordinates converter for mini map
 const opencageApiKey = '27da4a1090654b3fb665c4aa304d0b5d';
