@@ -115,32 +115,14 @@
             }
     
             function showMapPlaceholder(userLat, userLng, centreLat, centreLng, centreName) {
-                mapboxgl.accessToken = 'pk.eyJ1IjoicHJpbWFscmV4IiwiYSI6ImNscmFrbWg2cjBjbDUyaW13dmxjeG96bXoifQ.ktWyvNqeJ4awZ2pu__T1Xw';
+                mapboxgl.accessToken = 'pk.eyJ1IjoicHJpbWFscmV4IiwiYSI6ImNscmFrbWg2cjBjbDUyaW13dmxjeG96bXoifQ.ktWyvNqeJ4awZ2pu__T1Xw'; // Replace with your Mapbox access token
                 var map = new mapboxgl.Map({
-                    container: 'mapPlaceholder', // container ID
-                    style: 'mapbox://styles/mapbox/streets-v11', // map style
-                    center: [userLng, userLat], // starting position
-                    zoom: 10 // starting zoom
+                    container: 'mapPlaceholder', // Container ID
+                    style: 'mapbox://styles/mapbox/dark-v10', // Style URL
+                    center: [userLng, userLat], // Starting position [lng, lat]
+                    zoom: 15, // Starting zoom
+                    attributionControl: false // Disables the default attribution control, minimizes trademarks/logos
                 });
-    
-                // Add markers for the user and the centre
-                new mapboxgl.Marker({ color: 'blue' })
-                    .setLngLat([userLng, userLat])
-                    .addTo(map)
-                    .setPopup(new mapboxgl.Popup().setText("Your location"))
-                    .addTo(map);
-    
-                new mapboxgl.Marker({ color: 'green' })
-                    .setLngLat([centreLng, centreLat])
-                    .addTo(map)
-                    .setPopup(new mapboxgl.Popup().setText(centreName))
-                    .addTo(map);
-                    
-                map.on('load', function() {
-                    map.resize(); // This ensures map adjusts to the div size
-                });
-    
-    
     
                 // If you want to show a custom attribution, you can add it using the AttributionControl
                 map.addControl(new mapboxgl.AttributionControl({
@@ -185,6 +167,7 @@
             $('.mapboxgl-ctrl-logo').hide();
         }
     });
+
 </script>
     
 
