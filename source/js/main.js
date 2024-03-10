@@ -112,7 +112,7 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
     passport.authenticate('google', { failureRedirect: '/error' }),
     function(req, res) {
         if (req.user && req.user.displayName) {
-            req.session.username = req.user.displayName; // Or the appropriate field from the Google profile
+            req.session.username = req.user.displayName; 
         }    
     
     // Successful authentication, redirect success.
@@ -193,13 +193,16 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
         res.render("register.ejs");
     });
 
-    app.get("/inputform", (req, res) => {
-        res.render("inputform.ejs");
+    app.get("/inputform", isAuthenticated, (req, res) => {
+        res.render("inputform.ejs", { username: req.session.username || null });
+    });
+    app.get("/leaderboard", isAuthenticated, (req, res) => {
+        res.render("leaderboard.ejs", { username: req.session.username || null });
     });
 
     //route to display input form
-    app.get("/setting", (req, res) => {
-        res.render("inputform2.ejs");
+    app.get("/setting", isAuthenticated, (req, res) => {
+        res.render("inputform2.ejs", { username: req.session.username || null });
     });
 
     // Route to handle registration logic
@@ -228,19 +231,19 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
         }
     });
 
-app.get("/directions", (req, res) => {
-  res.render("mapboxdirectionexample.ejs", ecoData);
+app.get("/directions", isAuthenticated, (req, res) => {
+  res.render("mapboxdirectionexample.ejs", ecoData, { username: req.session.username || null });
 });
 
 
 // TRAVEL ROUTES SECTION
 
 // Route to display the travel routes page
-app.get("/ecoTravelRoutes", async (req, res) => {
+app.get("/ecoTravelRoutes", isAuthenticated, async (req, res) => {
   try {
         //const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints([-73.97137, 40.67286], [-122.677738, 45.522458], "driving");
         let extendedEcoData = [];
-        res.render("mapboxantpath.ejs", { extendedEcoData: extendedEcoData });
+        res.render("mapboxantpath.ejs", { extendedEcoData: extendedEcoData, username: req.session.username || null });
         
     } catch (error) {
         console.error("Error:", error);
