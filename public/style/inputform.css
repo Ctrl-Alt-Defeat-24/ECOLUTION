@@ -56,3 +56,17 @@ body {
     border-bottom: 2px solid rgb(0, 0, 0); /* Customizable thickness and color */
     padding-bottom: 5px; /* Adjusts the space between the text and the underline */
 }
+
+.ECOLUTION img {
+    width: 30%; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+    /* Additional styling as needed */
+  }
+  
+  .ECOLUTION {
+    position: absolute;
+    top: 2%;
+    left: 34%;
+    transform: translateX(-50%);
+    /* Ensures the logo is centered regardless of the screen width */
+  }
