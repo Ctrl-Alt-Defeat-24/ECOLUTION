@@ -19,14 +19,7 @@
         </a>
     <% } %> -->
 
-    <% if (username) { %>
-        <div class="user-info">
-            Welcome, <%= username %>
-            <a href="/logout">
-                <button style="background-color: green; color: white; border: none; padding: 10px 20px; border-radius: 5px;">Logout</button>
-            </a>
-        </div>
-    <% } %>
+   
     <link rel="stylesheet" href='/style/insight.min.css'>
     <link rel="stylesheet" href='/style/main.css'>
     
@@ -40,16 +33,34 @@
           </div>
 
 
-        <div class="nav-bar">
+          <div class="nav-bar">
             <ul class="nav-links">
                 <li><a href="/">Home</a></li>
                 <li><a href="/ecoTravelRoutes">Travel</a></li>
                 <li><a href="/recycle">Recycle</a></li>
                 <li><a href="/leaderboard">leaderboard</a></li>
+                <% if (username) { %>
+                    <li><a href="/logout" class="logout-link">
+                        <button>Logout</button>
+                    </a></li>
+                <% } else { %>
+                    <li><a href="/login" class="login-link">
+                        <button>Login</button>
+                    </a></li>
+                    <li><a href="/register" class="register-link">
+                        <button>Register</button>
+                    </a></li>
+                <% } %>
             </ul>
         </div>
+    
+        <% if (username) { %>
+            <div class="user-greeting">
+                Welcome, <%= username %>
+            </div>
+        <% } %>
         
-        <!-- The rest of your body content goes here -->
+        
     
 
 

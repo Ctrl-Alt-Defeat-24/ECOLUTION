@@ -1,23 +1,43 @@
-.register-link {
-    right: 100px;
+/* Position the user greeting in the bottom left corner */
+.user-greeting {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: green;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
 } 
 
-.user-info {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    background-color: green;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-} 
-/* Position the home button in the top right corner */
- .homepage-link 
- {
-    position: absolute;
-    top: 20px;
-    right: 20px;
- }
+/* Style the logout link to match other navigation links if desired */
+.logout-link button {
+  background-color: transparent; /* Makes the button's background match the nav bar */
+  color: black; /* Set the color to match your nav bar theme */
+  border: none;
+  padding: 0;
+  font-weight: bold;
+}
+
+.nav-links li a[href="/logout"] button {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  color: inherit; /* Inherits the color from the parent <a> tag */
+  border: none;
+}
+
+/* Ensure all nav bar buttons have consistent styling */
+.nav-bar button {
+  background-color: transparent; /* Adjust as needed */
+  border: none;
+  color: black; /* Or another color to fit the nav bar theme */
+  cursor: pointer;
+}
+
+.nav-bar button:hover {
+  text-decoration: underline; /* Adds a hover effect */
+}
+
 body {
     margin: 0;
     padding: 0;
