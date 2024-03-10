@@ -194,8 +194,8 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
     });
 
     //route to display input form
-    app.get("/inputform", (req, res) => {
-        res.render("inputform.ejs");
+    app.get("/setting", (req, res) => {
+        res.render("inputform2.ejs");
     });
 
     // Route to handle registration logic
