@@ -80,13 +80,13 @@ body {
   font-size: 10px;
   background-color: rgba(255, 255, 255, 0.5); /* Similar background color */
   width: 35%; /* Width similar to the boxes */
-  height: 35%; /* Adjusted height to match the pie chart */
+  height: 70%; /* Adjusted height to match the pie chart */
   border-radius: 20px; /* Rounded corners */
 
   /* Positioning */
   position: fixed; /* Fixed position to stay in place on scroll */
   right: 5%; /* Positioned on the right side of the screen */
-  bottom: -6%; /* Start at the middle of the screen */
+  top: 53%; /* Start at the middle of the screen */
   transform: translateY(-50%); /* Center it vertically */
 }
 
