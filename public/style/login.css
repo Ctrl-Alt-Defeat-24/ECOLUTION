@@ -55,7 +55,8 @@ form {
 }
 
 /* input text box */
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
     width: 150%;
     padding: 12px; /* Adjusted for proper sizing */
     margin: 10px 0; /* Adjusted for proper spacing */
