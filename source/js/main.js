@@ -298,6 +298,18 @@ app.post("/commitjourneycarbon", async (req, res) => {
         const { avgAcceptableWalkingDist_mile, GBPostalPrefix, GBPostalSuffix, region, publicProfile } = req.body;
         const userPreferences = await MQL.updateUserPreferences(req.session.username, avgAcceptableWalkingDist_mile, GBPostalPrefix, GBPostalSuffix, region, publicProfile);
         res.json({ userPreferences });
+        if(userPreferences){
+            req.session.userpreferences = userPreferences;
+            req.session.save(err => {
+                if (err) {
+                    console.error("Session save error:", err);
+                } else {
+                    console.log("Loaded preferences into session:", req.session.userpreferences);
+                    // Update the static global data with a cached version of the user preferences
+                    StaticGlobalData.userPreferences = req.session.userpreferences;
+                }
+            });
+        }
     } catch (error) {
         console.error("Error:", error);
     }
