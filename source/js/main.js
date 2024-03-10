@@ -293,6 +293,14 @@ app.post("/commitjourneycarbon", async (req, res) => {
     }
   });
 
-   
+  app.post("/updateUserPreferences", async (req, res) => {
+    try {
+        const { avgAcceptableWalkingDist_mile, GBPostalPrefix, GBPostalSuffix, region, publicProfile } = req.body;
+        const userPreferences = await MQL.updateUserPreferences(req.session.username, avgAcceptableWalkingDist_mile, GBPostalPrefix, GBPostalSuffix, region, publicProfile);
+        res.json({ userPreferences });
+    } catch (error) {
+        console.error("Error:", error);
+    }
+  });
 
 };

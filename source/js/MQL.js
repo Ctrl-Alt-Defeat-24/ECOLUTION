@@ -2,6 +2,7 @@
 
 const res = require("express/lib/response");
 const { MongoClient } = require('mongodb');
+const StaticGlobalData = require("../client/js/ecolutionclientlib");
 
 // This is the URL for the MongoDB hosted on MongoDB Atlas
 const url = 'mongodb+srv://UrbanR:fD9Zdwdk63UxzOUh@ecolution.4v9i1rl.mongodb.net/?retryWrites=true&w=majority';
@@ -51,6 +52,51 @@ const mql = {
             // If we couldnt retrieve the DB instance then we need to log the error and reject the promise
             }).catch((error) => {
                 console.error("Error fetching user preferences: ", error);
+                reject(error);
+            });
+        });
+    },
+
+    // This function updates the users' preferences based on the username, it also handles any new users
+    updateUserPreferences : async function(username, avgAcceptableWalkingDist_mile, GBPostalPrefix, GBPostalSuffix, region, publicProfile) {
+        return new Promise((resolve, reject) => {
+            this.getMongoDBInstance().then(async (db) => {
+                // Establish the collection of interest
+                const collection = db.collection('User_Preferences');
+                // Find the users preferences based on the username
+                console.log("Fetching user preferences for: ", username)
+                try {
+                    // Just make sure that we're sending a valid inputs
+                    const tempAvgAcceptableWalkingDist_mile = parseFloat(avgAcceptableWalkingDist_mile) > 0 ? parseFloat(avgAcceptableWalkingDist_mile) : StaticGlobalData.avgAcceptableWalkingDist_mile;
+                    const tempGBPostalPrefix = GBPostalPrefix.length > 0 ? GBPostalPrefix : "E17";
+                    const tempGBPostalSuffix = GBPostalSuffix.length > 0 ? GBPostalSuffix : "7JP";
+                    const tempRegion = region.length > 0 ? region : "GB";
+                    const tempPublicProfile = publicProfile.length > 0 ? publicProfile : "true";
+                    // Get the value from the collection
+                    const user = await collection.findOne({ _id: username });
+                    if(user){
+                        console.log("Updating Emissions for user: " + username)
+                        // Update all values with the new ones
+                        collection.updateOne({ _id: username }, { $set: { _id: username, avgAcceptableWalkingDist_mile: tempAvgAcceptableWalkingDist_mile, avgCO2eMT_driven_per_mile: 0.0002214, 
+                            GBPostalPrefix: tempGBPostalPrefix, GBPostalSuffix: tempGBPostalSuffix, region: tempRegion, publicProfile: tempPublicProfile } });
+                        // return true to show it was successful in updating
+                        resolve(true);
+                    } else {
+                        console.log("Creating new user preferences for: " + username)
+                        // Create a new user preferences entry
+                        collection.insertOne({ _id: username, avgAcceptableWalkingDist_mile: tempAvgAcceptableWalkingDist_mile, avgCO2eMT_driven_per_mile: 0.0002214, 
+                            GBPostalPrefix: tempGBPostalPrefix, GBPostalSuffix: tempGBPostalSuffix, region: tempRegion, publicProfile: tempPublicProfile });
+                        // return true to show it was successful in updating
+                        resolve(true);
+                    }
+                } catch (error) {
+                    // Handle errors
+                    console.error("Error fetching user preferences:", error);
+                    resolve(false);
+                }
+            // If we couldnt retrieve the DB instance then we need to log the error and reject the promise
+            }).catch((error) => {
+                console.error("Error fetching user preferences:", error);
                 reject(error);
             });
         });
@@ -121,7 +167,7 @@ const mql = {
                 // Establish the collection of interest
                 const collection = db.collection('User_SavedData');
                 // Find the users preferences based on the username
-                console.log("Fetching user preferences for: ", username)
+                console.log("Fetching user saved data for: ", username)
                 try {
                     // Just make sure that we're sending a valid number
                     if(emissionToAdd < 0 || isNaN(emissionToAdd)){
@@ -154,7 +200,7 @@ const mql = {
                 // Establish the collection of interest
                 const collection = db.collection('User_SavedData');
                 // Find the users preferences based on the username
-                console.log("Fetching user preferences for: ", username)
+                console.log("Fetching user saved data for: ", username)
                 try {
                     // Just make sure that we're sending a valid number
                     if(emissionToAdd < 0 || isNaN(emissionToAdd)){
