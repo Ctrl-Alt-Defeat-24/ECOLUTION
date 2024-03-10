@@ -299,7 +299,7 @@ app.post("/commitjourneycarbon", async (req, res) => {
         const userPreferences = await MQL.updateUserPreferences(req.session.username, avgAcceptableWalkingDist_mile, GBPostalPrefix, GBPostalSuffix, region, publicProfile);
         res.json({ userPreferences });
         if(userPreferences){
-            req.session.userpreferences = userPreferences;
+            req.session.userpreferences = await MQL.getUserPreferences(username);
             req.session.save(err => {
                 if (err) {
                     console.error("Session save error:", err);
