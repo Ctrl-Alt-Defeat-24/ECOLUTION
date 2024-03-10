@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Background Layout</title>
+    <link rel="stylesheet" href="/style/inputform.css">
+</head>
+<body>
+    <div id="formContainer">
+        <form id="dynamicForm">
+            <!-- Dynamic Content will be injected here -->
+        </form>
+    </div>
+
+    <script>
+        const formContainer = document.getElementById('dynamicForm');
+        let currentQuestion = 0;
+        
+        const questions = [
+            {type: 'select', name: 'country', label: 'Country You\'re In:', options: ['Please select a country', 'United States', 'United Kingdom', 'Canada', 'Australia']},
+            {type: 'text', name: 'postcodeP', label: 'GB Postcode Prefix (optional):'},
+            {type: 'text', name: 'postcodeS', label: 'GB Postcode Sufix (optional):'},
+            {type: 'text', name: 'walkingDistance', label: 'Acceptable Walking Distance (in kilometers):'},
+            {type: 'text', name: 'goal', label: 'Weekly/Monthly Goal:'},
+            {type: 'select', name: 'privacy', label: 'Would you like to share your data with other users?', options: ['Yes', 'No']}
+        ];
+
+        function createQuestion(question) {
+            formContainer.innerHTML = `<label>${question.label}</label>`;
+            if(question.type === 'select') {
+                const select = document.createElement('select');
+                select.name = question.name;
+                question.options.forEach(option => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option;
+                    optionElement.textContent = option;
+                    select.appendChild(optionElement);
+                });
+                formContainer.appendChild(select);
+            } else {
+                const input = document.createElement('input');
+                input.type = question.type;
+                input.name = question.name;
+                formContainer.appendChild(input);
+            }
+            const button = document.createElement('button');
+            button.textContent = 'Next';
+            button.type = 'button';
+            button.onclick = nextQuestion;
+            formContainer.appendChild(button);
+        }
+
+        function nextQuestion() {
+            const answer = formContainer.querySelector('input, select').value;
+            console.log(`Answer for ${questions[currentQuestion].label} is: ${answer}`);
+            currentQuestion++;
+            if(currentQuestion < questions.length) {
+                createQuestion(questions[currentQuestion]);
+            } else {
+                window.location.href = '/';
+            }
+        }
+
+        // Initialize the first question
+        createQuestion(questions[currentQuestion]);
+    </script>
+</body>
+</html>
