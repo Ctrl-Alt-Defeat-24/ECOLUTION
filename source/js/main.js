@@ -223,6 +223,8 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
                     isActive: "T"
                 };
                 await (await MQL.getMongoDBInstance()).collection('User_Credentials').updateOne({}, { $push: { credentials: newUser } });
+                newUser.username = username.displayName;
+                req.session.username = username;
                 res.redirect('/inputform');
             }
         } catch (error) {
