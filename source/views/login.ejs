@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="/style/login.css" > 
-    <style>
-      
-    </style>
+
 </head>
 <body>
     <div class="left-half">
@@ -27,7 +25,7 @@
             <div class="header"><h1>Login</h1></div>
             <form action="/login" method="post">
                 <input type="text" name="username" placeholder="Username" required>
-                <input type="password" name="password" placeholder="Password" required>
+                <input type="text" name="password" placeholder="Password" required>
                 <button type="submit">Login</button>
             </form>
             <a class="google-btn" href="/auth/google">
@@ -35,10 +33,6 @@
                 Log in with Google
             </a>
 
-        
-        <a href="/forgot-password" style="text-decoration: none;">
-                <p class="forgot">Forgot Password?</p>
-            </a>
             <a href="/register" style="text-decoration: none;">
                 <p class="register">Register With Us</p>
             </a>
