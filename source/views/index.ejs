@@ -233,28 +233,42 @@
     ];
   
     let currentTipIndex = Math.floor(Math.random() * tips.length);
+    let tipHistory = [currentTipIndex]; // Initialize history with the first random tip
+    let historyIndex = 0; // To keep track of the current position in history
+
     document.getElementById('tipText').innerHTML = tips[currentTipIndex];
   
-    function showNextRandomTip() {
-      let nextTipIndex;
-      do {
-        nextTipIndex = Math.floor(Math.random() * tips.length);
-      } while (nextTipIndex === currentTipIndex); // Ensure the next tip is different
-      currentTipIndex = nextTipIndex;
-      document.getElementById('tipText').innerHTML = tips[currentTipIndex];
+    function showNextTip() {
+        if (historyIndex < tipHistory.length - 1) {
+            // If the user has gone back, just move forward in the history
+            historyIndex++;
+            currentTipIndex = tipHistory[historyIndex];
+        } else {
+            // Else, add a new tip to the history
+            let nextTipIndex;
+            do {
+                nextTipIndex = Math.floor(Math.random() * tips.length);
+            } while (tipHistory.length > 1 && nextTipIndex === tipHistory[tipHistory.length - 2]);
+            currentTipIndex = nextTipIndex;
+            tipHistory.push(currentTipIndex);
+            historyIndex++;
+        }
+        document.getElementById('tipText').innerHTML = tips[currentTipIndex];
     }
-  
-    document.getElementById('nextTip').addEventListener('click', function() {
-      showNextRandomTip();
-    });
-  
-    document.getElementById('prevTip').addEventListener('click', function() {
-      // The previous button now also shows a random tip, or you can implement a specific sequence logic if preferred
-      showNextRandomTip();
-    });
+
+    function showPreviousTip() {
+        if (historyIndex > 0) {
+            historyIndex--;
+            currentTipIndex = tipHistory[historyIndex];
+            document.getElementById('tipText').innerHTML = tips[currentTipIndex];
+        }
+    }
+
+    document.getElementById('nextTip').addEventListener('click', showNextTip);
+    document.getElementById('prevTip').addEventListener('click', showPreviousTip);
   
     // Automatic transition to a new random tip every 10 seconds
-    setInterval(showNextRandomTip, 8000); // Adjust time as needed
+    setInterval(showNextTip, 6500); // Adjust time as needed
   </script>
   
 
