@@ -7,45 +7,26 @@
     <link rel="stylesheet" href="/style/inputform.css">
 </head>
 <body>
-    <div class="ECOLUTION">
-        <img src="/resources/PSD/ProjectSplash_Cropped.png" alt="Company Logo">
-      </div>
-
-
-
     <div id="formContainer">
         <form id="dynamicForm">
             <!-- Dynamic Content will be injected here -->
         </form>
     </div>
 
-<!-- navbar -->
-    <div class="nav-bar">
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/ecoTravelRoutes">Travel</a></li>
-            <li><a href="/recycle">Recycle</a></li>
-            <li><a href="/leaderboard">leaderboard</a></li>
-            <li><a href="/setting">Settings</a></li>
-        </ul>
-    </div>
-
-
-
-
     <script>
         const formContainer = document.getElementById('dynamicForm');
         let currentQuestion = 0;
-        
+        let answers = {}; // Object to store the answers
+    
         const questions = [
-            {type: 'select', name: 'country', label: 'Country You\'re In:', options: ['Please select a country', 'United States', 'United Kingdom', 'Canada', 'Australia']},
-            {type: 'text', name: 'postcodeP', label: 'GB Postcode Prefix (optional):'},
-            {type: 'text', name: 'postcodeS', label: 'GB Postcode Sufix (optional):'},
-            {type: 'text', name: 'walkingDistance', label: 'Acceptable Walking Distance (in kilometers):'},
+            {type: 'select', name: 'region', label: 'Country You\'re In:', options: ['Please select a country', 'United States', 'United Kingdom', 'Canada', 'Australia']},
+            {type: 'text', name: 'GBPostalPrefix', label: 'GB Postcode Prefix (optional):'},
+            {type: 'text', name: 'GBPostalSuffix', label: 'GB Postcode Sufix (optional):'},
+            {type: 'text', name: 'avgAcceptableWalkingDist_mile', label: 'Acceptable Walking Distance (in kilometers):'},
             {type: 'text', name: 'goal', label: 'Weekly/Monthly Goal:'},
-            {type: 'select', name: 'privacy', label: 'Would you like to share your data with other users?', options: ['Yes', 'No']}
+            {type: 'select', name: 'publicProfile', label: 'Would you like to share your data with other users?', options: ['Yes', 'No']}
         ];
-
+    
         function createQuestion(question) {
             formContainer.innerHTML = `<label>${question.label}</label>`;
             if(question.type === 'select') {
@@ -70,20 +51,38 @@
             button.onclick = nextQuestion;
             formContainer.appendChild(button);
         }
-
+    
         function nextQuestion() {
-            const answer = formContainer.querySelector('input, select').value;
+            const answerElement = formContainer.querySelector('input, select');
+            const answer = answerElement.value;
+            answers[answerElement.name] = answer; // Store the answer
             console.log(`Answer for ${questions[currentQuestion].label} is: ${answer}`);
             currentQuestion++;
             if(currentQuestion < questions.length) {
                 createQuestion(questions[currentQuestion]);
             } else {
-                window.location.href = '/';
+                // Submit answers to the server
+                fetch('/updateUserPreferences', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(answers),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    window.location.href = '/';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
             }
         }
-
+    
         // Initialize the first question
         createQuestion(questions[currentQuestion]);
     </script>
+    
 </body>
 </html>
