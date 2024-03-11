@@ -78,8 +78,8 @@ app.get('/current-power-consumption', async (req, res) => {
 //Users postcode
 //User Preferences postcode: StaticGlobalData.userPreferences.GBPostalPrefix;
 //StaticGlobalData.userPreferences.GBPostalSuffix;
-const postcodePrefix = "E17";
-const postcodeSuffix = "7JP";
+// const postcodePrefix = "E17";
+// const postcodeSuffix = "7JP";
 
 //OpenCage API key for postcode - coordinates converter for mini map
 const opencageApiKey = '27da4a1090654b3fb665c4aa304d0b5d';
@@ -116,6 +116,12 @@ app.get('/get-recycling-centres', async (req, res) => {
     try {
         const radius = 50; //radius in miles
         const count = 50; //return recycle centres
+        const postcodePrefix = StaticGlobalData.userPreferences.GBPostalPrefix;
+        const postcodeSuffix = StaticGlobalData.userPreferences.GBPostalSuffix;
+
+        if (!postcodePrefix || !postcodeSuffix) {
+            return res.status(400).send("User postcode prefix and suffix are required.");
+        }
 
         const centresData = await recycle.getNearestRecyclingCentresByPostCode(postcodePrefix, postcodeSuffix, radius, count);
         res.json(centresData);
@@ -127,8 +133,8 @@ app.get('/get-recycling-centres', async (req, res) => {
 
 app.get('/recycle', (req, res) => {
 
-    ecoData.postcodePrefix = postcodePrefix;
-    ecoData.postcodeSuffix = postcodeSuffix;
+    ecoData.postcodePrefix = StaticGlobalData.userPreferences.GBPostalPrefix;
+    ecoData.postcodeSuffix = StaticGlobalData.userPreferences.GBPostalSuffix;
     
     res.render("recyclingcentres", ecoData);
 }); 
