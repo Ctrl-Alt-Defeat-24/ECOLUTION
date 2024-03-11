@@ -70,3 +70,49 @@ body {
     transform: translateX(-50%);
     /* Ensures the logo is centered regardless of the screen width */
   }
+
+
+  /* Navigation Bar Styles */
+.nav-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px; /* Adjust the space between links as needed */
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: rgb(0, 0, 0); /* Ensuring visibility */
+    font-weight: bold;
+    font-size: medium;
+  }
+  
+  /* New style to underline the Travel link */
+  .nav-links li a[href="/setting"] {
+    border-bottom: 2px solid rgb(0, 0, 0); /* Customizable thickness and color */
+    padding-bottom: 5px; /* Adjusts the space between the text and the underline */
+  }
+
+
+  .ECOLUTION img {
+    width: 30%; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+    /* Additional styling as needed */
+  }
+  
+  .ECOLUTION {
+    position: absolute;
+    top: 2%;
+    left: 34%;
+    transform: translateX(-50%);
+    /* Ensures the logo is centered regardless of the screen width */
+  }
