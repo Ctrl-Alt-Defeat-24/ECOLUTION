@@ -137,21 +137,6 @@ body {
 
 
 
-/* top left box wrapper */
-.boxtl {
-    font-size: 10px;
-    background-color: rgba(238, 238, 238, 0.9);
-    width: 35%;
-    height: 35%;
-    border-radius: 20px;
-
-    /* Positioning */
-    position: fixed; /* or 'fixed' if you want it to stay in place on scroll */
-    left: 5%; /* Adjusts to roughly the bottom left-middle of the screen */
-    top: 12%; /* Aligns it to the bottom of the screen */
-    
-}
-
 .boxbl {
     font-size: 10px;
     background-color: rgba(180, 178, 178, 0.5);
@@ -178,6 +163,56 @@ body {
   right: 5%; /* Positioned on the right, mirroring the left box */
   top: 12%; /* Aligns it to the top of the screen, similar to the left box */
 }
+
+/* Updated tips-container to match the boxlt styling */
+.tips-container {
+  font-size: 10px;
+  background-color: rgba(238, 238, 238, 0.9); /* Matches boxlt's background color */
+  width: 32.5%; /* Matches boxlt's width */
+  height: 31.5%; /* Matches boxlt's height */
+  border-radius: 20px; /* Matches boxlt's border radius */
+
+  /* Positioning to match boxlt */
+  position: fixed; /* Matches boxlt's positioning */
+  left: 5%; /* Matches boxlt's left positioning */
+  top: 12%; /* Matches boxlt's top positioning */
+  
+  padding: 20px; /* Padding for the content inside the container */
+  color: #333; /* Text color */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: Adds a subtle shadow for depth */
+}
+
+.tips-header {
+font-size: 20px;
+margin-bottom: 10px;
+text-align: center;
+font-weight: bold;
+color: #333; /* Ensure the text color is visible against the background */
+}
+
+.tip {
+font-size: 14px;
+text-align: justify;
+}
+
+.arrows {
+display: flex;
+justify-content: space-between;
+margin-top: 10px;
+}
+
+.arrow {
+cursor: pointer;
+user-select: none;
+color: #333; /* Ensure the arrows are visible */
+}
+
+
+
+
+
+
+
 
 
 
