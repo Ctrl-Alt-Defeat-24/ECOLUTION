@@ -88,6 +88,24 @@
                         ["current week", ...data.data1.map(() => 0)], // Initializes data1 with zeros.
                         ["previous week", ...data.data2.map(() => 0)] // Initializes data2 with zeros.
                     ]
+                },
+                axis: {
+                    x: {
+                        type: 'category',
+                        categories: ['Travel', 'Recycling', 'Apliances'], // Example categories for X axis,
+                        label:
+                        {
+                            text: 'Causes of Emissions', // X-axis label text
+                            position: 'outer-center'
+                        }
+                    },
+                    y: {
+                        label: 
+                        {
+                            text: 'Emissions', // Y-axis label text
+                            position: 'outer-middle'
+                        }
+                    }
                 }
             });
 
