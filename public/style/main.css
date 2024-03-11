@@ -167,13 +167,13 @@ body {
 /* Updated tips-container to match the boxlt styling */
 .tips-container {
   font-size: 10px;
-  background-color: rgba(238, 238, 238, 0.9); /* Matches boxlt's background color */
+  background-color: rgba(238, 238, 238, 0.7); /* Matches boxlt's background color */
   width: 32.5%; /* Matches boxlt's width */
   height: 31.5%; /* Matches boxlt's height */
   border-radius: 20px; /* Matches boxlt's border radius */
 
   /* Positioning to match boxlt */
-  position: fixed; /* Matches boxlt's positioning */
+  position: absolute; /* Matches boxlt's positioning */
   left: 5%; /* Matches boxlt's left positioning */
   top: 12%; /* Matches boxlt's top positioning */
   
@@ -183,7 +183,7 @@ body {
 }
 
 .tips-header {
-font-size: 20px;
+font-size: 25px;
 margin-bottom: 10px;
 text-align: center;
 font-weight: bold;
@@ -191,7 +191,7 @@ color: #333; /* Ensure the text color is visible against the background */
 }
 
 .tip {
-font-size: 14px;
+font-size: 16px;
 text-align: justify;
 }
 
@@ -199,6 +199,7 @@ text-align: justify;
 display: flex;
 justify-content: space-between;
 margin-top: 10px;
+font-size: 30px;
 }
 
 .arrow {
