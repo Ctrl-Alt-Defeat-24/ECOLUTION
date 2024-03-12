@@ -166,11 +166,14 @@ const mql = {
                     // Get the value from the collection
                     const user = await collection.findOne({ _id: username });
                     var allDailyEmissions = [];
+                    // If the user has any previous daily emissions then we need to check if we're adding to the same day
                     if(user.activityDailyEmissions.length > 0){
+                        // Add the new value ontop of the user's current amount
                         for(var i = 0; i < user.activityDailyEmissions.length; i++){
                             allDailyEmissions.push([user.activityDailyEmissions[i].split(':')[0], user.activityDailyEmissions[i].split(':')[1]]); 
                         }
                     } else {
+                        // If the user has no previous daily emissions then we need to add the first entry
                         allDailyEmissions.push([new Date().toISOString().split('T')[0], 0]);
                     }
                     console.log(allDailyEmissions);
@@ -203,11 +206,16 @@ const mql = {
                     }
                     // Get the value from the collection
                     const user = await collection.findOne({ _id: username });
-                    console.log("Updating Emissions for user: " + username)
-                    // Add the new value ontop of the user's current amount
-                    collection.updateOne({ _id: username }, { $set: { _id: username, totalEstCO2eMT: user.totalEstCO2eMT + emissionToAdd } });
-                    // return true to show it was successful in updating
-                    resolve(true);
+                    if(user)
+                    {
+                        console.log("Updating Emissions for user: " + username)
+                        // Add the new value ontop of the user's current amount
+                        collection.updateOne({ _id: username }, { $set: { _id: username, totalEstCO2eMT: user.totalEstCO2eMT + emissionToAdd } });
+                        // return true to show it was successful in updating
+                        resolve(true);
+                    } else {
+                        await collection.insertOne({ _id: username, totalEstCO2eMT: emissionToAdd });
+                    }
                 } catch (error) {
                     // Handle errors
                     console.error("Error fetching user saved data:", error);

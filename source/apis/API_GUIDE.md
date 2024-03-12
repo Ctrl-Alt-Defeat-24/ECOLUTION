@@ -6,3 +6,5 @@ This guide outlines what each API does and how to use them appropriately.
     - Provides GoogleMaps-like navigation and route queries, allows us to find different routes and visually present them in the eco travel routes
  3) National Grid
     - GB Certified generational mix down to postal code, this is to be used as a more precise replacement for EMaps if the user elects to enter their post code in their preferences
+ 4) Recycle Now
+    - Certified information regarding Recycling Centres and what can be recycled within them - exclusive to the UK as it only has information regarding that region
