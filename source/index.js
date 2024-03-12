@@ -1,3 +1,8 @@
+//API keys for bar chart emission
+
+
+
+
 const express = require('express');
 var ejs = require('ejs');
 var bodyParser = require('body-parser');
@@ -138,6 +143,58 @@ app.get('/recycle', (req, res) => {
     
     res.render("recyclingcentres", ecoData);
 }); 
+
+
+
+//APIs for travelling carbon showcase (bar chart index.ejs)
+
+// FRED API: Fetch Vehicle Miles Traveled (VMT) Data
+app.get('/api/vmt', async (req, res) => {
+    // const FRED_API_KEY = 'c73f8c5cbfc36c0335aadb3009f4404d';
+    const url = `https://api.stlouisfed.org/fred/series/observations?series_id=VMT&api_key=c73f8c5cbfc36c0335aadb3009f4404d&file_type=json`;
+    try {
+        const response = await axios.get(url);
+        // Process and respond with the data as needed
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching VMT data from FRED:', error);
+        res.status(500).send('Error fetching VMT data');
+    }
+});
+
+// Climatiq API: Calculate Emissions for a Given Mode of Transport
+// Climatiq API: Calculate Emissions for a Given Mode of Transport
+app.post('/api/emissions', async (req, res) => {
+    const CLIMATIQ_API_KEY = 'VYT2AAXC6DMGM3KD3JC2N08DRDSA'; // Ensure this is your correct API key
+    const { distance, mode } = req.body; // Expecting distance in kilometers and mode as a string
+    // Verify and update the Climatiq API endpoint URL if needed
+    const url = 'https://api.climatiq.io/estimate'; // Example corrected URL, replace with the actual URL
+    const body = {
+        emission_factor: `transport_${mode}`,
+        parameters: {
+            distance: distance,
+            distance_unit: "km"
+        }
+    };
+    const headers = {
+        Authorization: `Bearer ${CLIMATIQ_API_KEY}`, // Use the API key variable
+        'Content-Type': 'application/json'
+    };
+    try {
+        const response = await axios.post(url, body, { headers });
+        // Process and respond with the calculated emissions data
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error calculating emissions with Climatiq:', error);
+        res.status(500).send('Error calculating emissions');
+    }
+});
+
+
+
+
+
+
 
 
 
