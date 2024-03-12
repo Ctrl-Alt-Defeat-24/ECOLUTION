@@ -17,6 +17,38 @@
         <img src="/resources/PSD/ProjectSplash_Cropped.png" alt="Company Logo">
       </div>
 
+
+      
+      <div class="nav-bar">
+        <!-- Hamburger Menu Icon Placeholder -->
+        <div class="hamburger"></div> <!-- Ensure this is hidden initially -->
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/ecoTravelRoutes">Travel</a></li>
+            <li><a href="/recycle">Recycle</a></li>
+            <li><a href="/leaderboard">Leaderboard</a></li>
+            <li><a href="/setting">Settings</a></li>
+           
+        </ul>
+    </div>
+    
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelector('.nav-links');
+            const hamburger = document.querySelector('.hamburger'); // Select the hamburger div
+
+            // Toggle nav links on click
+            hamburger.addEventListener('click', function() {
+                navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+            });
+        });
+    </script>
+
+
+
+
+
+
     <button style="position: absolute; top: 115px; right: 220px; z-index: 10;" onclick="copyAddressAndRedirect(this)">Copy & Go to Map</button>
 
     <script>
@@ -38,15 +70,7 @@
         <div id="centreDetails">Select a recycling centre to view details.</div>
     </div>
 
-    <div class="nav-bar">
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/ecoTravelRoutes">Travel</a></li>
-            <li><a href="/recycle">Recycle</a></li>
-            <li><a href="/leaderboard">Leaderboard</a></li>
-            <li><a href="/setting">Settings</a></li>
-        </ul>
-    </div>
+   
 
     <!-- second commit -->
 

@@ -53,6 +53,57 @@ body { margin: 0; padding: 0; }
 }
 
 
+/* screen sizes below 1000px width  */
+@media screen and (max-width: 1000px) {
+
+.nav-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none; /* Hide the nav links initially */
+    flex-direction: column; /* Stack the links vertically */
+    gap: 20px; /* Adjust the space between links as needed */
+    background-color: #fff; /* Background color of the dropdown */
+    position: absolute;
+    top: 60px; /* Positioning just below the hamburger icon */
+    right: 20px;
+    border-radius: 5px; /* Optional: for styled corners */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Optional: for a subtle shadow */
+  }
+
+  .nav-links a {
+    padding: 10px 20px; /* Adjust padding for larger tap/click areas */
+    color: black; /* Text color */
+  }
+
+.hamburger {
+    display: block; /* Show the hamburger icon */
+    background-image: url('/resources/PSD/whitehamburger.png'); /* Update with the correct path */
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+  }
+  .hamburger, .nav-bar {
+    z-index: 1000; /* Ensures it's above other content */
+}
+
+
+
+}
+
+
 
 </style>
 </head>
@@ -86,15 +137,32 @@ body { margin: 0; padding: 0; }
 
     </script>
 
-    <div class="nav-bar">
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/ecoTravelRoutes">Travel</a></li>
-            <li><a href="/Recycle">Recycle</a></li>
-            <li><a href="/Leaderboard">Leaderboard</a></li>
-            <li><a href="/setting">Settings</a></li>
-        </ul>
-    </div>
+
+<!-- nav bar  -->
+<div class="nav-bar">
+    <!-- Hamburger Menu Icon Placeholder -->
+    <div class="hamburger"></div> <!-- Ensure this is hidden initially -->
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/ecoTravelRoutes">Travel</a></li>
+        <li><a href="/recycle">Recycle</a></li>
+        <li><a href="/leaderboard">Leaderboard</a></li>
+        <li><a href="/setting">Settings</a></li>
+       
+    </ul>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelector('.nav-links');
+        const hamburger = document.querySelector('.hamburger'); // Select the hamburger div
+
+        // Toggle nav links on click
+        hamburger.addEventListener('click', function() {
+            navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+        });
+    });
+</script>
 
 
 

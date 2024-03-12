@@ -283,12 +283,7 @@ color: #333; /* Ensure the arrows are visible */
     z-index: 2; /* Lower z-index to ensure it stays below the nav bar */
 }
 
-
-
-
-
-  
-  #chart-wrapper {
+#chart-wrapper {
     position: absolute;
     top: 127%;
     left: 5%;
