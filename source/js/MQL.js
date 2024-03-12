@@ -102,6 +102,7 @@ const mql = {
         });
     },
 
+    // Get the users' saved data based on their username
     getUserSavedData : async function(username) {
         return new Promise((resolve, reject) => {
             this.getMongoDBInstance().then(async (db) => {
@@ -127,6 +128,33 @@ const mql = {
         });
     },
 
+    // This function adds a given emission(eMT) to the users standing amount
+    getUserAllEmissions : async function(username) {
+        return new Promise((resolve, reject) => {
+            this.getMongoDBInstance().then(async (db) => {
+                // Establish the collection of interest
+                const collection = db.collection('User_SavedData');
+                // Find the users preferences based on the username
+                console.log("Fetching user preferences for: ", username)
+                try {
+                    // Get the value from the collection
+                    const user = await collection.findOne({ _id: username });
+                    console.log(user.totalEstCO2eMT);
+                    resolve(user.totalEstCO2eMT);
+                } catch (error) {
+                    // Handle errors
+                    console.error("Error fetching user saved data: ", error);
+                    reject(error);
+                }
+            // If we couldnt retrieve the DB instance then we need to log the error and reject the promise
+            }).catch((error) => {
+                console.error("Error fetching user saved data: ", error);
+                reject(error);
+            });
+        });
+    },
+
+    // This function adds a given emission(eMT) to the users standing amount
     getUserAllDailyEmissions : async function(username) {
         return new Promise((resolve, reject) => {
             this.getMongoDBInstance().then(async (db) => {
