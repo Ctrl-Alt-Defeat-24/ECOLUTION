@@ -129,13 +129,13 @@ const mql = {
     },
 
     // This function adds a given emission(eMT) to the users standing amount
-    getUserAllEmissions : async function(username) {
+    getUserEmissions : async function(username) {
         return new Promise((resolve, reject) => {
             this.getMongoDBInstance().then(async (db) => {
                 // Establish the collection of interest
                 const collection = db.collection('User_SavedData');
                 // Find the users preferences based on the username
-                console.log("Fetching user preferences for: ", username)
+                console.log("Fetching user saved data for: ", username)
                 try {
                     // Get the value from the collection
                     const user = await collection.findOne({ _id: username });
