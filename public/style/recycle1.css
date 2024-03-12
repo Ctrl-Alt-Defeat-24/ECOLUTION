@@ -1,22 +1,12 @@
 @font-face {
-    font-family: 'SFProDisplayBlackItalic';
-    src: url('/ECOLUTION/source/client/typefaces/SFPRODISPLAYBLACKITALIC.OTF') format('opentype');
-  }
-  
-  @font-face {
-    font-family: 'SFProDisplayBold';
-    src: url('/ECOLUTION/source/client/typefaces/SFPRODISPLAYBOLD.OTF') format('opentype');
-  }
-  
-  /* Ensure global elements use border-box sizing */
-  *, *:before, *:after {
-    box-sizing: border-box;
-  }
-  
-  /* Apply the font family to map and related elements */
-  .mapboxgl-ctrl-geocoder, .map-element-class {
-    font-family: 'SFProDisplayBold', sans-serif;
-  }
+  font-family: 'SFProDisplayBlackItalic';
+  src: url('../typefaces/SFPRODISPLAYBLACKITALIC.OTF') format('opentype');
+}
+
+@font-face {
+  font-family: 'SFProDisplayBold';
+  src: url('../typefaces/SFPRODISPLAYBOLD.OTF') format('opentype');
+}
 
 
 html, body {
