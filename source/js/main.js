@@ -201,7 +201,7 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
 
     // Route to display the registration page
     app.get("/register", (req, res) => {
-        res.render("register.ejs");
+        res.render("register.ejs", { error: null , passwordError : null});
     });
 
     app.get("/inputform", isAuthenticated, (req, res) => {
@@ -218,11 +218,26 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
 
     // Route to handle registration logic
     app.post("/register", async (req, res) => {
-        const { email, username, password } = req.body;
+        const { email, username, password, confirmPassword} = req.body;
+        let passwordError = null; // Define passwordError here
+            // Check password requirements
+        if (password.length < 8) {
+            passwordError = "Password must be at least 8 characters long";
+        } else if (!/[A-Z]/.test(password)) {
+            passwordError = "Password must contain at least one capital letter";
+        }
         try {
+            // Check if password and confirm password match
+            if (password !== confirmPassword) {
+                res.render("register.ejs", { error: null, passwordError: "Passwords do not match.", username: req.session.username || null });
+                return; // End the function if passwords do not match
+            }
+
             const existingUser = await (await MQL.getMongoDBInstance()).collection('User_Credentials').findOne({ "credentials._id": username });
             if (existingUser) {
-                res.send("User already exists with that username");
+                res.render("register.ejs", { error: "User already exists with that username", passwordError: null, username: req.session.username || null });
+            } else if (passwordError !== null) {
+                res.render("register.ejs", { error: null, passwordError: passwordError, username: req.session.username || null });
             } else {
                 const newUser = {
                     _id: username,
