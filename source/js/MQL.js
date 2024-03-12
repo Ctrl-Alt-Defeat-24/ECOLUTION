@@ -216,7 +216,7 @@ const mql = {
                     } else {
                         var date = new Date().toISOString();
                         date = date.split('T')[0];
-                        await collection.insertOne({ _id: username, totalEstCO2eMT: emissionToAdd, activityDailyEmissions: (date + ":" + emissionToAdd) });
+                        await collection.insertOne({ _id: username, totalEstCO2eMT: emissionToAdd, activityDailyEmissions: [(date + ":" + emissionToAdd)] });
                         resolve(true);
                     }
                 } catch (error) {
