@@ -52,8 +52,8 @@ var ecoData = {}
 // Test data for chart gui
 app.get('/chart-data', (req, res) => {
     res.json({
-        data1: MQL.getUserAllDailyEmissions,
-        data2: MQL.getUserAllDailyEmissions
+        data1: [MQL.getUserAllDailyEmissions],
+        data2: [MQL.getUserAllDailyEmissions]
     });
 });
 
