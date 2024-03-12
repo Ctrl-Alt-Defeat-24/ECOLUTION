@@ -215,6 +215,7 @@ const mql = {
                         resolve(true);
                     } else {
                         await collection.insertOne({ _id: username, totalEstCO2eMT: emissionToAdd });
+                        resolve(true);
                     }
                 } catch (error) {
                     // Handle errors
