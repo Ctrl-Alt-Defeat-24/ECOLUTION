@@ -25,6 +25,8 @@
 
 
           <div class="nav-bar">
+            <!-- Hamburger Menu Icon Placeholder -->
+            <div class="hamburger"></div> <!-- Ensure this is hidden initially -->
             <ul class="nav-links">
                 <li><a href="/">Home</a></li>
                 <li><a href="/ecoTravelRoutes">Travel</a></li>
@@ -53,6 +55,20 @@
         <% } %>
         
         
+        <script>
+            
+    
+            // JavaScript to toggle hamburger menu visibility
+            document.addEventListener('DOMContentLoaded', function() {
+                const navLinks = document.querySelector('.nav-links');
+                const hamburger = document.querySelector('.hamburger'); // Select the hamburger div
+    
+                // Toggle nav links on click
+                hamburger.addEventListener('click', function() {
+                    navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+                });
+            });
+        </script>
     
 
 
@@ -273,6 +289,9 @@
     // Automatic transition to a new random tip every 10 seconds
     setInterval(showNextTip, 6500); // Adjust time as needed
   </script>
+
+
+
   
 
 

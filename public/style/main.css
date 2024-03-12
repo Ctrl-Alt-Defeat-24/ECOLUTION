@@ -235,9 +235,62 @@ color: #333; /* Ensure the arrows are visible */
 
 /* Media Queries for Tablet/Mobile Screens/Minimised Screens */
 @media screen and (max-width: 1250px) {
+
+  .nav-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none; /* Hide the nav links initially */
+    flex-direction: column; /* Stack the links vertically */
+    gap: 20px; /* Adjust the space between links as needed */
+    background-color: #fff; /* Background color of the dropdown */
+    position: absolute;
+    top: 60px; /* Positioning just below the hamburger icon */
+    right: 20px;
+    border-radius: 5px; /* Optional: for styled corners */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Optional: for a subtle shadow */
+  }
+
+  .nav-links a {
+    padding: 10px 20px; /* Adjust padding for larger tap/click areas */
+    color: black; /* Text color */
+  }
+
+.hamburger {
+    display: block; /* Show the hamburger icon */
+    background-image: url('/resources/PSD/hamburger.png'); /* Update with the correct path */
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+  }
+  .hamburger, .nav-bar {
+    z-index: 1000; /* Ensures it's above other content */
+}
+
+.tips-container {
+    z-index: 2; /* Lower z-index to ensure it stays below the nav bar */
+}
+
+
+
+
+
+  
   #chart-wrapper {
     position: absolute;
-    top: 135%;
+    top: 127%;
     left: 5%;
     width: 90%;
     margin-bottom: 20px; /* Adjust this value as needed to prevent touching the bottom */
@@ -247,10 +300,18 @@ color: #333; /* Ensure the arrows are visible */
     width: 90%;
   }
 
-  .boxtl {
+  
+
+  .tips-container {
     position: absolute;
-    width: 90%;
+    top: 12%; /* Adjust top positioning if necessary */
+    left: 5%;
+    width: 87%; /* Matches the width adjustments above */
+    height: 35%; /* Keeping the height consistent with .boxbl */
+    margin-bottom: 20px; /* Ensure there's space below this box */
   }
+
+ 
 
   .ECOLUTION
   {
@@ -264,107 +325,21 @@ color: #333; /* Ensure the arrows are visible */
 }
 
 
+@media screen and (max-width: 600px) {
+  
 
+  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Login Page */
-.container {
-    background-color: rgba(255, 255, 255, 0.7); /* semi-transparent white */
-    padding: 2em;
-    border-radius: 8px;
-    width: fit-content; /* or your preferred width */
-    display: flex;
-    justify-content: space-between;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  .tips-container {
+    position: absolute;
+    top: 12%; /* Adjust top positioning if necessary */
+    left: 5%;
+    width: 83%; /* Matches the width adjustments above */
+    height: 35%; /* Keeping the height consistent with .boxbl */
+    margin-bottom: 20px; /* Ensure there's space below this box */
   }
 
-  /* Style the form sections */
-.form-section {
-    padding: 20px;
-    flex-basis: 45%; /* Adjust the width of the form sections */
-  }
+ 
 
-  /* Style the form inputs and labels */
-.form-group label {
-    display: block;
-    margin-bottom: .5em;
-    color: #333;
+  
 }
-
-/* Style the input fields */
-.input-field {
-    background-color: #aaeeaa; /* light green background */
-    border: 1px solid #000; /* black border */
-    padding: 10px;
-    margin-bottom: 15px; /* space between input fields */
-    width: calc(100% - 22px); /* Adjust width based on padding and border */
-    box-sizing: border-box;
-  }
-
-.form-group input[type="text"],
-.form-group input[type="password"],
-.form-group input[type="email"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 1em;
-  border: none;
-  border-radius: 4px;
-  box-sizing: border-box; /* So the inputs don't exceed their containers */
-}
-/* Style the buttons */
-button {
-    background-color: #aaeeaa; /* Green */
-    color: black; /* Black text */
-    padding: 10px 15px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-  }
-  /* Style the labels for better visibility */
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #333;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  /* Links for 'Forgot Details' and 'Report Problem' */
-  .form-links {
-    text-align: center;
-    margin-top: 1em;
-  }
-  
-  .form-links a {
-    text-decoration: none;
-    color: #06C;
-    font-size: 0.9em;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 960px) {
-    .container {
-      flex-direction: column;
-      width: auto;
-    }
-  
-    .form-section {
-      flex-basis: 100%;
-    }
-  }
