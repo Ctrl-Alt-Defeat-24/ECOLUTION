@@ -5,7 +5,7 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="/style/login.css" > 
+    <link rel="stylesheet" href="/style/register.css" > 
 </head>
 <body>
     <div class="left-half">
@@ -20,7 +20,7 @@
     <div class="right-half">
         <div class="form-container">
             
-            <div class="header"><h1>Register Here</h1></div>
+            <div class="header" style="margin-left: -55px;"><h1>Register Here</h1></div>
             <% if (error) { %>
                 <p style="color: red;"><%= error %></p>
             <% } %>
@@ -35,13 +35,13 @@
                 <button type="submit">Register</button>
             </form>
 
-            <a class="google-btn" href="/auth/google">
+            <a class="google-btn" href="/auth/google" style="margin-left: -55px;"> <!-- Adjust the value as needed -->
                 <img src="/resources/PSD/googleIcon.png" alt="Google" style="vertical-align: middle; margin-right: 8px;">
                 Log in with Google
             </a>
-            
+
             <a href="/login" style="text-decoration: none;">
-                <p class="login">Already have an account?</p>
+                <p class="login" style="margin-left: -55px;">Already have an account?</p>
             </a>
         </div>
     </div>
