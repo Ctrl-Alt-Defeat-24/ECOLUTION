@@ -214,7 +214,9 @@ const mql = {
                         // return true to show it was successful in updating
                         resolve(true);
                     } else {
-                        await collection.insertOne({ _id: username, totalEstCO2eMT: emissionToAdd });
+                        var date = new Date().toISOString();
+                        date = date.split('T')[0];
+                        await collection.insertOne({ _id: username, totalEstCO2eMT: emissionToAdd, activityDailyEmissions: (date + ":" + emissionToAdd) });
                         resolve(true);
                     }
                 } catch (error) {
