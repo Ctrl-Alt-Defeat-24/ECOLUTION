@@ -17,30 +17,6 @@ const ecolutionGB_RecyclingCentres = {
 
     // This function cleans up the materials array and returns a sanitized version of it so that it can be easily used in the front end
     
-    //This one is commented out, text errors like repeating texts keep appearing, below is a fixed version to stop that, code is a temporary keep 
-    // sanitizeMaterials : function(materials) {
-    //     if (!Array.isArray(materials)) {
-    //         return materials;
-    //     }
-    //     // Create a new array to store the sanitized materials
-    //     var sanitizedMaterials = [];
-    //     for (var i = 0; i < materials.length; i++) {
-    //         var material = materials[i];
-    //         // Check to see if the material category is already defined to be used
-    //         if (typeof material === 'object' && material.category) {
-    //             sanitizedMaterials.push(material.name);
-    //         // Check to see if we have a number and if it's in our defined list of materials
-    //         } else if (typeof material === 'number' && materialsTypes[material]) {
-    //             sanitizedMaterials.push(materialsTypes[material]);
-    //         // Return an "Other" if we dont have it defined in either list or as an object
-    //         } else {
-    //             sanitizedMaterials.push("Other, please check the recycling point for more details");
-    //         }
-    //     }
-    //     return sanitizedMaterials;
-    // },
-    
-    //Working version
     sanitizeMaterials: function(materials) {
         if (!Array.isArray(materials)) {
             return materials;
