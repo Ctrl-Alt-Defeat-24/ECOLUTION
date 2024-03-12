@@ -50,15 +50,27 @@ app.use(session({
 var ecoData = {}
 
 app.get('/chart-data', async (req, res) => {
+    let numberValue;
     try {
         // Assuming you need to pass a username to these functions
         // and that "username" is somehow retrieved (e.g., from query params)
-        const username = req.query.username; // Example: get username from query params
+        const username = req.session.username; // Example: get username from query params
 
         const data1 = await MQL.getUserAllDailyEmissions(username);
-        const data2 = await MQL.getUserAllDailyEmissions(username); // If you need different data, adjust accordingly
+        const data2 = [0];
+    
+        // Assuming emissionsData has the structure similar to: [['2024-03-12', '0.16139221116766725']]
+        // and you're interested in the second element of the first inner array ([0][1]).
+        if (data1.length > 0 && data1[0].length > 1) {
+            const numberString = data1[0][1]; // Accessing the numerical string
+            numberValue = [parseFloat(numberString)]; // Converting the string to a floating point number
+            
+            console.log(numberValue); // Use the number as needed
+        } else {
+            console.error('Emissions data is not in the expected format or is empty');
+        }
 
-        res.json({ data1, data2 });
+        res.json( {numberValue,data2});
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');

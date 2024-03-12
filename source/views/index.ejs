@@ -85,7 +85,7 @@
                 data: {
                     type: "bar", // Specifies the chart type.
                     columns: [
-                        ["current week", ...data.data1.map(() => 0)], // Initializes data1 with zeros.
+                        ["current week", ...data.numberValue.map(() => 0)], // Initializes data1 with zeros.
                         ["previous week", ...data.data2.map(() => 0)] // Initializes data2 with zeros.
                     ]
                 },
@@ -113,7 +113,7 @@
             setTimeout(function() {
                 chart.load({
                     columns: [
-                        ["current week", ...data.data1], // Loads the actual data1 values.
+                        ["current week", ...data.numberValue], // Loads the actual data1 values.
                         ["previous week", ...data.data2] // Loads the actual data2 values.
                     ]
                 });
