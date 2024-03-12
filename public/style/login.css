@@ -74,8 +74,8 @@ button[type="submit"] {
     font-size: 120%;
     cursor: pointer; /* Added cursor pointer for better UX */
     
-    margin-right: 60%; /* Adjust this to align under the password field */
-    margin-bottom: 5%;
+    margin-right: 45%; /* Adjust this to align under the password field */
+    margin-bottom: 10%;
 }
 
 button[type="submit"]:hover {
@@ -90,11 +90,40 @@ button[type="submit"]:hover {
 }
 
 .register{
-    margin-left: -8%;
-    margin-bottom: 20%;
+    margin-left: -5%;
+margin-bottom: 4%;
 }
 .forgot{
     margin-left: -8%;
+}
+
+/* google button */
+.google-btn {
+    position: relative;
+    align-items: center; /* Center items vertically */
+    
+    background-color: #4285F4;
+    color: white;
+    padding: 16px 6px; /* Adjust padding as needed */
+    border: none;
+    border-radius: 30px; /* Adjust to match your design */
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 16px;
+    /* Space between the Google button and the next form element */
+    width: 50%; /* Match the width of your input fields */
+    margin-left: -19%;
+}
+
+.google-btn img {
+    
+    width: 20px; /* Adjust based on your logo size */
+    height: auto;
+}
+
+/* Hover effect for the Google button */
+.google-btn:hover {
+    background-color: #357ae8;
 }
 
 
@@ -124,6 +153,8 @@ button[type="submit"]:hover {
 }
 
 
+
+
 /* MEIDA QUERIES FOR PC Screens */
 @media screen and (max-width: 1800px) {
     .form-container{
@@ -149,19 +180,19 @@ button[type="submit"]:hover {
         font-weight: bold;
     }
 
-    input[type="text"],
-    input[type="password"] {
-    font-size: 100%;
-}
+
+
 
 
 button[type="submit"] {
     
-    margin-right: 55%; /* Adjust this to align under the password field */
+    margin-right: 45%; /* Adjust this to align under the password field */
 }
 
+
+
 .register{
-    margin-left: -10%;
+    margin-right: 45%;
     
 }
 .forgot{
@@ -179,6 +210,9 @@ button[type="submit"] {
    
     width: 70%;
 }
+
+
+
 
 }
 
@@ -213,10 +247,8 @@ button[type="submit"] {
         display: block; /* Stack vertically */
     }
 
-
-    
     .header{
-        margin-left: -60%;
+        margin-right: -60%;
     }
 
     .left-half::after {
@@ -266,34 +298,34 @@ button[type="submit"] {
     .forgot{
         margin-left: -12%;
     }
+
+    .google-btn {
+        
+       
+        margin-left: -30%;
+    }
+    
+    
+    button[type="submit"] {
+    padding: 12px 60px; /* Adjusted for proper sizing */
+    border-radius: 30px;
+    font-size: 120%;
+    cursor: pointer; /* Added cursor pointer for better UX */
+    
+    margin-right: 45%; /* Adjust this to align under the password field */
+    margin-bottom: 15%;
 }
-.google-btn {
-    display: inline-flex; /* Use flexbox for alignment */
-    align-items: center; /* Center items vertically */
-    justify-content: center; /* Center items horizontally */
-    background-color: #4285F4;
-    color: white;
-    padding: 12px 24px; /* Adjust padding as needed */
-    border: none;
-    border-radius: 30px; /* Adjust to match your design */
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 16px;
-    /* Space between the Google button and the next form element */
-    width: 50%; /* Match the width of your input fields */
-    margin-left: -25%;
 }
 
-.google-btn img {
-    margin-right: 8px; /* Space between the logo and the text */
-    width: 20px; /* Adjust based on your logo size */
-    height: auto;
+@media screen and (max-width: 900px)
+{
+    .google-btn {
+        
+       
+        margin-left: -40%;
+    }
 }
 
-/* Hover effect for the Google button */
-.google-btn:hover {
-    background-color: #357ae8;
-}
 @media screen and (max-width: 800px)
 {
     .register{
@@ -303,7 +335,57 @@ button[type="submit"] {
     .forgot{
         margin-left: -25%;
     }
+    button[type="submit"] {
+    
+        margin-right: 35%; /* Adjust this to align under the password field */
+        
+    }
 } 
+
+@media screen and (max-width: 700px)
+{
+    .google-btn {
+        
+       
+        margin-left: -55%;
+    }
+    
+} 
+@media screen and (max-width: 650px)
+{
+    .header{
+        margin-left: -20%;
+    }
+    
+} 
+
+@media screen and (max-width: 635px)
+{
+    button[type="submit"] {
+    
+        margin-right: 20%; /* Adjust this to align under the password field */
+        
+    }
+} 
+
+@media screen and (max-width: 560px)
+{
+    button[type="submit"] {
+    
+        margin-right: 15%; /* Adjust this to align under the password field */
+        font-size: 75%;
+        
+    }
+    .google-btn {
+        
+       font-size: 60%;
+        margin-left: -45%;
+        padding: 16px 15px;
+        
+    }
+}
+
+ 
 @media screen and (max-width: 470px)
 {
     .register{
@@ -312,5 +394,42 @@ button[type="submit"] {
     }
     .forgot{
         margin-left: -70%;
+    }
+    
+    button[type="submit"] {
+    
+        margin-right: 15%; /* Adjust this to align under the password field */
+        font-size: 50%;
+        
+    }
+    .google-btn {
+        
+       font-size: 30%;
+        margin-left: -40%;
+        padding: 10px 10px;
+        
+    }
+    .header{
+        margin-left: -50%;
+    }
+} 
+
+@media screen and (max-width: 375px)
+{
+    button[type="submit"] {
+    
+        margin-right: 0%; /* Adjust this to align under the password field */
+        font-size: 50%;
+        
+    }
+    .google-btn {
+        
+       font-size: 30%;
+        margin-left: -60%;
+        padding: 10px 10px;
+        
+    }
+    .header{
+        margin-left: -50%;
     }
 } 
