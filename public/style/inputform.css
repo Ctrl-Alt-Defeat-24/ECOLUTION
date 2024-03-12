@@ -7,6 +7,17 @@
   font-family: 'SFProDisplayBold';
   src: url('../typefaces/SFPRODISPLAYBOLD.OTF') format('opentype');
 }
+#dynamicForm select,
+#dynamicForm input[type='text'] {
+    width: 100%; /* Set width to full container width */
+    padding: 16px 20px; /* Increase padding to make the boxes taller and text more spaced */
+    font-size: 1.25rem; /* Increase font size */
+    border: 1px solid #ccc; /* Keep the border styling */
+    border-radius: 4px; /* Keep the border-radius for rounded corners */
+    margin: 10px 0; /* Keep the margin as it is */
+    box-sizing: border-box; /* Ensure padding doesn't affect overall width */
+}
+
 
 body {
     margin: 0;
