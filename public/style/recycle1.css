@@ -133,11 +133,15 @@ p {
 }
 
 .nav-links a {
+    font: 30px/40px 'SFProDisplayBold';
+    padding: 3px 5px;
+    font-size: 15px;
+    color: rgba(0, 0, 0, .9);
+    line-height: 20px;
+    text-align: center;
+    white-space: nowrap;
     text-decoration: none;
-    color: rgb(0, 0, 0); /* Ensuring visibility */
-    font-weight: bold;
-    font-size: medium;
-}
+  }
 
 /* New style to underline the Travel link */
 .nav-links li a[href="/recycle"] {

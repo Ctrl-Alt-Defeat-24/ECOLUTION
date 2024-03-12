@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'SFProDisplayBlackItalic';
+  src: url('../typefaces/SFPRODISPLAYBLACKITALIC.OTF') format('opentype');
+}
+
+@font-face {
+  font-family: 'SFProDisplayBold';
+  src: url('../typefaces/SFPRODISPLAYBOLD.OTF') format('opentype');
+}
+
 /* Position the user greeting in the bottom left corner */
 .user-greeting {
   position: fixed;
@@ -80,11 +90,17 @@ body {
 }
 
 .nav-links a {
+  font: 30px/40px 'SFProDisplayBold';
+  padding: 3px 5px;
+  font-size: 15px;
+  color: rgba(0, 0, 0, .9);
+  line-height: 20px;
+  text-align: center;
+  white-space: nowrap;
   text-decoration: none;
-  color: rgb(0, 0, 0); /* Ensuring visibility */
-  font-weight: bold;
-  font-size: medium;
 }
+
+
 
 /* New style to underline the Travel link */
 .nav-links li a[href="/"] {

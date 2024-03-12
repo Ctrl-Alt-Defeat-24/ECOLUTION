@@ -43,7 +43,7 @@
             <li><a href="/">Home</a></li>
             <li><a href="/ecoTravelRoutes">Travel</a></li>
             <li><a href="/recycle">Recycle</a></li>
-            <li><a href="/leaderboard">leaderboard</a></li>
+            <li><a href="/leaderboard">Leaderboard</a></li>
             <li><a href="/setting">Settings</a></li>
         </ul>
     </div>
@@ -121,7 +121,7 @@
             }
     
             function showMapPlaceholder(userLat, userLng, centreLat, centreLng, centreName) {
-                mapboxgl.accessToken = 'pk.eyJ1IjoicHJpbWFscmV4IiwiYSI6ImNscmFrbWg2cjBjbDUyaW13dmxjeG96bXoifQ.ktWyvNqeJ4awZ2pu__T1Xw'; // Replace with your Mapbox access token
+                mapboxgl.accessToken = 'pk.eyJ1IjoicHJpbWFscmV4IiwiYSI6ImNscmFrbWg2cjBjbDUyaW13dmxjeG96bXoifQ.ktWyvNqeJ4awZ2pu__T1Xw';
                 var map = new mapboxgl.Map({
                     container: 'mapPlaceholder', // Container ID
                     style: 'mapbox://styles/mapbox/dark-v10', // Style URL
@@ -166,9 +166,7 @@
                 });
             });
 
-            // Optionally, if you want to remove or minimize the logo
-            // You can manipulate the CSS directly to hide or alter the logo's appearance
-            // Please check Mapbox's terms of service before hiding the logo to ensure compliance
+
             map.addControl(new mapboxgl.NavigationControl());
             $('.mapboxgl-ctrl-logo').hide();
         }
