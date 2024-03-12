@@ -1,8 +1,11 @@
 
 const ecolutionTravelRoutes = require("./travelroutes");
+const cbreakdown = require('./carbonbreakdown');
 const MQL = require("./MQL");
 const StaticGlobalData = require("../client/js/ecolutionclientlib");
 const passport = require('passport');
+const axios = require('axios');
+const recycle = require('./gb_recyclecentres');
 var userProfile;
 //google api data
 const GOOGLE_CLIENT_ID ="736230719726-u4c6ik0sscous4930ruld7i0h20dflb4.apps.googleusercontent.com";
@@ -241,88 +244,172 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
         }
     });
 
-app.get("/directions", isAuthenticated, (req, res) => {
-  res.render("mapboxdirectionexample.ejs", ecoData, { username: req.session.username || null });
-});
+    app.get("/directions", isAuthenticated, (req, res) => {
+    res.render("mapboxdirectionexample.ejs", ecoData, { username: req.session.username || null });
+    });
 
 
-// TRAVEL ROUTES SECTION
+    // TRAVEL ROUTES SECTION
 
-// Route to display the travel routes page
-app.get("/ecoTravelRoutes", isAuthenticated, async (req, res) => {
-  try {
-        //const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints([-73.97137, 40.67286], [-122.677738, 45.522458], "driving");
-        let extendedEcoData = [];
-        res.render("mapboxantpath.ejs", { extendedEcoData: extendedEcoData, username: req.session.username || null });
-        
-    } catch (error) {
-        console.error("Error:", error);
-    }
-});
-
-// Function to take in the origin and destination and return the waypoints for any route(s)
-app.post("/calculateRoute", async (req, res) => {
-  try {
-        const { origin, destination, travelMode, EVMode } = req.body;
-        // Get the route information from the given data
-        const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints(origin, destination, travelMode, EVMode);
-        // Cache the route CO2eMT on the session
-        req.session.cachedMTRoute = extendedEcoData[1];
-        // Log the cached route
-        console.log(req.session.cachedMTRoute);
-        // Return all the data to the front end
-        res.json({ extendedEcoData });
-    } catch (error) {
-        console.error("Error:", error);
-    }
-});
-
-// Function to commit the journey carbon to the database
-app.post("/commitjourneycarbon", async (req, res) => {
+    // Route to display the travel routes page
+    app.get("/ecoTravelRoutes", isAuthenticated, async (req, res) => {
     try {
-        // Just log the amount to double check for NaNs if that we're ever to occur
-        console.log("Committing", req.session.cachedMTRoute, "to the database");
-        // Double check here to make sure that we're not trying to commit a NaN
-        if((req.session.cachedMTRoute != null || req.session.cachedMTRoute != undefined) && req.session.cachedMTRoute != 0){
-            // Add the new journey carbon to the users standing amount
-            const succesfullyUpdated = await MQL.AddToTotalEmission(req.session.username, req.session.cachedMTRoute);
-            const succesfullyUpdated2 = await MQL.AddToDailyEmissions(req.session.username, req.session.cachedMTRoute);
-            // Return the success of the update
-            res.json({ succesfullyUpdated });
-        // If we're trying to commit a 0 then we can skip the log as the update (currently) doesnt do anything but take up bandwidth
-        } else if (req.session.cachedMTRoute == 0)
-        {
-            console.log("No emissions to add, skipping the log");
-            res.json({ succesfullyUpdated: true });
-        } else {
-            console.error("Error trying to commit new journey carbon, make sure a route has been chosen");
-            res.json({ succesfullyUpdated: false });
+            //const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints([-73.97137, 40.67286], [-122.677738, 45.522458], "driving");
+            let extendedEcoData = [];
+            res.render("mapboxantpath.ejs", { extendedEcoData: extendedEcoData, username: req.session.username || null });
+            
+        } catch (error) {
+            console.error("Error:", error);
         }
-    } catch (error) {
-        console.error("Error trying to commit new journey carbon: ", error);
-    }
-  });
+    });
 
-  app.post("/updateUserPreferences", async (req, res) => {
+    // Function to take in the origin and destination and return the waypoints for any route(s)
+    app.post("/calculateRoute", async (req, res) => {
     try {
-        const { avgAcceptableWalkingDist_mile, GBPostalPrefix, GBPostalSuffix, region, publicProfile } = req.body;
-        const userPreferences = await MQL.updateUserPreferences(req.session.username, avgAcceptableWalkingDist_mile, GBPostalPrefix, GBPostalSuffix, region, publicProfile);
-        res.json({ userPreferences });
-        if(userPreferences){
-            req.session.userpreferences = await MQL.getUserPreferences(req.session.username);
-            req.session.save(err => {
-                if (err) {
-                    console.error("Session save error:", err);
-                } else {
-                    console.log("Loaded preferences into session:", req.session.userpreferences);
-                    // Update the static global data with a cached version of the user preferences
-                    StaticGlobalData.userPreferences = req.session.userpreferences;
+            const { origin, destination, travelMode, EVMode } = req.body;
+            // Get the route information from the given data
+            const extendedEcoData = await ecolutionTravelRoutes.getRouteWaypoints(origin, destination, travelMode, EVMode);
+            // Cache the route CO2eMT on the session
+            req.session.cachedMTRoute = extendedEcoData[1];
+            // Log the cached route
+            console.log(req.session.cachedMTRoute);
+            // Return all the data to the front end
+            res.json({ extendedEcoData });
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    });
+
+    // Function to commit the journey carbon to the database
+    app.post("/commitjourneycarbon", async (req, res) => {
+        try {
+            // Just log the amount to double check for NaNs if that we're ever to occur
+            console.log("Committing", req.session.cachedMTRoute, "to the database");
+            // Double check here to make sure that we're not trying to commit a NaN
+            if((req.session.cachedMTRoute != null || req.session.cachedMTRoute != undefined) && req.session.cachedMTRoute != 0){
+                // Add the new journey carbon to the users standing amount
+                const succesfullyUpdated = await MQL.AddToTotalEmission(req.session.username, req.session.cachedMTRoute);
+                const succesfullyUpdated2 = await MQL.AddToDailyEmissions(req.session.username, req.session.cachedMTRoute);
+                // Return the success of the update
+                res.json({ succesfullyUpdated });
+            // If we're trying to commit a 0 then we can skip the log as the update (currently) doesnt do anything but take up bandwidth
+            } else if (req.session.cachedMTRoute == 0)
+            {
+                console.log("No emissions to add, skipping the log");
+                res.json({ succesfullyUpdated: true });
+            } else {
+                console.error("Error trying to commit new journey carbon, make sure a route has been chosen");
+                res.json({ succesfullyUpdated: false });
+            }
+        } catch (error) {
+            console.error("Error trying to commit new journey carbon: ", error);
+        }
+    });
+
+    app.post("/updateUserPreferences", async (req, res) => {
+        try {
+            const { avgAcceptableWalkingDist_mile, GBPostalPrefix, GBPostalSuffix, region, publicProfile } = req.body;
+            const userPreferences = await MQL.updateUserPreferences(req.session.username, avgAcceptableWalkingDist_mile, GBPostalPrefix, GBPostalSuffix, region, publicProfile);
+            res.json({ userPreferences });
+            if(userPreferences){
+                req.session.userpreferences = await MQL.getUserPreferences(req.session.username);
+                req.session.save(err => {
+                    if (err) {
+                        console.error("Session save error:", err);
+                    } else {
+                        console.log("Loaded preferences into session:", req.session.userpreferences);
+                        // Update the static global data with a cached version of the user preferences
+                        StaticGlobalData.userPreferences = req.session.userpreferences;
+                    }
+                });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    });
+
+  
+    app.get('/chart-data', async (req, res) => {
+        try {
+            const allDailyEmissions = await MQL.getUserAllDailyEmissions(req.session.username);
+            
+            // Extract the emissions values for the recent 7 days
+            const recentData = allDailyEmissions.slice(-7).map(entry => parseFloat(entry[1]) || 0);
+            res.json({ data1: recentData });
+        } catch (error) {
+            console.error("Error fetching user daily emissions:", error);
+            res.status(500).send("Internal Server Error");
+        }
+    });
+
+
+
+    //// Endpoint to get current power consumption breakdown ////
+    app.get('/current-power-consumption', async (req, res) => {
+        try {
+            const zoneID = StaticGlobalData.userPreferences.region;
+            const postcodePrefix = StaticGlobalData.userPreferences.GBPostalPrefix; 
+            const data = await cbreakdown.getCurrentPowerConsumptionBreakdown(zoneID, postcodePrefix);
+            res.json(data);
+        } catch (error) {
+            console.error("Failed to get current power consumption breakdown:", error);
+            res.status(500).send("Server Error");
+        }
+    });
+
+    app.get('/get-recycling-centres', async (req, res) => {
+        try {
+            const radius = 50; //radius in miles
+            const count = 50; //return recycle centres
+            const postcodePrefix = StaticGlobalData.userPreferences.GBPostalPrefix;
+            const postcodeSuffix = StaticGlobalData.userPreferences.GBPostalSuffix;
+    
+            if (!postcodePrefix || !postcodeSuffix) {
+                return res.status(400).send("User postcode prefix and suffix are required.");
+            }
+    
+            const centresData = await recycle.getNearestRecyclingCentresByPostCode(postcodePrefix, postcodeSuffix, radius, count);
+            res.json(centresData);
+        } catch (error) {
+            console.error("Failed to get recycling centres:", error);
+            res.status(500).send("Server Error");
+        }
+    });
+    
+    app.get('/recycle', (req, res) => {
+    
+        ecoData.postcodePrefix = StaticGlobalData.userPreferences.GBPostalPrefix;
+        ecoData.postcodeSuffix = StaticGlobalData.userPreferences.GBPostalSuffix;
+        
+        res.render("recyclingcentres", ecoData);
+    });
+
+    ////// Endpoint to get recycling centres and postcode converted into coordinates for mini map //////
+    app.get('/convert-postcode-to-coordinates', async (req, res) => {
+        const postcode = req.query.postcode;
+        if (!postcode) {
+            return res.status(400).send('Postcode is required');
+        }
+
+        try {
+            const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json`, {
+                params: {
+                    key: '27da4a1090654b3fb665c4aa304d0b5d',
+                    q: postcode,
+                    pretty: 1,
+                    no_annotations: 1
                 }
             });
+            if (response.data && response.data.results && response.data.results.length > 0) {
+                const { lat, lng } = response.data.results[0].geometry;
+                res.json({ latitude: lat, longitude: lng });
+            } else {
+                res.status(404).send('Coordinates not found');
+            }
+        } catch (error) {
+            console.error('Error converting postcode to coordinates:', error);
+            res.status(500).send('Server Error');
         }
-    } catch (error) {
-        console.error("Error:", error);
-    }
-  });
+    });
 
 };
