@@ -49,12 +49,20 @@ app.use(session({
 // This is where any arrays or temporary data will be stored for use at the front end
 var ecoData = {}
 
-// Test data for chart gui
-app.get('/chart-data', (req, res) => {
-    res.json({
-        data1: [MQL.getUserAllDailyEmissions],
-        data2: [MQL.getUserAllDailyEmissions]
-    });
+app.get('/chart-data', async (req, res) => {
+    try {
+        // Assuming you need to pass a username to these functions
+        // and that "username" is somehow retrieved (e.g., from query params)
+        const username = req.query.username; // Example: get username from query params
+
+        const data1 = await MQL.getUserAllDailyEmissions(username);
+        const data2 = await MQL.getUserAllDailyEmissions(username); // If you need different data, adjust accordingly
+
+        res.json({ data1, data2 });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 
