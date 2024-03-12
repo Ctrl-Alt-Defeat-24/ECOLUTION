@@ -90,7 +90,7 @@ button[type="submit"]:hover {
 }
 
 .register{
-    margin-left: -5%;
+    margin-left: -1%;
 margin-bottom: 4%;
 }
 .forgot{
@@ -117,7 +117,7 @@ margin-bottom: 4%;
 
 .google-btn img {
     
-    width: 20px; /* Adjust based on your logo size */
+    width: 60px; /* Adjust based on your logo size */
     height: auto;
 }
 
