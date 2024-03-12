@@ -45,12 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 
 
-
-
-
-
-    <button style="position: absolute; top: 115px; right: 220px; z-index: 10;" onclick="copyAddressAndRedirect(this)">Copy & Go to Map</button>
-
     <script>
     function copyAddressAndRedirect(button) {
         var address = document.querySelector('.address').innerText;
@@ -132,13 +126,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
             function displayCentreDetailsAndMap(centre) {
                 var detailsHTML = `
-                    <h2 class="distance">${centre.distance.toFixed(2)} miles away</h2>
-                    <h2 class="location-title">${centre.name}</h2>
-                    <p class="address">${centre.address}</p>
-                    <p>The following materials can be recycled at this place:</p>
-                    <p>Materials: ${centre.materials.join(', ')}</p>
-                    <div id="mapPlaceholder"></div>`;
-                $('#centreDetails').html(detailsHTML);
+        <h2 class="distance">${centre.distance.toFixed(2)} miles away</h2>
+        <h2 class="location-title">${centre.name}</h2>
+        <p class="address">${centre.address}</p>
+        <p>The following materials can be recycled at this place:</p>
+        <p>Materials: ${centre.materials.join(', ')}</p>
+        <button style="margin-top: 10px;" onclick="copyAddressAndRedirect(this)">Copy & Go to Map</button>
+        <div id="mapPlaceholder"></div>`;
+    $('#centreDetails').html(detailsHTML);
     
                 // Assuming this function is correctly defined to show the map
                 showMapPlaceholder(userLat, userLng, centre.latitude, centre.longitude, centre.name.replace(/'/g, "\\'"));
