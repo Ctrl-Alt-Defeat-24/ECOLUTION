@@ -112,7 +112,7 @@ margin-bottom: 4%;
     font-size: 16px;
     /* Space between the Google button and the next form element */
     width: 50%; /* Match the width of your input fields */
-    margin-left: -13%;
+    margin-left: -40px;
 }
 
 .google-btn img {
