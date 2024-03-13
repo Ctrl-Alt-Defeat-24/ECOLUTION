@@ -142,7 +142,7 @@ body {
     /* Ensures the logo is centered regardless of the screen width */
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 1000px) {
 
     .nav-bar {
         position: fixed;

@@ -234,7 +234,7 @@ color: #333; /* Ensure the arrows are visible */
 
 
 /* Media Queries for Tablet/Mobile Screens/Minimised Screens */
-@media screen and (max-width: 1250px) {
+@media screen and (max-width: 1000px) {
 
   .nav-bar {
     position: fixed;

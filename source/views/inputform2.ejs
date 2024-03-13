@@ -29,16 +29,34 @@
     </div>
     
     <script>
-document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             const navLinks = document.querySelector('.nav-links');
-            const hamburger = document.querySelector('.hamburger'); // Select the hamburger div
-
-            // Toggle nav links on click
-            hamburger.addEventListener('click', function() {
+            const hamburger = document.querySelector('.hamburger'); // select the hamburger div
+        
+            // function to toggle nav links visibility
+            function toggleNavLinks() {
                 navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
-            });
+            }
+        
+            //toggle nav links on click
+            hamburger.addEventListener('click', toggleNavLinks);
+        
+            //adjust navLinks visibility based on window width
+            function adjustNavLinksForWindowSize() {
+                if (window.innerWidth > 1000) {
+                    navLinks.style.display = 'flex'; // Ensure nav-links are visible on wider screens
+                } else if (!navLinks.style.display || navLinks.style.display === 'flex') {
+                    navLinks.style.display = 'none'; // Hide nav-links on smaller screens if not already toggled
+                }
+            }
+        
+            //listen for window resize events
+            window.addEventListener('resize', adjustNavLinksForWindowSize);
+        
+            //initial adjustment in case the page loads in a narrow window
+            adjustNavLinksForWindowSize();
         });
-    </script>
+            </script>
 
     
 
