@@ -371,10 +371,20 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
     //// Endpoint to get current power consumption breakdown ////
     app.get('/current-power-consumption', async (req, res) => {
         try {
-            const zoneID = StaticGlobalData.userPreferences.region;
-            const postcodePrefix = StaticGlobalData.userPreferences.GBPostalPrefix; 
-            const data = await cbreakdown.getCurrentPowerConsumptionBreakdown(zoneID, postcodePrefix);
-            res.json(data);
+            const zoneID = StaticGlobalData.userPreferences.region; // Assuming this is the region name or identifier
+            const postcodePrefix = StaticGlobalData.userPreferences.GBPostalPrefix;
+            
+            // Fetch the power consumption breakdown data
+            const consumptionData = await cbreakdown.getCurrentPowerConsumptionBreakdown(zoneID, postcodePrefix);
+            
+            // Use the actual region from user preferences for the regionName
+            const regionName = zoneID; // Assuming zoneID is the name or identifier of the region
+    
+            // Ensure the response maintains its expected structure for consumption data
+            res.json({
+                data: consumptionData, // Keep the original data structure
+                regionName: regionName // Use the actual region name
+            });
         } catch (error) {
             console.error("Failed to get current power consumption breakdown:", error);
             res.status(500).send("Server Error");

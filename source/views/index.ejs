@@ -11,89 +11,77 @@
 </head>
 <body>
    
-    <link rel="stylesheet" href='/style/insight.min.css'>
-    <link rel="stylesheet" href='/style/main.css'>
-    
-</head>
-<body>
+<link rel="stylesheet" href='/style/insight.min.css'>
+<link rel="stylesheet" href='/style/main.css'>
 
-    <body>
+<div class="ECOLUTION">
+    <img src="/resources/PSD/ProjectSplash_Cropped.png" alt="Company Logo">
+</div>
 
-        <div class="ECOLUTION">
-            <img src="/resources/PSD/ProjectSplash_Cropped.png" alt="Company Logo">
-          </div>
-
-
-          <div class="nav-bar">
-            <!-- Hamburger Menu Icon Placeholder -->
-            <div class="hamburger"></div> <!-- Ensure this is hidden initially -->
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/ecoTravelRoutes">Travel</a></li>
-                <li><a href="/recycle">Recycle</a></li>
-                <li><a href="/leaderboard">Leaderboard</a></li>
-                <li><a href="/setting">Settings</a></li>
-                <% if (username) { %>
-                    <li><a href="/logout" class="logout-link">
-                        <button>Logout</button>
-                    </a></li>
-                <% } else { %>
-                    <li><a href="/login" class="login-link">
-                        <button>Login</button>
-                    </a></li>
-                    <li><a href="/register" class="register-link">
-                        <button>Register</button>
-                    </a></li>
-                <% } %>
-            </ul>
-        </div>
-    
+<div class="nav-bar">
+    <!-- Hamburger Menu Icon Placeholder -->
+    <div class="hamburger"></div> <!-- Ensure this is hidden initially -->
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/ecoTravelRoutes">Travel</a></li>
+        <li><a href="/recycle">Recycle</a></li>
+        <li><a href="/leaderboard">Leaderboard</a></li>
+        <li><a href="/setting">Settings</a></li>
         <% if (username) { %>
-            <div class="user-greeting">
-                Welcome, <%= username %>
-            </div>
+            <li><a href="/logout" class="logout-link">
+                <button>Logout</button>
+            </a></li>
+        <% } else { %>
+            <li><a href="/login" class="login-link">
+                <button>Login</button>
+            </a></li>
+            <li><a href="/register" class="register-link">
+                <button>Register</button>
+            </a></li>
         <% } %>
-        
-        
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const navLinks = document.querySelector('.nav-links');
-                const hamburger = document.querySelector('.hamburger'); // select the hamburger div
-            
-                // function to toggle nav links visibility
-                function toggleNavLinks() {
-                    navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
-                }
-            
-                //toggle nav links on click
-                hamburger.addEventListener('click', toggleNavLinks);
-            
-                //adjust navLinks visibility based on window width
-                function adjustNavLinksForWindowSize() {
-                    if (window.innerWidth > 1000) {
-                        navLinks.style.display = 'flex'; // Ensure nav-links are visible on wider screens
-                    } else if (!navLinks.style.display || navLinks.style.display === 'flex') {
-                        navLinks.style.display = 'none'; // Hide nav-links on smaller screens if not already toggled
-                    }
-                }
-            
-                //listen for window resize events
-                window.addEventListener('resize', adjustNavLinksForWindowSize);
-            
-                //initial adjustment in case the page loads in a narrow window
-                adjustNavLinksForWindowSize();
-            });
-                </script>
+    </ul>
+</div>
+
+<% if (username) { %>
+    <div class="user-greeting">
+        Welcome, <%= username %>
+    </div>
+<% } %>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelector('.nav-links');
+        const hamburger = document.querySelector('.hamburger'); // select the hamburger div
     
-
-
-    <!-- Bottom left Rectangle -->
-    <div class="boxtl"></div>
-    <!-- Top right box -->
+        // function to toggle nav links visibility
+        function toggleNavLinks() {
+            navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+        }
     
-      
+        //toggle nav links on click
+        hamburger.addEventListener('click', toggleNavLinks);
+    
+        //adjust navLinks visibility based on window width
+        function adjustNavLinksForWindowSize() {
+            if (window.innerWidth > 1000) {
+                navLinks.style.display = 'flex'; // Ensure nav-links are visible on wider screens
+            } else if (!navLinks.style.display || navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none'; // Hide nav-links on smaller screens if not already toggled
+            }
+        }
+    
+        //listen for window resize events
+        window.addEventListener('resize', adjustNavLinksForWindowSize);
+    
+        //initial adjustment in case the page loads in a narrow window
+        adjustNavLinksForWindowSize();
+    });
+</script>
 
-   <div id="chart-wrapper">
+<!-- Bottom left Rectangle -->
+<div class="boxtl"></div>
+
+<div id="chart-wrapper">
     <div id="chart"></div>
 </div>
 
@@ -153,62 +141,70 @@
 
 </script>
 
-    
-
-
 <!-- Pie Chart Wrapper/CarbonBreakdown API passed/displayed into here -->
 <div id="piechart-wrapper">
+    <div id="piechart-header" class="piechart-header"></div>
     <div id="piechart"></div>
 </div>
 <!-- Pie Chart Script -->
 <script>
     // Fetch the power consumption data from the server
     fetch('/current-power-consumption')
-        .then(response => response.json())
-        .then(data => {
-            // Assume data is an array of objects with 'fuel' and 'percentage' properties
-            var columns = data.map(item => [item.fuel, item.percentage]);
-            
-            // Generate the pie chart using billboard.js
-            var piechart = bb.generate({
-                bindto: "#piechart",
-                data: {
-                    type: "pie", // Specifies the chart type as pie.
-                    columns: columns
-                },
-                pie: {
-                    label: {
-                        show: false // Hides the label; set to true if you want to display them.
-                    }
-                },
-                tooltip: {
-                    format: {
-                        value: function (value, ratio, id) {
-                            return value + '%'; // Formatting the tooltip to show percentages
-                        }
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(({data, regionName}) => {
+        // Destructure the response to get both data and regionName
+        // Assuming data is the expected array for pie chart generation
+        var columns = data.map(item => [item.fuel, item.percentage]);
+        
+        // Generate the pie chart using billboard.js
+        var piechart = bb.generate({
+            bindto: "#piechart",
+            data: {
+                type: "pie",
+                columns: columns
+            },
+            pie: {
+                label: {
+                    show: false // Adjust based on your preference
+                }
+            },
+            tooltip: {
+                format: {
+                    value: function (value, ratio, id) {
+                        return `${value}%`; // Formatting the tooltip to show percentages
                     }
                 }
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching power consumption data:', error);
+            }
         });
-</script>
-
+  
+        // Set the header to display the region name
+        document.getElementById('piechart-header').innerHTML = "Region: " + regionName;
+      })
+      .catch(error => {
+        console.error('Error fetching power consumption data:', error);
+        // Handle errors or display a message to the user
+      });
+  </script>
+  
 
 <!-- tips random -->
 <div class="tips-container">
     <div class="tips-header">Eco Tips</div>
     <div id="tipText" class="tip">Tip will appear here</div>
     <div class="arrows">
-      <div id="prevTip" class="arrow">&#8592;</div>
-      <div id="nextTip" class="arrow">&#8594;</div>
+        <div id="prevTip" class="arrow">&#8592;</div>
+        <div id="nextTip" class="arrow">&#8594;</div>
     </div>
-  </div>
+</div>
 
-  <script>
+<script>
     const tips = [
-     // Tip 1
+        // Tip 1
   "Use Eco-Friendly Cleaning Products: Opt for natural, biodegradable cleaning solutions to lessen your exposure to harmful chemicals and reduce environmental pollution. Ingredients like vinegar, baking soda, and lemon not only clean effectively but are also safer for the planet, as they break down harmlessly into the environment after use, minimizing their impact on ecosystems and waterways. By making the switch to eco-friendly cleaning products, you not only safeguard your health and that of your family but also contribute to the preservation of biodiversity and the sustainability of our planet for future generations.",
 
 // Tip 2
@@ -264,14 +260,15 @@
 
 // Tip 19
 "Conserve Energy at Home: Enhance your home's energy efficiency by improving insulation, sealing leaks, and using energy-saving appliances and light bulbs. Simple measures like turning off lights and unplugging devices when not in use contribute to significant energy savings. By conserving energy at home, you're reducing greenhouse gas emissions, lowering utility bills, and creating a more sustainable living environment for yourself and future generations."
+
     ];
-  
+
     let currentTipIndex = Math.floor(Math.random() * tips.length);
     let tipHistory = [currentTipIndex]; // Initialize history with the first random tip
     let historyIndex = 0; // To keep track of the current position in history
 
     document.getElementById('tipText').innerHTML = tips[currentTipIndex];
-  
+
     function showNextTip() {
         if (historyIndex < tipHistory.length - 1) {
             // If the user has gone back, just move forward in the history
@@ -300,20 +297,10 @@
 
     document.getElementById('nextTip').addEventListener('click', showNextTip);
     document.getElementById('prevTip').addEventListener('click', showPreviousTip);
-  
+
     // Automatic transition to a new random tip every 10 seconds
     setInterval(showNextTip, 6500); // Adjust time as needed
-  </script>
-
-
-
-  
-
-
-
-
-
-
+</script>
 
 </body>
 </html>
