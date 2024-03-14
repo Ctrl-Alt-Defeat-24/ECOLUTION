@@ -52,7 +52,6 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
                     lastLoginDate: new Date(),
                     isActive: "T"
                 };
-                req.session.isNewUser = true;
                 await (await MQL.getMongoDBInstance()).collection('User_Credentials').updateOne({}, { $push: { credentials: newUser } });
             } else {
                 // Update existing user's last login date or any other relevant information
@@ -60,7 +59,6 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
                     { "credentials.username": username },
                     { $set: { "credentials.$.lastLoginDate": new Date() } }
                 );
-                req.session.isNewUser = false;
 
             }
             console.log("Setting username in session:", username);
@@ -131,12 +129,7 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
         }    
     
         // Successful authentication, redirect success.
-        if (req.session.isNewUser) {
-            res.redirect('/inputform');
-        } else {
-            // Successful authentication, redirect home.
-            res.redirect('/'); 
-        }
+        res.redirect('/inputform');
     });
 
     app.get("/", isAuthenticated, async (req, res) => {
