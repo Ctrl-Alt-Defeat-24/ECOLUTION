@@ -10,6 +10,7 @@
 
 /* Position the user greeting in the bottom left corner */
 .user-greeting {
+  font-family: 'SFProDisplayBold', sans-serif;
   position: fixed;
   bottom: 20px;
   left: 20px;
@@ -135,6 +136,7 @@ body {
 /* Pie Chart Wrapper */
 #piechart-wrapper {
   background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+  font-family: 'SFProDisplayBold', sans-serif;
   width: 33.5%; /* Width similar to the other boxes */
   height: 35%; /* Height to fit the content */
   border-radius: 20px; /* Rounded corners */
@@ -149,6 +151,9 @@ body {
 #piechart {
   width: 100%; /* Fill the wrapper */
   height: 100%; /* Fill the wrapper */
+  bottom: 12%;
+  font-family: 'SFProDisplay', sans-serif;
+  
 }
 
 
@@ -209,8 +214,8 @@ color: #333; /* Ensure the text color is visible against the background */
 }
 
 .tip {
-font-size: 16px;
-font-family: 'SFProDisplayBold', sans-serif;
+font-size: 14px;
+font-family: 'SFProDisplay', sans-serif;
 text-align: justify;
 }
 
@@ -238,7 +243,19 @@ color: #333; /* Ensure the arrows are visible */
 
 /* Media Queries for Tablet/Mobile Screens/Minimised Screens */
 @media screen and (max-width: 1000px) {
+  
+  .user-greeting {
+    position: absolute;
+    font-family: 'SFProDisplayBold', sans-serif;
+    position: absolute;
+    top: 45px;
+    left: 1%;
+    background-color: #ffffff00;
+    color: black;
+    font-size: 100%;
+    
 
+  } 
   .nav-bar {
     position: fixed;
     top: 0;

@@ -183,7 +183,8 @@
         });
   
         // Set the header to display the region name
-        document.getElementById('piechart-header').innerHTML = "Region: " + regionName;
+        document.getElementById('piechart-header').innerHTML = "Carbon Breakdown <br>Region: <span style='font-size: 12px;'>" + regionName + "</span>";
+
       })
       .catch(error => {
         console.error('Error fetching power consumption data:', error);

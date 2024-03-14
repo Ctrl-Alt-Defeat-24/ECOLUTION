@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <p class="address">${centre.address}</p>
         <p>The following materials can be recycled at this place:</p>
         <p>Materials: ${centre.materials.join(', ')}</p>
-        <button style="margin-top: 10px;" onclick="copyAddressAndRedirect(this)">Copy & Go to Map</button>
+        <button style="margin-top: 10px; font-family: 'SFProDisplay', sans-serif;" onclick="copyAddressAndRedirect(this)">Copy & Go to Map</button>
         <div id="mapPlaceholder"></div>`;
     $('#centreDetails').html(detailsHTML);
     

@@ -1,52 +1,56 @@
 @font-face {
-  font-family: 'SFProDisplayBlackItalic';
-  src: url('../typefaces/SFPRODISPLAYBLACKITALIC.OTF') format('opentype');
+    font-family: 'SFProDisplayBlackItalic';
+    src: url('../typefaces/SFPRODISPLAYBLACKITALIC.OTF') format('opentype');
 }
 
 @font-face {
-  font-family: 'SFProDisplayBold';
-  src: url('../typefaces/SFPRODISPLAYBOLD.OTF') format('opentype');
+    font-family: 'SFProDisplayBold';
+    src: url('../typefaces/SFPRODISPLAYBOLD.OTF') format('opentype');
 }
-
 
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
     background-image: url('/resources/PSD/forest.jpg');
-    background-size: cover; /* Ensures the background covers the entire page */
-    background-position: center; /* Centers the background image */
-    font-size: 14px; /* Adjusted font size for the entire page */
+    background-size: cover;
+    background-position: center;
+    font-size: 14px;
 }
 
 #container {
     display: flex;
     flex-wrap: nowrap;
-    width: 80%; /* Reduce the width to make the content more centered */
-    height: 80vh; /* Slightly reduce the height to allow more background to show */
-    margin: 10vh auto; /* Center the container vertically and horizontally */
-    box-shadow: 0 0 15px rgba(0,0,0,0.2); /* Enhanced shadow for depth */
-    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background to show the image behind */
+    width: 80%;
+    height: 80vh;
+    margin: 10vh auto;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
 #recyclingCentresList, #centreDetails {
     overflow-y: auto;
-    margin: 8px; /* Adds margin inside the container for spacing */
-    padding: 10px; /* Adjusted padding */
+    margin: 8px;
+    padding: 10px;
 }
+#centreDetails {
+    font-size: 14px;
+    font-family: 'SFProDisplay', sans-serif;
+}
+
 
 #recyclingCentresList {
     flex: 1;
-    background-color: #f9f9f9; /* Light grey background */
-    border-right: 2px solid #ddd; /* Defined border to separate from details */
+    background-color: #f9f9f9;
+    border-right: 2px solid #ddd;
 }
 
 .centre-item {
     cursor: pointer;
-    padding: 8px; /* Reduced padding */
+    padding: 8px;
     border-bottom: 1px solid #ccc;
     background-color: #fff;
-    margin-bottom: 4px; /* Adds a little margin between items */
+    margin-bottom: 4px;
 }
 
 .centre-item:hover {
@@ -54,55 +58,55 @@ html, body {
 }
 
 #centreDetails {
-    flex: 1.5; /* Adjust size if you want the details section to be wider */
+    flex: 1.5;
     background-color: #fff;
 }
 
 #centreDetails div {
     background-color: #f9f9f9;
-    padding: 12px; /* Reduced padding */
+    padding: 12px;
     border: 1px solid #e7e7e7;
     border-radius: 4px;
-    margin-bottom: 8px; /* Adds a little margin between detail sections */
-}
-
-h2, p {
-    margin: 4px 0; /* Slightly reduced margin */
+    margin-bottom: 8px;
 }
 
 h2 {
-    font-size: 18px; /* Adjusted font size */
+    margin: 4px 0;
+    font-family: 'SFProDisplayBold', sans-serif;
+    
+}
+
+h2 {
+    font-size: 18px;
 }
 
 p {
-    font-size: 14px; /* Adjusted font size */
+    font-size: 14px;
+    font-family: 'SFProDisplay', sans-serif;
 }
 
-
-/* ... your existing CSS ... */
-
 #centreDetails h2.distance {
-    background-color: #e1e1e1; /* Slightly grey background */
+    background-color: #e1e1e1;
     padding: 4px;
     border-radius: 4px;
-    font-size: 16px; /* Slightly larger font for distance */
-    font-weight: normal; /* Adjust the weight as needed */
-    text-align: center; /* Center align the distance */
-    margin-bottom: 8px; /* Space between distance and location title */
+    font-size: 16px;
+    font-weight: normal;
+    text-align: center;
+    margin-bottom: 8px;
 }
 
 #centreDetails h2.location-title {
-    font-size: 20px; /* Increased font size for location title */
-    margin-bottom: 4px; /* Space between title and address */
+    font-size: 20px;
+    margin-bottom: 4px;
 }
 
 #centreDetails p.address {
-    font-weight: bold; /* Make the address bold */
+    font-weight: bold;
 }
 
 #mapPlaceholder {
-    height: 75%; /* Increased height for the map */
-    margin: 16px 0; /* Center the map vertically with margin */
+    height: 60%;
+    margin: 16px 0;
 }
 
 /* Navigation Bar Styles */
@@ -119,7 +123,7 @@ p {
     padding: 0;
     margin: 0;
     display: flex;
-    gap: 20px; /* Adjust the space between links as needed */
+    gap: 20px;
 }
 
 .nav-links a {
@@ -131,76 +135,21 @@ p {
     text-align: center;
     white-space: nowrap;
     text-decoration: none;
-  }
+}
 
-/* New style to underline the Travel link */
 .nav-links li a[href="/recycle"] {
-    border-bottom: 2px solid rgb(0, 0, 0); /* Customizable thickness and color */
-    padding-bottom: 5px; /* Adjusts the space between the text and the underline */
+    border-bottom: 2px solid rgb(0, 0, 0);
+    padding-bottom: 5px;
 }
 
 .ECOLUTION img {
-    width: 30%; /* Adjust the width as needed */
-    height: auto; /* Maintain aspect ratio */
-    /* Additional styling as needed */
-  }
-  
-  .ECOLUTION {
+    width: 30%;
+    height: auto;
+}
+
+.ECOLUTION {
     position: absolute;
     top: 1%;
     left: 34%;
     transform: translateX(-50%);
-    /* Ensures the logo is centered regardless of the screen width */
-  }
-
-
-  
-  
-  @media screen and (max-width: 1000px) {
-
-    .nav-bar {
-        position: fixed;
-        top: 0;
-        right: 0;
-        padding: 20px;
-        text-align: center;
-      }
-    
-      .nav-links {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: none; /* Hide the nav links initially */
-        flex-direction: column; /* Stack the links vertically */
-        gap: 20px; /* Adjust the space between links as needed */
-        background-color: #fff; /* Background color of the dropdown */
-        position: absolute;
-        top: 60px; /* Positioning just below the hamburger icon */
-        right: 20px;
-        border-radius: 5px; /* Optional: for styled corners */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Optional: for a subtle shadow */
-      }
-    
-      .nav-links a {
-        padding: 10px 20px; /* Adjust padding for larger tap/click areas */
-        color: black; /* Text color */
-      }
-    
-    .hamburger {
-        display: block; /* Show the hamburger icon */
-        background-image: url('/resources/PSD/hamburger.png'); /* Update with the correct path */
-        width: 30px;
-        height: 30px;
-        background-size: cover;
-        cursor: pointer;
-        position: fixed;
-        top: 20px;
-        right: 20px;
-      }
-      .hamburger, .nav-bar {
-        z-index: 1000; /* Ensures it's above other content */
-    }
-    
-  
-  
 }
