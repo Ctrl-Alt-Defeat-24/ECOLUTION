@@ -34,9 +34,10 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
     passport.use(new GoogleStrategy({
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: "http://localhost:8000/auth/google/callback"
+        callbackURL: "http://localhost:8000/auth/google/callback",
+        passReqToCallback: true
       },
-      async (accessToken, refreshToken, profile, done) => {
+      async (req, accessToken, refreshToken, profile, done) => {
         try {
             const username = profile.displayName; // Or profile.emails[0].value for email
             const user = await (await MQL.getMongoDBInstance()).collection('User_Credentials').findOne({ "credentials.username": username });
@@ -51,6 +52,7 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
                     lastLoginDate: new Date(),
                     isActive: "T"
                 };
+                req.session.isNewUser = true;
                 await (await MQL.getMongoDBInstance()).collection('User_Credentials').updateOne({}, { $push: { credentials: newUser } });
             } else {
                 // Update existing user's last login date or any other relevant information
@@ -58,12 +60,14 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
                     { "credentials.username": username },
                     { $set: { "credentials.$.lastLoginDate": new Date() } }
                 );
+                req.session.isNewUser = false;
+
             }
             console.log("Setting username in session:", username);
             // Here, mark the user as authenticated in the session
             done(null, profile);
         } catch (error) {
-            console.log("Error during Google authentication:", user);
+            console.log("Error during Google authentication:", profile, error);
             done(error, null);
         }
     }));
@@ -126,14 +130,19 @@ module.exports = function(app, ecoData, bcrypt, saltRounds) {
             req.session.username = req.user.displayName; 
         }    
     
-    // Successful authentication, redirect success.
-    res.redirect('/'); 
+        // Successful authentication, redirect success.
+        if (req.session.isNewUser) {
+            res.redirect('/inputform');
+        } else {
+            // Successful authentication, redirect home.
+            res.redirect('/'); 
+        }
     });
 
     app.get("/", isAuthenticated, async (req, res) => {
 
         res.render("index.ejs", {ecoData, username: req.session.username || null});
-  });
+    });
     app.get("/login", (req, res) => {
         res.render("login.ejs", { username: req.session.username || null });
     });
