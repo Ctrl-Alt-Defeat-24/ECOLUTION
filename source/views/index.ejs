@@ -1,307 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ECOLUTION</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/billboard.js/3.1.5/billboard.min.js"></script>
-    <link rel="stylesheet" href="/style/insight.min.css">
-    <link rel="stylesheet1" href="/style/main.css" > 
-</head>
-<body>
-   
-<link rel="stylesheet" href='/style/insight.min.css'>
-<link rel="stylesheet" href='/style/main.css'>
+    <link rel="stylesheet" href="/style/insight.min.css" />
+    <link rel="stylesheet1" href="/style/main.css" />
+  </head>
+  <body>
+    <link rel="stylesheet" href="/style/insight.min.css" />
+    <link rel="stylesheet" href="/style/main.css" />
 
-<div class="ECOLUTION">
-    <img src="/resources/PSD/ProjectSplash_Cropped.png" alt="Company Logo">
-</div>
+    <div class="ECOLUTION">
+      <img src="/resources/PSD/ProjectSplash_Cropped.png" alt="Company Logo" />
+    </div>
 
-<div class="nav-bar">
-    <!-- Hamburger Menu Icon Placeholder -->
-    <div class="hamburger"></div> <!-- Ensure this is hidden initially -->
-    <ul class="nav-links">
+    <div class="nav-bar">
+      <!-- Hamburger Menu Icon Placeholder -->
+      <div class="hamburger"></div>
+      <!-- Ensure this is hidden initially -->
+      <ul class="nav-links">
         <li><a href="/">Home</a></li>
         <li><a href="/ecoTravelRoutes">Travel</a></li>
         <li><a href="/recycle">Recycle</a></li>
-        <li><a href="/leaderboard">Leaderboard</a></li>
         <li><a href="/setting">Settings</a></li>
         <% if (username) { %>
-            <li><a href="/logout" class="logout-link">
-                <button>Logout</button>
-            </a></li>
+        <li>
+          <a href="/logout" class="logout-link">
+            <button>Logout</button>
+          </a>
+        </li>
         <% } else { %>
-            <li><a href="/login" class="login-link">
-                <button>Login</button>
-            </a></li>
-            <li><a href="/register" class="register-link">
-                <button>Register</button>
-            </a></li>
+        <li>
+          <a href="/login" class="login-link">
+            <button>Login</button>
+          </a>
+        </li>
+        <li>
+          <a href="/register" class="register-link">
+            <button>Register</button>
+          </a>
+        </li>
         <% } %>
-    </ul>
-</div>
-
-<% if (username) { %>
-    <div class="user-greeting">
-        Welcome, <%= username %>
+      </ul>
     </div>
-<% } %>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const navLinks = document.querySelector('.nav-links');
-        const hamburger = document.querySelector('.hamburger'); // select the hamburger div
-    
+    <% if (username) { %>
+    <div class="user-greeting">Welcome, <%= username %></div>
+    <% } %>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navLinks = document.querySelector(".nav-links");
+        const hamburger = document.querySelector(".hamburger"); // select the hamburger div
+
         // function to toggle nav links visibility
         function toggleNavLinks() {
-            navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+          navLinks.style.display =
+            navLinks.style.display === "none" ? "flex" : "none";
         }
-    
+
         //toggle nav links on click
-        hamburger.addEventListener('click', toggleNavLinks);
-    
+        hamburger.addEventListener("click", toggleNavLinks);
+
         //adjust navLinks visibility based on window width
         function adjustNavLinksForWindowSize() {
-            if (window.innerWidth > 1000) {
-                navLinks.style.display = 'flex'; // Ensure nav-links are visible on wider screens
-            } else if (!navLinks.style.display || navLinks.style.display === 'flex') {
-                navLinks.style.display = 'none'; // Hide nav-links on smaller screens if not already toggled
-            }
+          if (window.innerWidth > 1000) {
+            navLinks.style.display = "flex"; // Ensure nav-links are visible on wider screens
+          } else if (
+            !navLinks.style.display ||
+            navLinks.style.display === "flex"
+          ) {
+            navLinks.style.display = "none"; // Hide nav-links on smaller screens if not already toggled
+          }
         }
-    
+
         //listen for window resize events
-        window.addEventListener('resize', adjustNavLinksForWindowSize);
-    
+        window.addEventListener("resize", adjustNavLinksForWindowSize);
+
         //initial adjustment in case the page loads in a narrow window
         adjustNavLinksForWindowSize();
-    });
-</script>
+      });
+    </script>
 
-<!-- Bottom left Rectangle -->
-<div class="boxtl"></div>
+    <!-- Bottom left Rectangle -->
+    <div class="boxtl"></div>
 
-<div id="chart-wrapper">
-    <div id="chart"></div>
-</div>
+    <div id="chart-wrapper">
+      <div id="chart"></div>
+    </div>
 
-<script>
-    // Fetch the chart data from the server
-    fetch('/chart-data')
-    .then(response => response.json())
-    .then(data => {
-        // Generate the chart using billboard.js
-        var chart = bb.generate({
+    <script>
+      // Fetch the chart data from the server
+      fetch("/chart-data")
+        .then((response) => response.json())
+        .then((data) => {
+          // Generate the chart using billboard.js
+          var chart = bb.generate({
             bindto: "#chart",
             transition: {
-                duration: 1000
+              duration: 1000,
             },
             bar: {
-                width: {
-                    ratio: 0.5 // This controls the width of the bars in the chart.
-                }
+              width: {
+                ratio: 0.5, // This controls the width of the bars in the chart.
+              },
             },
             data: {
-                type: "bar", // Specifies the chart type.
-                columns: [
-                    ["Recent Days Activity", ...data.data1],
-                ]
+              type: "bar", // Specifies the chart type.
+              columns: [["Recent Days Activity", ...data.data1]],
             },
             axis: {
-                x: {
-                    type: 'category',
-                    categories: ['', '', '', '', '', '', ''], // Placeholder categories
-                    label: {
-                        text: 'Recent 7 Days', // X-axis label text
-                        position: 'outer-center'
-                    }
+              x: {
+                type: "category",
+                categories: ["", "", "", "", "", "", ""], // Placeholder categories
+                label: {
+                  text: "Recent 7 Days", // X-axis label text
+                  position: "outer-center",
                 },
-                y: {
-                    label: {
-                        text: 'Emissions', // Y-axis label text
-                        position: 'outer-middle'
-                    }
-                }
-            }
-        });
+              },
+              y: {
+                label: {
+                  text: "Emissions", // Y-axis label text
+                  position: "outer-middle",
+                },
+              },
+            },
+          });
 
-        // Update the chart categories and data after a delay to create an animation effect
-        setTimeout(function() {
-            chart.axis.labels({ x: 'Recent 7 Days' });
+          // Update the chart categories and data after a delay to create an animation effect
+          setTimeout(function () {
+            chart.axis.labels({ x: "Recent 7 Days" });
             chart.load({
-                columns: [
-                    ["Recent Days Activity", ...data.data1],
-                ]
+              columns: [["Recent Days Activity", ...data.data1]],
             });
-        }, 2000); // Delay before updating the chart data
-    })
-    .catch(error => {
-        console.error("Error fetching chart data:", error);
-    });
+          }, 2000); // Delay before updating the chart data
+        })
+        .catch((error) => {
+          console.error("Error fetching chart data:", error);
+        });
+    </script>
 
-</script>
+    <!-- Pie Chart Wrapper/CarbonBreakdown API passed/displayed into here -->
+    <div id="piechart-wrapper">
+      <div id="piechart-header" class="piechart-header"></div>
+      <div id="piechart"></div>
+    </div>
+    <!-- Pie Chart Script -->
+    <script>
+      // Fetch the power consumption data from the server
+      fetch("/current-power-consumption")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(({ data, regionName }) => {
+          // Destructure the response to get both data and regionName
+          // Assuming data is the expected array for pie chart generation
+          var columns = data.map((item) => [item.fuel, item.percentage]);
 
-<!-- Pie Chart Wrapper/CarbonBreakdown API passed/displayed into here -->
-<div id="piechart-wrapper">
-    <div id="piechart-header" class="piechart-header"></div>
-    <div id="piechart"></div>
-</div>
-<!-- Pie Chart Script -->
-<script>
-    // Fetch the power consumption data from the server
-    fetch('/current-power-consumption')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(({data, regionName}) => {
-        // Destructure the response to get both data and regionName
-        // Assuming data is the expected array for pie chart generation
-        var columns = data.map(item => [item.fuel, item.percentage]);
-        
-        // Generate the pie chart using billboard.js
-        var piechart = bb.generate({
+          // Generate the pie chart using billboard.js
+          var piechart = bb.generate({
             bindto: "#piechart",
             data: {
-                type: "pie",
-                columns: columns
+              type: "pie",
+              columns: columns,
             },
             pie: {
-                label: {
-                    show: false // Adjust based on your preference
-                }
+              label: {
+                show: false, // Adjust based on your preference
+              },
             },
             tooltip: {
-                format: {
-                    value: function (value, ratio, id) {
-                        return `${value}%`; // Formatting the tooltip to show percentages
-                    }
-                }
-            }
+              format: {
+                value: function (value, ratio, id) {
+                  return `${value}%`; // Formatting the tooltip to show percentages
+                },
+              },
+            },
+          });
+
+          // Set the header to display the region name
+          document.getElementById("piechart-header").innerHTML =
+            "Carbon Breakdown <br>Region: <span style='font-size: 12px;'>" +
+            regionName +
+            "</span>";
+        })
+        .catch((error) => {
+          console.error("Error fetching power consumption data:", error);
+          // Handle errors or display a message to the user
         });
-  
-        // Set the header to display the region name
-        document.getElementById('piechart-header').innerHTML = "Carbon Breakdown <br>Region: <span style='font-size: 12px;'>" + regionName + "</span>";
+    </script>
 
-      })
-      .catch(error => {
-        console.error('Error fetching power consumption data:', error);
-        // Handle errors or display a message to the user
-      });
-  </script>
-  
-
-<!-- tips random -->
-<div class="tips-container">
-    <div class="tips-header">Eco Tips</div>
-    <div id="tipText" class="tip">Tip will appear here</div>
-    <div class="arrows">
+    <!-- tips random -->
+    <div class="tips-container">
+      <div class="tips-header">Eco Tips</div>
+      <div id="tipText" class="tip">Tip will appear here</div>
+      <div class="arrows">
         <div id="prevTip" class="arrow">&#8592;</div>
         <div id="nextTip" class="arrow">&#8594;</div>
+      </div>
     </div>
-</div>
 
-<script>
-    const tips = [
+    <script>
+      const tips = [
         // Tip 1
-  "Use Eco-Friendly Cleaning Products: Opt for natural, biodegradable cleaning solutions to lessen your exposure to harmful chemicals and reduce environmental pollution. Ingredients like vinegar, baking soda, and lemon not only clean effectively but are also safer for the planet, as they break down harmlessly into the environment after use, minimizing their impact on ecosystems and waterways. By making the switch to eco-friendly cleaning products, you not only safeguard your health and that of your family but also contribute to the preservation of biodiversity and the sustainability of our planet for future generations.",
+        "Use Eco-Friendly Cleaning Products: Opt for natural, biodegradable cleaning solutions to lessen your exposure to harmful chemicals and reduce environmental pollution. Ingredients like vinegar, baking soda, and lemon not only clean effectively but are also safer for the planet, as they break down harmlessly into the environment after use, minimizing their impact on ecosystems and waterways. By making the switch to eco-friendly cleaning products, you not only safeguard your health and that of your family but also contribute to the preservation of biodiversity and the sustainability of our planet for future generations.",
 
-// Tip 2
-"Invest in Reusable Products: Transition away from single-use plastics by choosing reusable alternatives such as water bottles, coffee cups, shopping bags, and straws. These items help reduce waste and can offer financial savings over time by minimizing the need to repurchase disposable products. By investing in reusable products, you're not only reducing your environmental footprint but also promoting a culture of sustainability and responsible consumption.",
+        // Tip 2
+        "Invest in Reusable Products: Transition away from single-use plastics by choosing reusable alternatives such as water bottles, coffee cups, shopping bags, and straws. These items help reduce waste and can offer financial savings over time by minimizing the need to repurchase disposable products. By investing in reusable products, you're not only reducing your environmental footprint but also promoting a culture of sustainability and responsible consumption.",
 
-// Tip 3
-"Start Composting: Composting your organic waste, like fruit scraps, vegetable peels, coffee grounds, and eggshells, diverts it from landfills and creates nutrient-rich soil for your garden. This practice reduces your household waste and contributes to a healthier garden ecosystem. By embracing composting, you're turning food scraps into a valuable resource while minimizing your impact on the environment.",
+        // Tip 3
+        "Start Composting: Composting your organic waste, like fruit scraps, vegetable peels, coffee grounds, and eggshells, diverts it from landfills and creates nutrient-rich soil for your garden. This practice reduces your household waste and contributes to a healthier garden ecosystem. By embracing composting, you're turning food scraps into a valuable resource while minimizing your impact on the environment.",
 
-// Tip 4
-"Choose Sustainable Fashion: Support fashion brands that prioritize eco-friendly materials and ethical manufacturing processes. Engage in sustainable fashion practices by purchasing second-hand clothes or participating in clothes-swapping events. These actions not only reduce waste but also promote a more sustainable lifestyle and support ethical business practices within the fashion industry.",
+        // Tip 4
+        "Choose Sustainable Fashion: Support fashion brands that prioritize eco-friendly materials and ethical manufacturing processes. Engage in sustainable fashion practices by purchasing second-hand clothes or participating in clothes-swapping events. These actions not only reduce waste but also promote a more sustainable lifestyle and support ethical business practices within the fashion industry.",
 
-// Tip 5
-"Reduce Digital Footprint: The energy consumption of digital storage and activities is significant. By regularly cleaning your email inbox, unsubscribing from unnecessary newsletters, and streaming videos at lower resolutions, you can reduce your digital carbon footprint and contribute to energy conservation. Small changes in your digital habits can lead to significant reductions in energy usage and environmental impact.",
+        // Tip 5
+        "Reduce Digital Footprint: The energy consumption of digital storage and activities is significant. By regularly cleaning your email inbox, unsubscribing from unnecessary newsletters, and streaming videos at lower resolutions, you can reduce your digital carbon footprint and contribute to energy conservation. Small changes in your digital habits can lead to significant reductions in energy usage and environmental impact.",
 
-// Tip 6
-"Participate in Local Clean-Up Events: Engage with your community by joining efforts to clean parks, beaches, and rivers. These activities not only improve the local environment but also foster community engagement and raise awareness about the importance of environmental stewardship. By participating in clean-up events, you're making a tangible difference in your community and inspiring others to take action.",
+        // Tip 6
+        "Participate in Local Clean-Up Events: Engage with your community by joining efforts to clean parks, beaches, and rivers. These activities not only improve the local environment but also foster community engagement and raise awareness about the importance of environmental stewardship. By participating in clean-up events, you're making a tangible difference in your community and inspiring others to take action.",
 
-// Tip 7
-"Adopt a Zero-Waste Lifestyle: Strive to eliminate waste by choosing products with minimal packaging, repairing rather than discarding items, and repurposing materials. A zero-waste approach reduces landfill contribution and promotes sustainable living practices. By embracing a zero-waste lifestyle, you're taking proactive steps to reduce your environmental impact and live more harmoniously with the planet.",
+        // Tip 7
+        "Adopt a Zero-Waste Lifestyle: Strive to eliminate waste by choosing products with minimal packaging, repairing rather than discarding items, and repurposing materials. A zero-waste approach reduces landfill contribution and promotes sustainable living practices. By embracing a zero-waste lifestyle, you're taking proactive steps to reduce your environmental impact and live more harmoniously with the planet.",
 
-// Tip 8
-"Use Public Libraries and Digital Resources: Leverage free resources such as public libraries and digital platforms for books, magazines, and movies. This practice conserves resources, supports public institutions, and offers an economical alternative to purchasing new materials. By utilizing public libraries and digital resources, you're reducing consumption and promoting access to knowledge and entertainment for all members of society.",
+        // Tip 8
+        "Use Public Libraries and Digital Resources: Leverage free resources such as public libraries and digital platforms for books, magazines, and movies. This practice conserves resources, supports public institutions, and offers an economical alternative to purchasing new materials. By utilizing public libraries and digital resources, you're reducing consumption and promoting access to knowledge and entertainment for all members of society.",
 
-// Tip 9
-"Implement a Meatless Day: Incorporating at least one meatless day per week into your diet can significantly reduce your carbon footprint. Exploring vegetarian options helps mitigate the environmental impact of meat production and encourages a diverse and nutritious diet. By adopting a meatless day, you're supporting sustainable food choices and reducing the strain on natural resources and ecosystems.",
+        // Tip 9
+        "Implement a Meatless Day: Incorporating at least one meatless day per week into your diet can significantly reduce your carbon footprint. Exploring vegetarian options helps mitigate the environmental impact of meat production and encourages a diverse and nutritious diet. By adopting a meatless day, you're supporting sustainable food choices and reducing the strain on natural resources and ecosystems.",
 
-// Tip 10
-"Promote Biodiversity in Your Garden: Enhance your garden's ecosystem by planting native species that support local wildlife like birds, bees, and butterflies. Native plants are better adapted to your climate, requiring less water and maintenance, which contributes to biodiversity and ecological health. By promoting biodiversity in your garden, you're creating a habitat for diverse species and supporting the overall health of the ecosystem.",
+        // Tip 10
+        "Promote Biodiversity in Your Garden: Enhance your garden's ecosystem by planting native species that support local wildlife like birds, bees, and butterflies. Native plants are better adapted to your climate, requiring less water and maintenance, which contributes to biodiversity and ecological health. By promoting biodiversity in your garden, you're creating a habitat for diverse species and supporting the overall health of the ecosystem.",
 
-// Tip 11
-"Use Natural Pest Control: Avoid the use of chemical pesticides in your garden by adopting natural pest control methods. Techniques such as companion planting, encouraging beneficial insects, and applying homemade remedies can effectively manage pests without harming the environment. By using natural pest control methods, you're protecting beneficial insects, soil health, and water quality, while reducing your reliance on harmful chemicals.",
+        // Tip 11
+        "Use Natural Pest Control: Avoid the use of chemical pesticides in your garden by adopting natural pest control methods. Techniques such as companion planting, encouraging beneficial insects, and applying homemade remedies can effectively manage pests without harming the environment. By using natural pest control methods, you're protecting beneficial insects, soil health, and water quality, while reducing your reliance on harmful chemicals.",
 
-// Tip 12
-"Reduce Food Waste: By planning meals, storing food correctly, and utilizing leftovers creatively, you can significantly reduce food waste. Composting food scraps further minimizes waste and produces compost that enriches soil in gardens, reducing the need for synthetic fertilizers. By reducing food waste, you're conserving resources, saving money, and minimizing the environmental impact of food production and disposal.",
+        // Tip 12
+        "Reduce Food Waste: By planning meals, storing food correctly, and utilizing leftovers creatively, you can significantly reduce food waste. Composting food scraps further minimizes waste and produces compost that enriches soil in gardens, reducing the need for synthetic fertilizers. By reducing food waste, you're conserving resources, saving money, and minimizing the environmental impact of food production and disposal.",
 
-// Tip 13
-"Support Renewable Energy Projects: Contributing to or investing in renewable energy projects, like community solar power or wind farms, accelerates the transition to clean energy sources. These actions reduce dependence on fossil fuels and promote a sustainable energy future. By supporting renewable energy projects, you're investing in a cleaner, more resilient energy system that benefits both the environment and future generations.",
+        // Tip 13
+        "Support Renewable Energy Projects: Contributing to or investing in renewable energy projects, like community solar power or wind farms, accelerates the transition to clean energy sources. These actions reduce dependence on fossil fuels and promote a sustainable energy future. By supporting renewable energy projects, you're investing in a cleaner, more resilient energy system that benefits both the environment and future generations.",
 
-// Tip 14
-"Educate Yourself and Others: Stay informed about environmental issues and solutions, and share your knowledge within your community. Education is a vital tool for fostering environmental awareness and inspiring actions that support sustainability. By educating yourself and others, you're empowering individuals to make informed decisions and take meaningful action to protect the planet.",
+        // Tip 14
+        "Educate Yourself and Others: Stay informed about environmental issues and solutions, and share your knowledge within your community. Education is a vital tool for fostering environmental awareness and inspiring actions that support sustainability. By educating yourself and others, you're empowering individuals to make informed decisions and take meaningful action to protect the planet.",
 
-// Tip 15
-"Advocate for Environmental Policies: Actively participate in advocating for policies and initiatives that promote environmental sustainability. Supporting leaders and policies committed to combating climate change and protecting natural resources plays a critical role in shaping a sustainable future. By advocating for environmental policies, you're using your voice to influence positive change and ensure a healthier planet for current and future generations.",
+        // Tip 15
+        "Advocate for Environmental Policies: Actively participate in advocating for policies and initiatives that promote environmental sustainability. Supporting leaders and policies committed to combating climate change and protecting natural resources plays a critical role in shaping a sustainable future. By advocating for environmental policies, you're using your voice to influence positive change and ensure a healthier planet for current and future generations.",
 
-// Tip 16
-"Reduce, Reuse, Recycle Diligently: Before discarding items, consider if they can be reused or repurposed. Recycling plays a key role in minimizing landfill waste and conserving resources. Familiarize yourself with local recycling regulations and support products made from recycled materials. By practicing reduce, reuse, recycle diligently, you're minimizing waste, conserving resources, and contributing to a circular economy that prioritizes sustainability.",
+        // Tip 16
+        "Reduce, Reuse, Recycle Diligently: Before discarding items, consider if they can be reused or repurposed. Recycling plays a key role in minimizing landfill waste and conserving resources. Familiarize yourself with local recycling regulations and support products made from recycled materials. By practicing reduce, reuse, recycle diligently, you're minimizing waste, conserving resources, and contributing to a circular economy that prioritizes sustainability.",
 
-// Tip 17
-"Minimize Water Usage: Water is a finite resource. Address leaks, install water-saving fixtures, and practice efficient water use in your garden to conserve water. These actions not only save water but also reduce the energy required for water treatment and distribution. By minimizing water usage, you're protecting freshwater ecosystems, preserving water resources for future generations, and reducing your environmental footprint.",
+        // Tip 17
+        "Minimize Water Usage: Water is a finite resource. Address leaks, install water-saving fixtures, and practice efficient water use in your garden to conserve water. These actions not only save water but also reduce the energy required for water treatment and distribution. By minimizing water usage, you're protecting freshwater ecosystems, preserving water resources for future generations, and reducing your environmental footprint.",
 
-// Tip 18
-"Opt for Sustainable Transportation: Reduce your carbon footprint by choosing sustainable transportation options such as public transit, carpooling, cycling, or walking. For those who need a vehicle, consider a hybrid or electric model to minimize fossil fuel use and greenhouse gas emissions. By opting for sustainable transportation, you're reducing air pollution, easing traffic congestion, and promoting a healthier, more livable environment for all.",
+        // Tip 18
+        "Opt for Sustainable Transportation: Reduce your carbon footprint by choosing sustainable transportation options such as public transit, carpooling, cycling, or walking. For those who need a vehicle, consider a hybrid or electric model to minimize fossil fuel use and greenhouse gas emissions. By opting for sustainable transportation, you're reducing air pollution, easing traffic congestion, and promoting a healthier, more livable environment for all.",
 
-// Tip 19
-"Conserve Energy at Home: Enhance your home's energy efficiency by improving insulation, sealing leaks, and using energy-saving appliances and light bulbs. Simple measures like turning off lights and unplugging devices when not in use contribute to significant energy savings. By conserving energy at home, you're reducing greenhouse gas emissions, lowering utility bills, and creating a more sustainable living environment for yourself and future generations."
+        // Tip 19
+        "Conserve Energy at Home: Enhance your home's energy efficiency by improving insulation, sealing leaks, and using energy-saving appliances and light bulbs. Simple measures like turning off lights and unplugging devices when not in use contribute to significant energy savings. By conserving energy at home, you're reducing greenhouse gas emissions, lowering utility bills, and creating a more sustainable living environment for yourself and future generations.",
+      ];
 
-    ];
+      let currentTipIndex = Math.floor(Math.random() * tips.length);
+      let tipHistory = [currentTipIndex]; // Initialize history with the first random tip
+      let historyIndex = 0; // To keep track of the current position in history
 
-    let currentTipIndex = Math.floor(Math.random() * tips.length);
-    let tipHistory = [currentTipIndex]; // Initialize history with the first random tip
-    let historyIndex = 0; // To keep track of the current position in history
+      document.getElementById("tipText").innerHTML = tips[currentTipIndex];
 
-    document.getElementById('tipText').innerHTML = tips[currentTipIndex];
-
-    function showNextTip() {
+      function showNextTip() {
         if (historyIndex < tipHistory.length - 1) {
-            // If the user has gone back, just move forward in the history
-            historyIndex++;
-            currentTipIndex = tipHistory[historyIndex];
+          // If the user has gone back, just move forward in the history
+          historyIndex++;
+          currentTipIndex = tipHistory[historyIndex];
         } else {
-            // Else, add a new tip to the history
-            let nextTipIndex;
-            do {
-                nextTipIndex = Math.floor(Math.random() * tips.length);
-            } while (tipHistory.length > 1 && nextTipIndex === tipHistory[tipHistory.length - 2]);
-            currentTipIndex = nextTipIndex;
-            tipHistory.push(currentTipIndex);
-            historyIndex++;
+          // Else, add a new tip to the history
+          let nextTipIndex;
+          do {
+            nextTipIndex = Math.floor(Math.random() * tips.length);
+          } while (
+            tipHistory.length > 1 &&
+            nextTipIndex === tipHistory[tipHistory.length - 2]
+          );
+          currentTipIndex = nextTipIndex;
+          tipHistory.push(currentTipIndex);
+          historyIndex++;
         }
-        document.getElementById('tipText').innerHTML = tips[currentTipIndex];
-    }
+        document.getElementById("tipText").innerHTML = tips[currentTipIndex];
+      }
 
-    function showPreviousTip() {
+      function showPreviousTip() {
         if (historyIndex > 0) {
-            historyIndex--;
-            currentTipIndex = tipHistory[historyIndex];
-            document.getElementById('tipText').innerHTML = tips[currentTipIndex];
+          historyIndex--;
+          currentTipIndex = tipHistory[historyIndex];
+          document.getElementById("tipText").innerHTML = tips[currentTipIndex];
         }
-    }
+      }
 
-    document.getElementById('nextTip').addEventListener('click', showNextTip);
-    document.getElementById('prevTip').addEventListener('click', showPreviousTip);
+      document.getElementById("nextTip").addEventListener("click", showNextTip);
+      document
+        .getElementById("prevTip")
+        .addEventListener("click", showPreviousTip);
 
-    // Automatic transition to a new random tip every 10 seconds
-    setInterval(showNextTip, 6500); // Adjust time as needed
-</script>
-
-</body>
+      // Automatic transition to a new random tip every 10 seconds
+      setInterval(showNextTip, 6500); // Adjust time as needed
+    </script>
+  </body>
 </html>

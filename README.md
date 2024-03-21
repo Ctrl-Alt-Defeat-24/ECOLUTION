@@ -5,22 +5,7 @@ Carbon Tracking &amp; Lifestyle Web App
 
 # USAGE
  - Clone Repo
- - "npm install" : the following dependencies
-    "all": "^0.0.0",
-    "bcrypt": "^5.1.1",
-    "billboard.js": "^3.11.0-next.1",
-    "body-parser": "^1.20.2",
-    "canvas": "^2.11.2",
-    "chart.js": "^4.4.1",
-    "ejs": "^3.1.9",
-    "express": "^4.18.2",
-    "mongodb": "6.3",
-    "node-fetch": "^2.7.0"
-    "express-session": "1.18.0"
- - "npm init -y" in the source folder
-    - node should detect the dependencies and will install them for you, if not manually install express
- - Run index.js via Node.js
- - If a server message appears in the console then success!
- 
-# DEMO
- - /antpath to demonstrate ecofriendly navigation
+ - In the root directory (.../ECOLUTION) run "npm install"
+    - node should detect the dependencies and will install them for you
+ - Run index.js via Node.js in VS Code (F5 for Start with Debugging)
+ - If a server message appears in the console then it's live!
